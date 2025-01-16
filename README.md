@@ -1,4 +1,4 @@
-# Netflix Project
+# Netflix Project - Setup and Usage Instructions
 ## Prerequisites
 Before you begin, make sure you have the following:
 
@@ -15,74 +15,53 @@ Open Command Prompt (not PowerShell) and go to the folder where the netflix-proj
 2. Start Docker:
 Ensure Docker Desktop is running on your computer.
 
-3. Set the ENV file:
-Make sure that the "webServer" folder in your repository folder contains a "config" folder, and in that folder, there is a file named .env.local with the following content:
-   ```bash
-   CONNECTION_STRING=mongodb://mongodb:27017/my_database
-   ```
-4. Running the Program:
-Execute the following commands in Command Prompt for running the server and the client:
-
-- Step 1: Build the recommendation server:
-   ```bash
-   docker build -t rec-image -f ./recServer/Dockerfile .
-   ```
-- Step 2: Build the web server:
-   ```bash
-   docker build -t web-image -f ./webServer/Dockerfile .
-   ```
--  Step 3: Create a Network for the Containers:
-   ```bash
-   docker network create mynetwork
-   ```
-- Step 4: Run a mongoDB container:
-   ```bash
-   docker run --name mongodb --network mynetwork -d -p 27017:27017 mongo:latest
-   ```
-- Step 5: Set the ports of the connection of the recommendation server and the web server and the connection of the user to the web server:
-  Set the Connection Port in the Environment Variable REC_TO_WEB_PORT:
-   ```bash
-   set REC_TO_WEB_PORT=<put the port here (e.g. 8080)>
-   ```
-  Set the Connection Port in the Environment Variable USER_TO_WEB_PORT:
+3. Set the ENV file and other Environment variables:
+- Step 1: 
+   Make sure that the "webServer" folder in your repository folder contains a "config" folder, and in that folder, there is a file named .env.local with the following content:
+      ```bash
+      CONNECTION_STRING=mongodb://mongodb:27017/my_database
+      ```
+- Step 2: Set the Ports for the web Server Connections:
+    Set the port that you want the web server to listen to in the Environment Variable USER_TO_WEB_PORT:
    ```bash
    set USER_TO_WEB_PORT=<put the port here (e.g. 3000)>
    ```
+   Set the port between the recommendations server and the web server in the Environment Variable REC_TO_WEB_PORT:
+   ```bash
+   set REC_TO_WEB_PORT=<put the port here (e.g. 8080)>
+   ```
    We give the flexibility to choose the port here, as it may sometimes be occupied or blocked, requiring you to run the program again with a different port.
-- Step 6: Run the recommendation server:
-   Run the recommendation server's container with the port:
+4. Running the Program:
+Execute the following commands in Command Prompt for running the web server:
+
+- Step 1: Build the web server:
    ```bash
-   docker run -d -it --name rec-container --network mynetwork -e REC_TO_WEB_PORT=%REC_TO_WEB_PORT% -p %REC_TO_WEB_PORT%:%REC_TO_WEB_PORT% -v "%cd%/recServer/data:/myapp/server/data" rec-image
+   docker-compose build
    ```
-- Step 7: Run the web server:
-    - Option 1: Automatic IP
-   Use the recommendation server's container name (rec-container) as the client IP:
+- Step 2: Run the web server:
    ```bash
-   docker run -it --rm --name web-container --network mynetwork -e REC_TO_WEB_PORT=%REC_TO_WEB_PORT% -e REC_TO_WEB_IP=rec-container -e USER_TO_WEB_PORT=%USER_TO_WEB_PORT% -p %USER_TO_WEB_PORT%:%USER_TO_WEB_PORT% web-image
+   docker-compose up
    ```
-  - Option 2: Manual IP
-      - Inspect the network to find the server's IP:
-        ```bash
-        docker network inspect mynetwork
-        ```
-      - Look for the IPv4Address field under the rec-container details and use the obtained IP address to run the web server:
-        ```bash
-        docker run -it --rm --name web-container --network mynetwork -e REC_TO_WEB_PORT=%REC_TO_WEB_PORT% -e REC_TO_WEB_IP=<recommendation server's IP address> -p %USER_TO_WEB_PORT%:%USER_TO_WEB_PORT% web-image
-        ```
-- Step 8: Connect the web server:
+- Step 3: Connect the web server:
    You can now connect to the web server using your preferred method (such as curl, Thunder Client, etc.) with a command like the following:
    ```bash
    http://localhost:<put here your USER_TO_WEB_PORT>/api/categories/
    ```
-5. Running the Tests
+- Step 4: Stoping the web server and removing the containers:
+   ```bash
+   docker-compose down
+   ```
+5. Running the tests for the recommendation server
 To build and run the test container, use these commands:
 
 - Build the test Docker image:
   ```bash
   docker build -t test-runner -f recServer/tests/Dockerfile .
+  ```
 - Run the tests:
   ```bash
   docker run --rm test-runner
+  ```
 ## Basic Explanations About Our Code
 In our program, to make a POST request for a movie, all fields must be provided, as shown in the example execution. For the categories field, an array of the desired category names should be provided. However, when the movie is saved in the database, an array of category objects will be stored.
 

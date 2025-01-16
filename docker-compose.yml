@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    command: ["mongod", "--quiet", "--logpath", "/dev/null"]
+    container_name: mongodb
+    networks:
+      - mynetwork
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  rec-server:
+    build:
+      context: .
+      dockerfile: ./recServer/Dockerfile
+      args:
+        REC_TO_WEB_PORT: "${REC_TO_WEB_PORT}"
+    container_name: rec-container
+    networks:
+      - mynetwork
+    environment:
+      REC_TO_WEB_PORT: "${REC_TO_WEB_PORT}"
+    ports:
+      - "${REC_TO_WEB_PORT}:${REC_TO_WEB_PORT}"
+    volumes:
+      - ./recServer/data:/myapp/server/data
+
+  web-server:
+    build:
+      context: .
+      dockerfile: ./webServer/Dockerfile
+      args:
+        REC_TO_WEB_PORT: "${REC_TO_WEB_PORT}"
+        USER_TO_WEB_PORT: "${USER_TO_WEB_PORT}"
+    container_name: web-container
+    networks:
+      - mynetwork
+    environment:
+      REC_TO_WEB_IP: "rec-container"
+      REC_TO_WEB_PORT: "${REC_TO_WEB_PORT}"
+      USER_TO_WEB_PORT: "${USER_TO_WEB_PORT}"
+    ports:
+      - "${USER_TO_WEB_PORT}:${USER_TO_WEB_PORT}"
+
+networks:
+  mynetwork:
+
+volumes:
+  mongodb_data:
