@@ -1,26 +1,40 @@
 .admin-page {
-    padding: 2rem;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .admin-page h1 {
-    color: #e50914; /* Netflix red */
-    font-weight: bold;
-  }
-  
-  .admin-page h2 {
-    color: #343a40;
-  }
-  
-  .list-group-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .list-group-item button {
-    font-size: 0.8rem;
-  }
-  
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-page h1 {
+  color: #e50914; /* Netflix red */
+  font-weight: bold;
+}
+
+.admin-page h2 {
+  color: #343a40;
+}
+
+.list-group-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+/* Button styling */
+.list-group-item button {
+  font-size: 0.8rem;
+  transition: background-color 0.3s ease;
+}
+
+/* Ensure styles are applied only to the checkbox and label inside .form-check */
+.form-check .promoted-label {
+  color: black; /* Make label text black */
+  margin-right: 1000px; /* Adjust the space between the label and checkbox */
+  vertical-align: middle; /* Align the label vertically with the checkbox */
+}
+
+.form-check .form-check-input {
+  vertical-align: middle; /* Align the checkbox vertically with the label */
+  margin-top: 0; /* Reset any margin top that may interfere */
+}

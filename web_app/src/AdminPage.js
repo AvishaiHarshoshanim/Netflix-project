@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AdminPage.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -6,22 +6,50 @@ const AdminPage = () => {
   const [categories, setCategories] = useState([]);
   const [movies, setMovies] = useState([]);
   const [newCategory, setNewCategory] = useState('');
+  const [promoted, setPromoted] = useState(false);
   const [newMovie, setNewMovie] = useState({ title: '', category: '' });
+
+  // Fetch categories from the server on page load
+  useEffect(() => {
+    fetch('http://localhost:5000/api/categories')
+      .then((response) => response.json())
+      .then((data) => setCategories(data))
+      .catch((error) => console.error('Error fetching categories:', error));
+  }, []);
 
   const addCategory = () => {
     if (newCategory) {
-      setCategories([...categories, newCategory]);
-      setNewCategory('');
+      fetch('http://localhost:5000/api/categories', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: newCategory, promoted: promoted }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setCategories([...categories, data]);
+          setNewCategory('');
+          setPromoted(false);
+        })
+        .catch((error) => console.error('Error adding category:', error));
     }
   };
 
   const deleteCategory = (category) => {
-    setCategories(categories.filter((c) => c !== category));
-    setMovies(movies.filter((m) => m.category !== category));
+    fetch(`http://localhost:5000/api/categories/${category}`, {
+      method: 'DELETE',
+    })
+      .then(() => {
+        setCategories(categories.filter((c) => c !== category));
+        setMovies(movies.filter((m) => m.category !== category));
+      })
+      .catch((error) => console.error('Error deleting category:', error));
   };
 
   const addMovie = () => {
     if (newMovie.title && newMovie.category) {
+      // You would implement a similar POST call for adding movies to the server here.
       setMovies([...movies, newMovie]);
       setNewMovie({ title: '', category: '' });
     }
@@ -34,7 +62,7 @@ const AdminPage = () => {
   return (
     <div className="admin-page container">
       <h1 className="text-center mb-4">Netflix Admin Page</h1>
-      
+
       {/* Category Management */}
       <div className="mb-5">
         <h2>Manage Categories</h2>
@@ -50,13 +78,25 @@ const AdminPage = () => {
             Add Category
           </button>
         </div>
+
+        {/* Checkbox for Promoted Category */}
+        <div className="form-check mb-3">
+          <label className="promoted-label">Promoted:</label>
+          <input
+            type="checkbox"
+            className="form-check-input"
+            checked={promoted}
+            onChange={(e) => setPromoted(e.target.checked)}
+          />
+        </div>
+
         <ul className="list-group">
           {categories.map((category, index) => (
             <li key={index} className="list-group-item d-flex justify-content-between">
-              {category}
+              {category.name} {category.promoted && <span className="badge bg-warning">Promoted</span>}
               <button
                 className="btn btn-danger btn-sm"
-                onClick={() => deleteCategory(category)}
+                onClick={() => deleteCategory(category.name)}
               >
                 Delete
               </button>
@@ -64,7 +104,7 @@ const AdminPage = () => {
           ))}
         </ul>
       </div>
-      
+
       {/* Movie Management */}
       <div>
         <h2>Manage Movies</h2>
@@ -86,8 +126,8 @@ const AdminPage = () => {
             >
               <option value="">Select Category</option>
               {categories.map((category, index) => (
-                <option key={index} value={category}>
-                  {category}
+                <option key={index} value={category.name}>
+                  {category.name}
                 </option>
               ))}
             </select>
