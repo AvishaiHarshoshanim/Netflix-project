@@ -1,0 +1,26 @@
+.admin-page {
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .admin-page h1 {
+    color: #e50914; /* Netflix red */
+    font-weight: bold;
+  }
+  
+  .admin-page h2 {
+    color: #343a40;
+  }
+  
+  .list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .list-group-item button {
+    font-size: 0.8rem;
+  }
+  
