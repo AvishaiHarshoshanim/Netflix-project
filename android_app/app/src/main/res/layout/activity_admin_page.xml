@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header -->
+        <TextView
+            android:id="@+id/header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Netflix Admin Page"
+            android:textSize="24sp"
+            android:textColor="#e50914"
+            android:layout_gravity="center"
+            android:paddingBottom="16dp"
+            android:textStyle="bold" />
+
+        <!-- Category Management -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Manage Categories"
+            android:textSize="18sp"
+            android:paddingBottom="8dp" />
+
+        <EditText
+            android:id="@+id/category_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Add new category" />
+
+        <CheckBox
+            android:id="@+id/promoted_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Promoted" />
+
+        <Button
+            android:id="@+id/add_category_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Category"
+            android:layout_marginTop="8dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/category_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp" />
+
+        <!-- Movie Management -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Manage Movies"
+            android:textSize="18sp"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp" />
+
+        <EditText
+            android:id="@+id/movie_title_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Movie Title" />
+
+        <Spinner
+            android:id="@+id/category_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
+
+        <Button
+            android:id="@+id/add_movie_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Movie"
+            android:layout_marginTop="8dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/movie_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+</ScrollView>
