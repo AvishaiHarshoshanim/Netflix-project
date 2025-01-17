@@ -24,7 +24,7 @@ Ensure Docker Desktop is running on your computer.
 - Step 2: Set the Ports for the web Server Connections:
     Set the port that you want the web server to listen to in the Environment Variable USER_TO_WEB_PORT:
    ```bash
-   set USER_TO_WEB_PORT=<put the port here (e.g. 3000)>
+   set USER_TO_WEB_PORT=<put the port here (e.g. 5000)>
    ```
    Set the port between the recommendations server and the web server in the Environment Variable REC_TO_WEB_PORT:
    ```bash
