@@ -4,7 +4,7 @@ const categoryService = require('../services/category');
 const createCategory = async (req, res) => {
     try {
         // Try to create the category
-        const newCategory = await categoryService.createCategory(req.body.name);
+        const newCategory = await categoryService.createCategory(req.body.name, req.body.promoted);
         res.status(201).json(newCategory); // Send the created category with a 201 status code
     } catch (err) {
         // If there's an error (e.g., duplicate category name)
@@ -38,11 +38,18 @@ const getCategory = async (req, res) => {
 
 const updateCategory = async (req, res) => {
     const updatedCtegoryData = {...req.body};
-    const updatedCategory = await categoryService.updateCategory(req.params.id, updatedCtegoryData);
-    if (!updatedCategory) {
-        return res.status(404).json({ errors: ['Category not found'] });
+    try {
+        // Try to update the category
+        const updatedCategory = await categoryService.updateCategory(req.params.id, updatedCtegoryData);
+        res.status(204).json("Category updated sucssesfuly"); // Send the created category with a 201 status code
+    } catch (err) {
+        if (err.message == "Category not found") {
+            res.status(404).json({ errors: ['Category not found'] });
+        } else {
+            // If there's an error (e.g., duplicate category name)
+            res.status(400).json({ errors: [err.message] });
+        }
     }
-    return res.status(204).send("Category updated sucssesfuly");
 };
 
 const deleteCategory = async (req, res) => {
