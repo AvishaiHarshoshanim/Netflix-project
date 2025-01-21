@@ -8,6 +8,7 @@ const createCategory = async (name, promoted) => {
         if (promoted !== undefined) category.promoted = promoted; 
         return await category.save(); // Return the saved category
     } catch (err) {
+        console.log(err)
         // If there is a duplicate key error (unique constraint violation)
         if (err.code === 11000) {
             throw new Error('Category name must be unique');
@@ -27,9 +28,19 @@ const getCategoryByName = async (name) => {
 const getCategories = async () => { return await Category.find({}); };
 
 const updateCategory = async (categoryId, replace) => {
-    const category = await getCategoryById(categoryId);
-    if (!category) return null;
-    return await Category.findByIdAndUpdate(categoryId, replace, { new: true });
+    try {
+        const category = await getCategoryById(categoryId);
+        if (!category) throw new Error('Category not found');
+        return await Category.findByIdAndUpdate(categoryId, replace, { new: true });
+    } catch (err) {
+        // If there is a duplicate key error (unique constraint violation)
+        if (err.code === 11000) {
+            throw new Error('Category name must be unique');
+        } else {
+            // If any other error occurs
+            throw new Error('Error editing category');
+        }
+    }
 };
 
 const deleteCategory = async (id) => {

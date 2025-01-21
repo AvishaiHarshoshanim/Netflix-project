@@ -3,16 +3,25 @@ const movieService = require('../services/movies');
 const usersService = require('../services/users');
 const categoryService = require('../services/category');
 const general = require('../services/general');
+const fs = require('fs');
+const cors = require('cors');
+const multer = require('multer');
+const express = require('express');
 
 //shuffel the array
 function shuffle(arr) {
-    const array = [...arr]; 
+    const array = [...arr];
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
 }
+
+const getAllMovies = async (req, res) => {
+    res.json(await movieService.getAllMovies());
+};
+
 //convert catregoryName to category Id
 const getCategoryIdsFromNames = async (categoryNames) => {
     const categoryIds = [];
@@ -76,32 +85,38 @@ const getMoviesByCategory = async (req, res) => {
 };
 
 const createMovie = async (req, res) => {
+    
+    const jsonedMovieData = JSON.parse(req.body.movieData);
+
     try {
         const fields = ['movieName', 'categories', 'director', 'actors'];
-        const missing = []; 
+        const missing = [];
 
-    // Push the missing fields into missing
-    fields.forEach(field => {
-        if (!req.body[field]) {
-            missing.push(field);
-        }
-    });
+        // Push the missing fields into missing
+        fields.forEach(field => {
+            if (!jsonedMovieData[field]) {
+                missing.push(field);
+            }
+        });
         if (missing.length > 0) {
             return res.status(400).json({
                 errors: [`The following field/fields are missing: ${missing.join(', ')}`],
             });
         }
-        
-        if (!Array.isArray(req.body.categories)) {
+
+        if (!Array.isArray(jsonedMovieData.categories)) {
             return res.status(400).json({
                 error: 'The "categories" field must be an array.',
             });
         }
 
         // Validate that categories array doesn't contain empty strings
-        if (req.body.categories) {
-            const validCategories = req.body.categories.filter(category => category.trim().length > 0);
-            
+        if (jsonedMovieData.categories) {
+            var validCategories = [];
+            if (jsonedMovieData.categories.length !== 0){
+                validCategories = jsonedMovieData.categories.filter(category => category.trim().length > 0);
+            }
+
             if (validCategories.length === 0) {
                 let noCategory = await mongoose.model('Category').findOne({ name: 'no_category' }).exec();
                 if (!noCategory) {
@@ -110,20 +125,20 @@ const createMovie = async (req, res) => {
                     });
                     await noCategory.save();
                 }
-                return res.status(201).json(await movieService.createMovie(
-                    req.body.movieName,
-                    [noCategory._id],
-                    req.body.director
-                ));
+                validCategories = [noCategory.name]
             }
+
+            // If a picture is provided, validate the file path
+            const picture = req.file ? req.file.filename : null;  // Get filename from multer upload
 
             try {
                 const categoryIds = await getCategoryIdsFromNames(validCategories);
                 return res.status(201).json(await movieService.createMovie(
-                    req.body.movieName,
+                    jsonedMovieData.movieName,
                     categoryIds,
-                    req.body.director,
-                    req.body.actors
+                    jsonedMovieData.director,
+                    jsonedMovieData.actors,
+                    picture
                 ));
             } catch (error) {
                 return res.status(400).json({ error: error.message });
@@ -140,12 +155,12 @@ const createMovie = async (req, res) => {
 
 const getMovie = async (req, res) => {
     try {
-    const { id } = req.params;
+        const { id } = req.params;
 
-    // Validate the ID format
-    if (!general.isValidObjectId(id)) {
-        return res.status(400).json({ errors: ['Invalid movie ID'] });
-    }
+        // Validate the ID format
+        if (!general.isValidObjectId(id)) {
+            return res.status(400).json({ errors: ['Invalid movie ID'] });
+        }
 
         // Fetch the movie
         const movie = await movieService.getMovieById(id);
@@ -163,16 +178,18 @@ const getMovie = async (req, res) => {
     }
 };
 const updateMovie = async (req, res) => {
+    const jsonedMovieData = JSON.parse(req.body.movieData);
+
     try {
         const fields = ['movieName', 'categories', 'director', 'actors'];
-        const missing = []; 
+        const missing = [];
 
-    // Push the missing fields into missing
-    fields.forEach(field => {
-        if (!req.body[field]) {
-            missing.push(field);
-        }
-    });
+        // Push the missing fields into missing
+        fields.forEach(field => {
+            if (!jsonedMovieData[field]) {
+                missing.push(field);
+            }
+        });
         const id = req.params.id;
 
         if (missing.length > 0) {
@@ -180,7 +197,7 @@ const updateMovie = async (req, res) => {
                 error: `Missing required fields: ${missing.join(', ')}`,
             });
         }
-        if (!Array.isArray(req.body.categories)) {
+        if (!Array.isArray(jsonedMovieData.categories)) {
             return res.status(400).json({
                 error: 'The "categories" field must be an array.',
             });
@@ -191,9 +208,12 @@ const updateMovie = async (req, res) => {
         }
 
         // Validate categories array and handle empty strings
-        if (req.body.categories) {
-            const validCategories = req.body.categories.filter(category => category.trim().length > 0);
-            
+        if (jsonedMovieData.categories) {
+            var validCategories = [];
+            if (jsonedMovieData.categories.length !== 0) {
+            validCategories = jsonedMovieData.categories.filter(category => category.trim().length > 0);
+            }
+
             if (validCategories.length === 0) {
                 // Handle case where all categories are empty - use no_category
                 let noCategory = await mongoose.model('Category').findOne({ name: 'no_category' }).exec();
@@ -203,25 +223,20 @@ const updateMovie = async (req, res) => {
                     });
                     await noCategory.save();
                 }
-
-                const updatedMovieData = {
-                    ...req.body,
-                    categories: [noCategory._id],
-                };
-
-                const movie = await movieService.replaceMovie(id, updatedMovieData);
-                if (!movie) {
-                    return res.status(404).json({ error: 'Movie not found' });
-                }
-                return res.json(movie);
+                validCategories = [noCategory.name]
             }
+
+            // If a picture is provided, validate the file path
+            const picture = req.file ? req.file.filename : null;  // Get filename from multer upload
+
 
             try {
                 // Process valid categories
                 const categoryIds = await getCategoryIdsFromNames(validCategories);
                 const updatedMovieData = {
-                    ...req.body,
+                    ...jsonedMovieData,
                     categories: categoryIds,
+                    picture: picture
                 };
 
                 const movie = await movieService.replaceMovie(id, updatedMovieData);
@@ -245,7 +260,7 @@ const updateMovie = async (req, res) => {
 const deleteMovie = async (req, res) => {
     try {
         const movie = await movieService.deleteMovieById(req.params.id);
-      
+
         if (!movie) {
             return res.status(404).json({ error: 'Movie not found' });
         }
@@ -258,7 +273,7 @@ const deleteMovie = async (req, res) => {
 
 // function for receiving movie recommendations by movie ID
 async function getRecommendations(req, res) {
-    const movieId = req.params.id;  
+    const movieId = req.params.id;
     const userId = req.headers['userId'] || req.headers['userid'];
     if (!userId) {
         return res.status(400).json({ error: 'User ID is required in headers' });
@@ -271,7 +286,7 @@ async function getRecommendations(req, res) {
     if (!general.isValidObjectId(movieId)) {
         return res.status(400).json({ errors: ['Invalid movie ID'] });
     }
-        
+
     // Checking if the userId exists
     const userExists = await movieService.isUserExists(userId);
     if (!userExists) {
@@ -312,7 +327,7 @@ async function addUserMovie(req, res) {
     const movieId = req.params.id; // 'movieId' is taken directly from the URL
     const userId = req.headers['userId'] || req.headers['userid'];
     if (!userId) {
-    return res.status(400).json({ error: 'User ID is required in headers' });
+        return res.status(400).json({ error: 'User ID is required in headers' });
     }
 
     if (!general.isValidObjectId(userId)) {
@@ -322,7 +337,7 @@ async function addUserMovie(req, res) {
     if (!general.isValidObjectId(movieId)) {
         return res.status(400).json({ errors: ['Invalid movie ID'] });
     }
-    
+
     // Checking if the userId exists
     const userExists = await movieService.isUserExists(userId);
     if (!userExists) {
@@ -342,7 +357,7 @@ async function addUserMovie(req, res) {
 
         // Check the response from addMoviesToViewingHistory
         if (mongoResponse === "Movie already exists in viewing history") {
-            return res.status(404).json({ message: "Movie already exists in viewing history" }); 
+            return res.status(404).json({ message: "Movie already exists in viewing history" });
         }
 
         // Adding the movie to the userId on the server of the recommendation system
@@ -360,10 +375,10 @@ async function addUserMovie(req, res) {
         } else if (response.trim() === "404 Not Found") {
             return res.status(404).send("404 Not Found");
         } else if (response.trim() === "Movie not found" || response.trim() === "User not found") {
-                return res.status(404).send("404 Not Found");      
-        }  else if (response.trim() === "Movie already exists in viewing history") {
             return res.status(404).send("404 Not Found");
-    }
+        } else if (response.trim() === "Movie already exists in viewing history") {
+            return res.status(404).send("404 Not Found");
+        }
     } catch (err) {
         res.status(500).json({ message: "Error adding movie to user", error: err.message });
     }
@@ -389,4 +404,4 @@ async function searchMovies(req, res) {
 }
 
 
-module.exports = {createMovie, getMovie, updateMovie, deleteMovie, getMoviesByCategory, getRecommendations, addUserMovie, searchMovies};
+module.exports = { createMovie, getMovie, updateMovie, deleteMovie, getMoviesByCategory, getRecommendations, addUserMovie, searchMovies, getAllMovies };

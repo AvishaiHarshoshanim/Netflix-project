@@ -4,7 +4,9 @@ const Categories = require('../models/category');
 const Counter = require('../models/counters');
 const mongoose = require('mongoose');
 
+
 const net = require('net'); // This module allows us to connect to servers via TCP, to send and receive data.
+const { error } = require('console');
 
 const getNextMovieIdForRecServer = async () => {
     const counter = await Counter.findOneAndUpdate(
@@ -16,7 +18,7 @@ const getNextMovieIdForRecServer = async () => {
 };
 
 const getMoviesWatchedByUser = async (id) => {
-    const user = await Users.findById(id).populate('viewingHistory'); 
+    const user = await Users.findById(id).populate('viewingHistory');
     return user ? user.viewingHistory : [];
 };
 
@@ -33,21 +35,39 @@ const getMoviesByCategory = async (categoryId, userId) => {
     }).populate('categories');
 };
 
+const getAllMovies = async () => { return await Movie.find({}); };
 
-const createMovie = async (movieName, categories, director, actors) => {
-    const existingMovie = await Movie.findOne({ movieName: movieName });
-    if (existingMovie) {
-        throw new Error(`Movie with name "${movieName}" already exists`);
+const createMovie = async (movieName, categories, director, actors, picture) => {
+    try {
+        // Check if the movie already exists
+        const existingMovie = await Movie.findOne({ movieName: movieName });
+        if (existingMovie) {
+            throw new Error(`Movie with name "${movieName}" already exists`);
+        }
+
+        // Get the next movie ID for the recommendation server
+        const movieIdForRecServer = await getNextMovieIdForRecServer();
+
+        // Set up the movie object
+        const movie = new Movie({
+            movieName,
+            categories,
+            director,
+            actors,
+            movieIdForRecServer,
+        });
+
+        // If there's a picture uploaded, save the file path
+        if (picture) {
+            movie.picture = picture; // Store the file path (you can change this to the URL if you need)
+        }
+
+        // Save the movie to the database
+        const savedMovie = await movie.save();
+        return savedMovie;
+    } catch (error) {
+        throw new Error(error.message);
     }
-    const movieIdForRecServer = await getNextMovieIdForRecServer(); 
-    const movie = new Movie({
-        movieName,
-        categories,
-        director,
-        actors,
-        movieIdForRecServer
-    });
-    return await movie.save();
 };
 
 const getMovieById = async (movieId) => {
@@ -87,7 +107,7 @@ async function deleteMovieFromRecServer(userId, movieId) {
                 reject(err);
             });
 
-            client.on('close', () => {});
+            client.on('close', () => { });
         });
     } catch (err) {
         throw new Error(err.message);
@@ -99,7 +119,7 @@ const deleteMovieById = async (movieId) => {
     try {
         //  Retrieving all users who have the movie in their viewing history
         const users = await Users.find({ viewingHistory: movieId });
-        
+
         // Updating the users' viewing history
         await Users.updateMany(
             { viewingHistory: movieId },
@@ -114,7 +134,7 @@ const deleteMovieById = async (movieId) => {
         // Deleting the movie from mongo
         const movie = await Movie.findByIdAndDelete(movieId);
 
-        return movie; 
+        return movie;
     } catch (err) {
         throw new Error(err.message);
     }
@@ -138,7 +158,7 @@ async function getRecommendationsFromServer(userId, movieId) {
             // Login to the recommendation system
             client.connect(process.env.REC_TO_WEB_PORT, process.env.REC_TO_WEB_IP, () => {
                 // Sending userid and movieid to the server from exercise 2
-                const data = `GET ${idForRecServer} ${movieIdForRecServer}`;  
+                const data = `GET ${idForRecServer} ${movieIdForRecServer}`;
                 client.write(data + '\n');  // Sending the string to the server
             });
 
@@ -172,57 +192,57 @@ async function getRecommendationsFromServer(userId, movieId) {
 async function addUserMovieToServer(userId, movieId) {
     try {
         const user = await Users.findOne({ _id: userId });
-            if (!user) resolve("User not found");
+        if (!user) resolve("User not found");
 
-            const idForRecServer = user.idForRecServer;
-            const movie = await Movie.findOne({ _id: movieId });
-            if (!movie) resolve("Movie not found");
-            const movieIdForRecServer = movie.movieIdForRecServer;
-            return new Promise((resolve, reject) => {
-                const client = new net.Socket();
-            
-                // Connecting to the server of the recommendation system
-                client.connect(process.env.REC_TO_WEB_PORT, process.env.REC_TO_WEB_IP, () => {
-                    const postCommand = `POST ${idForRecServer} ${movieIdForRecServer}`;
-                    client.write(postCommand + '\n'); // Sending the POST command to the server
-                });
-            
-                let responseReceived = false; // Flag to track if response has been handled
-            
-                // Handle the response from the server (for both POST and PATCH)
-                client.on('data', (data) => {
-                    const response = data.toString().trim();
-            
-                    if (!responseReceived) {
-                        if (response === "404 Not Found") {
-                            // If POST fails, try PATCH
-                            const patchCommand = `PATCH ${idForRecServer} ${movieIdForRecServer}`;
-                            client.write(patchCommand + '\n');  // Sending the PATCH command
-                        } else {
-                            // POST succeeded or PATCH succeeded, resolve with the response
-                            responseReceived = true; // Set flag to indicate that response was handled
-                            resolve(response); // Resolve with the first successful response
-                            client.end(); // Close connection after response is received
-                        }
-                    } else {
-                        // After the PATCH request, we handle its response here
-                        responseReceived = true; // Ensure we don't resolve multiple times
-                        resolve(response); // Resolve with the PATCH response
-                        client.end(); // Close connection after PATCH response
-                    }
-                });
-            
-                // Handle any connection errors
-                client.on('error', (err) => {
-                    console.error("Connection error:", err);
-                    reject(err); // Reject if there is an error with the connection
-                });
-            
-                // Handle the connection close event
-                client.on('close', () => {
-                    //console.log("Connection closed.");
-                });
+        const idForRecServer = user.idForRecServer;
+        const movie = await Movie.findOne({ _id: movieId });
+        if (!movie) resolve("Movie not found");
+        const movieIdForRecServer = movie.movieIdForRecServer;
+        return new Promise((resolve, reject) => {
+            const client = new net.Socket();
+
+            // Connecting to the server of the recommendation system
+            client.connect(process.env.REC_TO_WEB_PORT, process.env.REC_TO_WEB_IP, () => {
+                const postCommand = `POST ${idForRecServer} ${movieIdForRecServer}`;
+                client.write(postCommand + '\n'); // Sending the POST command to the server
             });
+
+            let responseReceived = false; // Flag to track if response has been handled
+
+            // Handle the response from the server (for both POST and PATCH)
+            client.on('data', (data) => {
+                const response = data.toString().trim();
+
+                if (!responseReceived) {
+                    if (response === "404 Not Found") {
+                        // If POST fails, try PATCH
+                        const patchCommand = `PATCH ${idForRecServer} ${movieIdForRecServer}`;
+                        client.write(patchCommand + '\n');  // Sending the PATCH command
+                    } else {
+                        // POST succeeded or PATCH succeeded, resolve with the response
+                        responseReceived = true; // Set flag to indicate that response was handled
+                        resolve(response); // Resolve with the first successful response
+                        client.end(); // Close connection after response is received
+                    }
+                } else {
+                    // After the PATCH request, we handle its response here
+                    responseReceived = true; // Ensure we don't resolve multiple times
+                    resolve(response); // Resolve with the PATCH response
+                    client.end(); // Close connection after PATCH response
+                }
+            });
+
+            // Handle any connection errors
+            client.on('error', (err) => {
+                console.error("Connection error:", err);
+                reject(err); // Reject if there is an error with the connection
+            });
+
+            // Handle the connection close event
+            client.on('close', () => {
+                //console.log("Connection closed.");
+            });
+        });
     } catch (err) {
         throw new Error(err.message);
     }
@@ -230,14 +250,14 @@ async function addUserMovieToServer(userId, movieId) {
 
 // function to update mongoDB
 async function addMoviesToViewingHistory(userId, movieId) {
-        try {
+    try {
         const user = await Users.findOne({ _id: userId });
         if (!user) {
             throw new Error("user not found in MongoDB");
         }
 
         if (user.viewingHistory.includes(movieId)) {
-            return("Movie already exists in viewing history");
+            return ("Movie already exists in viewing history");
         }
         user.viewingHistory.push(movieId);
         await user.save();
@@ -261,10 +281,10 @@ async function isUserExists(userId) {
 async function isMovieExists(movieId) {
     try {
         const movie = await Movie.findOne({ _id: movieId });
-        return !!movie; 
+        return !!movie;
     } catch (err) {
         console.error("Error in isMovieExists:", err.message);
-        return false;  
+        return false;
     }
 }
 
@@ -274,17 +294,17 @@ async function searchMoviesInDatabase(query) {
         const movies = await Movie.find({
             $or: [
                 { movieName: { $regex: query, $options: 'i' } },
-                { categories: { $in: await Categories.find({ name: { $regex: query, $options: 'i' } }).then(categories => categories.map(c => c._id))} },
+                { categories: { $in: await Categories.find({ name: { $regex: query, $options: 'i' } }).then(categories => categories.map(c => c._id)) } },
                 { director: { $regex: query, $options: 'i' } },
                 { actors: { $regex: query, $options: 'i' } },
             ]
         });
         return movies;
-        
+
     } catch (err) {
         throw new Error("Error searching for movies: " + err.message);
     }
 }
 
 
-module.exports = {getMoviesWatchedByUser, getPromotedCategories, getMoviesByCategory, createMovie, getMovieById, replaceMovie, deleteMovieById, getRecommendationsFromServer, addUserMovieToServer, searchMoviesInDatabase, isUserExists, addMoviesToViewingHistory, isMovieExists};
+module.exports = { getMoviesWatchedByUser, getPromotedCategories, getMoviesByCategory, createMovie, getMovieById, replaceMovie, deleteMovieById, getRecommendationsFromServer, addUserMovieToServer, searchMoviesInDatabase, isUserExists, addMoviesToViewingHistory, isMovieExists, getAllMovies };
