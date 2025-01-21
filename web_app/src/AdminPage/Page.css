@@ -1,6 +1,8 @@
-.admin-page-managment {
+.managment-list {
   padding: 2rem;
-  margin: 2rem;
+  margin: auto;
+  margin-bottom: auto;
+  height: 100%;
   width: 75%;
   max-width: 75%;
   border-radius: 8px;
@@ -8,6 +10,7 @@
   background-color: rgba(0, 0, 0, 0.7); /* Darker background for contrast */
   list-style-type: none;
   z-index: 1;
+  overflow-y: scroll;
 }
 
 .managment-block {
@@ -38,6 +41,7 @@
   justify-content: center;
   background: black;
   text-align: center;
+  padding: 40px 20px;
 }
 
 .admin-page-header::before {
@@ -64,7 +68,22 @@
   font: 3.5em;
 }
 
-.admin-page-managment h2 {
+.logo {
+  background-image: url('./Netflix_Logo.png');
+  background-size: contain; /* To fit the image to the div */
+  background-repeat: no-repeat;
+  width: 200px; /* Set the size you need */
+  height: 200px; /* Set the size you need */
+
+  /* Positioning the logo in the top left corner */
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 10; /* Optional, to ensure it stays on top of other content */
+}
+
+
+.managment-list h2 {
   color: #ffffff;
   margin-bottom: 1.5rem;
 }
@@ -117,6 +136,10 @@
   background-color: #e6e6e6;
 }
 
+.form-check-input {
+  cursor: pointer;
+}
+
 .select-form .form-select {
   background-color: #333;
   color: #fff;
@@ -129,7 +152,7 @@
 }
 
 @media (max-width: 768px) {
-  .admin-page-managment {
+  .managment-list {
     padding: 1rem;
   }
 
@@ -146,4 +169,63 @@
 /* Style for required field asterisk */
 .form-label .text-danger {
   color: #e50914; /* Netflix red for emphasis */
+}
+
+.movie-details {
+  background-color: #f9f9f9; /* Light background for better readability */
+  border: 1px solid #e0e0e0; /* Subtle border for separation */
+  border-radius: 8px; /* Rounded corners for modern look */
+  padding: 20px; /* Inner spacing */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  width: 100%; /* Set a maximum width for layout consistency */
+  margin: 20px auto; /* Center the div on the page */
+  font-family: Arial, sans-serif; /* Clean and readable font */
+  line-height: 1.6; /* Better spacing between lines */
+}
+
+.movie-detail-row {
+  display: flex; /* Arrange label and content side-by-side */
+  justify-content: flex-start; /* Align items to the left */
+  align-items: center; /* Vertically center-align the items */
+  padding: 10px 0; /* Add spacing between rows */
+  border-bottom: 1px solid #ddd; /* Divider between rows */
+}
+
+.movie-detail-row:last-child {
+  border-bottom: none; /* Remove border from the last row */
+}
+
+.movie-detail-label {
+  font-weight: bold; /* Emphasize labels */
+  color: #333; /* Darker text for contrast */
+  flex: 0 0 40%; /* Allocate fixed width for labels */
+}
+
+.movie-detail-row span {
+  flex: 1; /* Let content take the remaining space */
+  color: #555; /* Softer color for content */
+  text-align: left; /* Align text to the left */
+}
+
+.movie-details img {
+  display: block; /* Block-level element for images */
+  margin: 10px 200px; /* Add top and bottom margin */
+  max-width: 300px; /* Make it responsive */
+  border: 1px solid #ccc; /* Subtle border for the image */
+  border-radius: 10px; /* Rounded corners */
+  object-fit: contain; /* Ensure the image is displayed properly */
+}
+
+.actions {
+  display: flex; /* Use flexbox for button alignment */
+  justify-content: flex-start; /* Align buttons to the left */
+  align-items: center; /* Ensure buttons are vertically aligned and not stretched */
+  gap: 10px; /* Add space between buttons */
+}
+
+.actions .btn {
+  min-width: 80px; /* Optional: Ensures buttons have consistent width */
+  padding: 5px 10px; /* Adjust padding for a balanced look */
+  font-size: 14px; /* Ensure text size is appropriate */
+  line-height: 1.2; /* Improve vertical text alignment */
 }
