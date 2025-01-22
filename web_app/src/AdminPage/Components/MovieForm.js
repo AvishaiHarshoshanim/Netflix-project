@@ -41,14 +41,11 @@ const MovieForm = ({ categories, addMovie, newMovie, setNewMovie }) => {
                 onChange={(e) => {
                     // Get the selected file
                     const file = e.target.files[0];
-                    const pictureURL = URL.createObjectURL(file);
-
                     // Update state with the selected file
                     setNewMovie({
                         ...newMovie,
                         pictureName: file.name,
                         pictureFile: file,
-                        pictureURL: pictureURL,
                       });
                 }}
             />

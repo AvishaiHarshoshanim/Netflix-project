@@ -61,7 +61,7 @@ const MovieManager = ({ categories, movies, setMovies }) => {
             }
             return;
           });
-        } else if (response.status === 201) {
+        } else if (response.status === 201) {          
           // Successfully created movie
           return response.json();
         } else {
@@ -82,16 +82,9 @@ const MovieManager = ({ categories, movies, setMovies }) => {
             categories: transformedCategories, // Replace IDs with names
           };
 
-          const MovieToSave = {
-            ...transformedMovie,
-            pictureFile: newMovie.pictureFile,
-            pictureName: newMovie.pictureName,
-            pictureURL: newMovie.pictureURL
-          };
+          setMovies([...movies, transformedMovie]);
 
-          setMovies([...movies, MovieToSave]);
-
-          setNewMovie({ movieName: '', categories: [], director: '', actors: '', pictureName: '', pictureFile: null });
+          setNewMovie({ movieName: '', categories: [], director: '', actors: '', pictureURL: '', pictureName: '', pictureFile: null });
         }
       })
       .catch((error) => console.error('Error adding movie:', error));
@@ -123,6 +116,8 @@ const MovieManager = ({ categories, movies, setMovies }) => {
       director: editingMovie.director,
       actors: editingMovie.actors,
       categories: editingMovie.categories,
+      pictureName: editingMovie.pictureName,
+      pictureURL: editingMovie.pictureURL
     };
 
     const formData = new FormData();
@@ -165,9 +160,6 @@ const MovieManager = ({ categories, movies, setMovies }) => {
           const transformedMovie = {
             ...updatedMovie,
             categories: updatedMovie.categories.map((category) => category.name),
-            pictureFile: editingMovie.pictureFile,
-            pictureName: editingMovie.pictureName,
-            pictureURL: editingMovie.pictureURL
           };
 
           // Update the movies state with the modified movie

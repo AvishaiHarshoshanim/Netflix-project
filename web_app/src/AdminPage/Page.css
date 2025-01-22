@@ -207,16 +207,16 @@
   text-align: left; /* Align text to the left */
 }
 
-.movie-details img {
-  display: block; /* Block-level element for images */
-  margin: 10px 200px; /* Add top and bottom margin */
+.movie-detail-row img {
+  flex: 1; /* Let content take the remaining space */
+  display: flex; /* Block-level element for images */
+  /*margin: 10px 200px; /* Add top and bottom margin */
   max-width: 300px; /* Make it responsive */
   border: 1px solid #ccc; /* Subtle border for the image */
   border-radius: 10px; /* Rounded corners */
-  object-fit: contain; /* Ensure the image is displayed properly */
 }
 
-.actions {
+.list-group-item .actions {
   display: flex; /* Use flexbox for button alignment */
   justify-content: flex-start; /* Align buttons to the left */
   align-items: center; /* Ensure buttons are vertically aligned and not stretched */
@@ -225,7 +225,7 @@
 
 .actions .btn {
   min-width: 80px; /* Optional: Ensures buttons have consistent width */
-  padding: 5px 10px; /* Adjust padding for a balanced look */
+  padding: 5px auto; /* Adjust padding for a balanced look */
   font-size: 14px; /* Ensure text size is appropriate */
   line-height: 1.2; /* Improve vertical text alignment */
 }

@@ -4,9 +4,6 @@ const usersService = require('../services/users');
 const categoryService = require('../services/category');
 const general = require('../services/general');
 const fs = require('fs');
-const cors = require('cors');
-const multer = require('multer');
-const express = require('express');
 
 //shuffel the array
 function shuffle(arr) {
@@ -85,11 +82,10 @@ const getMoviesByCategory = async (req, res) => {
 };
 
 const createMovie = async (req, res) => {
-    
     const jsonedMovieData = JSON.parse(req.body.movieData);
 
     try {
-        const fields = ['movieName', 'categories', 'director', 'actors'];
+        const fields = ['movieName', 'categories', 'director'];
         const missing = [];
 
         // Push the missing fields into missing
@@ -128,8 +124,13 @@ const createMovie = async (req, res) => {
                 validCategories = [noCategory.name]
             }
 
-            // If a picture is provided, validate the file path
-            const picture = req.file ? req.file.filename : null;  // Get filename from multer upload
+            var pictureName =  null;
+            var pictureURL = null;
+
+            if (req.file) {
+                pictureURL = `http://localhost:${process.env.USER_TO_WEB_PORT}/${req.file.path}`;
+                pictureName =  req.file.filename;
+            }
 
             try {
                 const categoryIds = await getCategoryIdsFromNames(validCategories);
@@ -138,7 +139,8 @@ const createMovie = async (req, res) => {
                     categoryIds,
                     jsonedMovieData.director,
                     jsonedMovieData.actors,
-                    picture
+                    pictureName,
+                    pictureURL
                 ));
             } catch (error) {
                 return res.status(400).json({ error: error.message });
@@ -181,7 +183,7 @@ const updateMovie = async (req, res) => {
     const jsonedMovieData = JSON.parse(req.body.movieData);
 
     try {
-        const fields = ['movieName', 'categories', 'director', 'actors'];
+        const fields = ['movieName', 'categories', 'director'];
         const missing = [];
 
         // Push the missing fields into missing
@@ -226,8 +228,16 @@ const updateMovie = async (req, res) => {
                 validCategories = [noCategory.name]
             }
 
-            // If a picture is provided, validate the file path
-            const picture = req.file ? req.file.filename : null;  // Get filename from multer upload
+            var pictureName =  null;
+            var pictureURL = null;
+
+            if (req.file) {
+                pictureURL = `http://localhost:${process.env.USER_TO_WEB_PORT}/${req.file.path}`;
+                pictureName =  req.file.filename;
+            } else {
+                pictureName = jsonedMovieData.pictureName;
+                pictureURL = jsonedMovieData.pictureURL
+            }
 
 
             try {
@@ -236,7 +246,8 @@ const updateMovie = async (req, res) => {
                 const updatedMovieData = {
                     ...jsonedMovieData,
                     categories: categoryIds,
-                    picture: picture
+                    pictureName,
+                    pictureURL
                 };
 
                 const movie = await movieService.replaceMovie(id, updatedMovieData);

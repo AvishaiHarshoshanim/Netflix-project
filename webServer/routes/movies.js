@@ -3,14 +3,18 @@ const router = express.Router();
 const moviesController = require('../controllers/movies');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
-// Set up multer to handle file uploads
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './uploads/'); // You can change this directory to where you want to store the images
+        const dir = './uploads/';
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true }); // Create directory if it doesn't exist
+        }
+        cb(null, dir);
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname)); // Use timestamp to avoid file name collisions
+        cb(null, path.basename(file.originalname, path.extname(file.originalname)) + '-' + Date.now() + path.extname(file.originalname));
     },
 });
 

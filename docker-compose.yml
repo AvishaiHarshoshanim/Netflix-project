@@ -18,11 +18,13 @@ services:
       dockerfile: ./recServer/Dockerfile
       args:
         REC_TO_WEB_PORT: "${REC_TO_WEB_PORT}"
+        USER_TO_WEB_PORT: "${USER_TO_WEB_PORT}"
     container_name: rec-container
     networks:
       - mynetwork
     environment:
       REC_TO_WEB_PORT: "${REC_TO_WEB_PORT}"
+      USER_TO_WEB_PORT: "${USER_TO_WEB_PORT}"
     ports:
       - "${REC_TO_WEB_PORT}:${REC_TO_WEB_PORT}"
     volumes:
@@ -44,6 +46,8 @@ services:
       USER_TO_WEB_PORT: "${USER_TO_WEB_PORT}"
     ports:
       - "${USER_TO_WEB_PORT}:${USER_TO_WEB_PORT}"
+    volumes:
+      - ./webServer/uploads:/myapp/webserver/uploads
 
 networks:
   mynetwork:

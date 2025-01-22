@@ -37,7 +37,7 @@ const getMoviesByCategory = async (categoryId, userId) => {
 
 const getAllMovies = async () => { return await Movie.find({}); };
 
-const createMovie = async (movieName, categories, director, actors, picture) => {
+const createMovie = async (movieName, categories, director, actors, pictureName, pictureURL) => {
     try {
         // Check if the movie already exists
         const existingMovie = await Movie.findOne({ movieName: movieName });
@@ -57,9 +57,10 @@ const createMovie = async (movieName, categories, director, actors, picture) => 
             movieIdForRecServer,
         });
 
-        // If there's a picture uploaded, save the file path
-        if (picture) {
-            movie.picture = picture; // Store the file path (you can change this to the URL if you need)
+        // If there's a picture uploaded, save the file path and name
+        if (pictureName) {
+            movie.pictureName = pictureName;
+            movie.pictureURL = pictureURL;
         }
 
         // Save the movie to the database
