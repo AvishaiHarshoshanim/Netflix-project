@@ -44,14 +44,12 @@ const MovieList = ({ movies, categories, editingMovie, setEditingMovie, deleteMo
                                 onChange={(e) => {
                                     // Get the selected file
                                     const file = e.target.files[0];
-                                    const pictureURL = URL.createObjectURL(file);
                 
                                     // Update state with the selected file
                                     setEditingMovie({
                                         ...editingMovie,
                                         pictureName: file.name,
                                         pictureFile: file,
-                                        pictureURL: pictureURL,
                                       });
                                 }}                            
                                 />
@@ -99,7 +97,8 @@ const MovieList = ({ movies, categories, editingMovie, setEditingMovie, deleteMo
                                 </div>
                                 <div className="movie-detail-row">
                                     <span className="movie-detail-label">Movie Picture:</span>
-                                    {movie.pictureFile ? (
+                                    <span>
+                                    {movie.pictureURL ? (
                                         <img
                                             src={movie.pictureURL} // Path or URL of the image
                                             alt={`${movie.movieName} poster`} // Alternative text for the image
@@ -107,6 +106,7 @@ const MovieList = ({ movies, categories, editingMovie, setEditingMovie, deleteMo
                                     ) : (
                                         <span>No picture available</span>
                                     )}
+                                    </span>
                                 </div>
                             </div>
 
