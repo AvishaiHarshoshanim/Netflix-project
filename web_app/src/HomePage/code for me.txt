@@ -1,0 +1,114 @@
+category.js
+
+import React, { useState, useEffect } from 'react';
+import './CategoryRow.css';
+
+function CategoryRow({ categoryName, categoryId }) {
+
+  const [movies, setMovies] = useState([]); // State to store the movies of this category
+
+  // Fetch movies for the current category (Sending a GET to the server and loading movies for a specific category)
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/api/categories/${categoryId}/movies`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch movies');
+        }
+        const data = await response.json();
+        setMovies(data); // Update the state with the fetched movies
+      } catch (error) {
+        console.error('Error fetching movies:', error);
+      }
+    };
+
+    fetchMovies(); // Fetch movies when the component mounts
+  }, [categoryId]); // Run only when categoryId changes
+
+
+  return (
+    <div className="category-row">    {/* div for one category (Name and list of movies) */}
+      {/* div for the category name */}
+      <div className="category-title">{categoryName}</div>
+      
+      {/*  Creating a dynamic list of all movies in the current category */}
+      <div className="movies-container">
+        {movies.map((movie) => (
+          <div key={movie.id} className="movie-card">
+            <img src={movie.image} alt={movie.name} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default CategoryRow;
+
+
+
+
+
+
+homePgae.js
+
+import React, { useState, useEffect } from 'react';
+import './HomePage.css';
+import CategoryList from './components/CategoryList';
+
+function HomePage() {
+  const [isMuted, setIsMuted] = useState(true);  // State to track whether the video is muted (true) or unmuted (false)
+  const [categories, setCategories] = useState([]); // State to store categories from the server
+
+  // Fetch categories from the webServer
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/api/categories');
+        if (!response.ok) {
+          throw new Error('Failed to fetch categories');
+        }
+        const data = await response.json();
+        setCategories(data); // Update the state with the fetched categories
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategories(); // Fetch categories when the component mounts
+  }, []); // Empty dependency array ensures it runs only once
+
+
+  // The toggleMute function is responsible for muting or unmuting the video when someone clicks the mute button.
+  const toggleMute = () => {
+    const video = document.querySelector('.background-video');  // Finding the video
+    if (video) {
+      video.muted = !video.muted;  // Reverses the muted value
+      setIsMuted(video.muted);  // Update the state
+    }
+  };
+
+  
+  return (
+    <div className="HomePage">  {/* Everything inside this 'div' will get the HomePage.css styling */}
+      <div className="video-section">  {/* div for the background video */}
+        <video className="background-video" autoPlay loop muted={isMuted}>
+          <source src="/videos/video_720.mp4" type="video/mp4" />
+          Your browser does not support the video tag.  {/* Fallback text that appears in case the user's browser does not support the <video> element. */}
+        </video>  
+        <button className="play-button">start movie</button>
+        <button className="mute-button" onClick={toggleMute}>
+          <img   
+            src={isMuted ? "/images/mute-icon.png" : "/images/unmute-icon.png"}
+            alt={isMuted ? "Muted" : "Unmuted"}
+            className="mute-icon"
+          />   {/* Audio icon */}
+        </button>
+      </div>  {/* close div for the background video */}
+      <CategoryList categories={categories} />
+    </div>  
+  );
+}
+
+export default HomePage;
+
