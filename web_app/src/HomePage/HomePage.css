@@ -25,9 +25,10 @@
   
   .movie-item {
     list-style: none;
+    padding: 0;
+    border: none; /* מסיר גבול */
     background-color: #222;
     color: white;
-    padding: 10px;
     border-radius: 5px;
     flex: 0 0 auto; /* לאפשר גלילה ולא מתיחה */
     min-width: 200px;
@@ -35,7 +36,7 @@
     position: relative;
     text-align: center;
     transition: transform 0.3s ease;
-  }
+}
   
   .movie-item:hover {
     transform: scale(1.05);
@@ -43,15 +44,25 @@
   }
 
   .movie-container {
-    width: 100%; /* תמונה בגודל מלא של הריבוע */
-    height: 100%; /* תמונה בגודל מלא של הריבוע */
-    position: absolute; /* מאפשר לשים את שם הסרט על התמונה */
-    top: 0;
-    left: 0;
-    background-size: cover; /* לוודא שהתמונה ממלאת את כל הרקע */
-    background-position: center; /* למרכז את התמונה */
-    overflow: hidden; /* לא להוציא את התמונה החוצה */
-  }
+    width: 100%;
+    height: 100%;
+    position: relative;
+    margin-right: 10px;
+    overflow: hidden;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box; /* לכלול את הגבולות וה-padding בחישוב הגודל */
+    border: none; /* הסרת הגבולות */
+}
+
+.movie-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+    box-sizing: border-box; /* לכלול את ה-padding בחישוב הגודל */
+}
 
 .movie-container:hover {
     transform: scale(1.05); /* להגדיל מעט בעת ריחוף */
