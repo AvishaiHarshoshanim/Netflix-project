@@ -39,4 +39,35 @@
     transform: scale(1.05);
     background-color: #333;
   }
+
+  .movie-container {
+    width: 200px; /* רוחב הריבוע */
+    height: 300px; /* גובה הריבוע */
+    position: relative;
+    margin-right: 10px; /* רווח בין הסרטים */
+    overflow: hidden;
+    border-radius: 5px; /* פינות מעוגלות */
+    background-size: cover; /* לוודא שהתמונה ממלאת את כל הרקע */
+    background-position: center; /* למרכז את התמונה */
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-container:hover {
+    transform: scale(1.05); /* להגדיל מעט בעת ריחוף */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* הצללה */
+}
+
+.movie-title {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.7); /* רקע כהה למחצה */
+    color: white;
+    text-align: center;
+    font-size: 1em;
+    font-weight: bold;
+    box-sizing: border-box; /* לכלול padding בחישוב גודל האלמנט */
+}
   
