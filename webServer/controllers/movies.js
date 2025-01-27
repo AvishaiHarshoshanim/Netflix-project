@@ -60,19 +60,25 @@ const getMoviesByCategory = async (req, res) => {
         for (const category of promotedCategories) {
             const movies = await movieService.getMoviesByCategory(category._id, userId);
             const shuffledMovies = shuffle(movies);
-            moviesByCategories.push({
-                category: category.name,
-                movies: shuffledMovies.slice(0, 20),
-            });
+
+            // Only include categories with movies
+            if (shuffledMovies.length > 0) {
+                moviesByCategories.push({
+                    category: category.name,
+                    movies: shuffledMovies.slice(0, 20),
+                });
+            }
         }
 
         const watchAgainMovies = await movieService.getMoviesWatchedByUser(userId);
         const last20Movies = shuffle(watchAgainMovies.slice(-20));
 
-        moviesByCategories.push({
-            category: 'Watch Again',
-            movies: last20Movies,
-        });
+        if (last20Movies.length > 0) {
+            moviesByCategories.push({
+                category: 'Watch Again',
+                movies: last20Movies,
+            });
+        }
 
         return res.status(200).json(moviesByCategories);
     } catch (error) {
