@@ -32,12 +32,17 @@ const HomePage = () => {
             <h2 className="category-title">{category.category}</h2>
             <ul className="movies-list">
               {category.movies.map((movie) => (
-                <li
-                key={movie._id}
-                className="movie-container"
-                style={{ backgroundImage: `url(${movie.pictureURL})` }} // הגדרת התמונה כרקע
-              >
-                <div className="movie-title">{movie.movieName}</div> {/* שם הסרט בתחתית */}
+                <li key={movie._id} className="movie-item">
+                <div className="movie-container">
+                  <img 
+                    src={movie.pictureURL} 
+                    alt={movie.movieName} 
+                    className="movie-image" 
+                  />
+                  <div className="movie-title-overlay">
+                    {movie.movieName}
+                  </div>
+                </div>
               </li>
             ))}
           </ul>

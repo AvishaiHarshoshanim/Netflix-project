@@ -30,7 +30,9 @@
     padding: 10px;
     border-radius: 5px;
     flex: 0 0 auto; /* לאפשר גלילה ולא מתיחה */
-    min-width: 150px;
+    min-width: 200px;
+    height: 100px;
+    position: relative;
     text-align: center;
     transition: transform 0.3s ease;
   }
@@ -41,24 +43,22 @@
   }
 
   .movie-container {
-    width: 200px; /* רוחב הריבוע */
-    height: 300px; /* גובה הריבוע */
-    position: relative;
-    margin-right: 10px; /* רווח בין הסרטים */
-    overflow: hidden;
-    border-radius: 5px; /* פינות מעוגלות */
+    width: 100%; /* תמונה בגודל מלא של הריבוע */
+    height: 100%; /* תמונה בגודל מלא של הריבוע */
+    position: absolute; /* מאפשר לשים את שם הסרט על התמונה */
+    top: 0;
+    left: 0;
     background-size: cover; /* לוודא שהתמונה ממלאת את כל הרקע */
     background-position: center; /* למרכז את התמונה */
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+    overflow: hidden; /* לא להוציא את התמונה החוצה */
+  }
 
 .movie-container:hover {
     transform: scale(1.05); /* להגדיל מעט בעת ריחוף */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* הצללה */
 }
 
-.movie-title {
+.movie-title-overlay {
     position: absolute;
     bottom: 0;
     width: 100%;
