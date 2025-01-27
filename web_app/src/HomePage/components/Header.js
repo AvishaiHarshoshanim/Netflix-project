@@ -1,25 +1,22 @@
-import React from 'react';
-import './Header.css';
+import React from "react";
+import "./Header.css";
 
-function Header({ toggleTheme, isDarkMode }) {
-    return (
-        <header className="header">
-            <div className="header__logo">
-                <img src="/images/Netflix_Logo.avif" alt="Netflix Logo" />
-            </div>
-            <div className="header__nav">
-                <a href="/">Home</a>
-                <a href="/search">Search</a>
-                <button className="header__theme-toggle" onClick={toggleTheme}>
-                {isDarkMode ? 'Light Mode' : 'Dark Mode'} {/* represent mode */}
-                </button>
-            </div>
-            <div className="header__buttons">
-                <button className="header__logout">Logout</button>
-                <button className="header__management">Management Screen</button>
-            </div>
-        </header>
-    );
-}
+const Header = () => {
+  return (
+    <div className="header">
+      <div className="header-links">
+        <span className="header-link" onClick={() => alert("Going Home!")}>
+          HOME
+        </span>
+        <span className="header-link" onClick={() => alert("Searching...")}>
+          SEARCH
+        </span>
+      </div>
+      <button className="logout-btn" onClick={() => alert("Logged out!")}>
+        LOGOUT
+      </button>
+    </div>
+  );
+};
 
 export default Header;
