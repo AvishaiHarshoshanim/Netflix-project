@@ -24,9 +24,7 @@ const HeroSection = () => {
 
             {/* Overlay Content */}
             <div className="hero-content">
-                <div className="hero-buttons">
-                    <button className="btn btn-primary">play now</button>
-                </div>
+                
             </div>
             {/* Mute/Unmute Button */}
             <button className="mute-button" onClick={toggleMute}>
@@ -35,6 +33,9 @@ const HeroSection = () => {
                 alt={isMuted ? 'Mute' : 'Unmute'}
             />
             </button>
+            <div className="hero-buttons">
+                <button className="btn btn-primary">play now</button>
+            </div>
         </div>
     );
 };
