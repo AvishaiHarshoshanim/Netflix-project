@@ -14,14 +14,14 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
-    private final List<AdminPage.Movie> movies;
+    private final List<AdminPagePackage.Movie> movies;
     private final OnDeleteClickListener deleteClickListener;
 
     public interface OnDeleteClickListener {
         void onDeleteClick(String title);
     }
 
-    public MovieAdapter(List<AdminPage.Movie> movies, OnDeleteClickListener deleteClickListener) {
+    public MovieAdapter(List<AdminPagePackage.Movie> movies, OnDeleteClickListener deleteClickListener) {
         this.movies = movies;
         this.deleteClickListener = deleteClickListener;
     }
@@ -36,7 +36,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-        AdminPage.Movie movie = movies.get(position);
+        AdminPagePackage.Movie movie = movies.get(position);
         holder.movieTitle.setText(movie.getTitle());
         holder.movieCategory.setText("(" + movie.getCategory() + ")");
         holder.deleteButton.setOnClickListener(v -> deleteClickListener.onDeleteClick(movie.getTitle()));
