@@ -10,11 +10,11 @@
   
 .search-results {
     display: flex;
-    flex-direction: column; /* יציג כל סרט בשורה נפרדת */
-    align-items: center; /* ימרכז את הסרטים */
+    flex-wrap: wrap; /* מאפשר לשבור שורה כשאין מקום */
     gap: 15px; /* רווח בין הסרטים */
+    justify-content: flex-start; /* מתחיל שורה בצד שמאל */
     padding: 20px;
-}
+  }
 
   .error-message {
     color: #e50914; /* אדום בולט כמו של Netflix */

@@ -9,8 +9,10 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/admin" element={<AdminPage />} />
+        <Route path="/" element={<>
+            <HomePage />
+            <AdminPage />
+          </>} />
           <Route path="/search/:query" element={<SearchPage />} />
         </Routes>
       </div>
