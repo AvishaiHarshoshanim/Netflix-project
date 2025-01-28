@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
 
 const Header = () => {
   const navigate = useNavigate();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const searchInputRef = useRef(null);
 
   // פונקציה לפתיחה/סגירה של החיפוש
   const toggleSearch = () => {
     setIsSearchOpen((prev) => !prev);
   };
+
+  // אפקט שמפעיל מיקוד בשדה החיפוש כשהחלונית נפתחת
+  React.useEffect(() => {
+    if (isSearchOpen && searchInputRef.current) {
+      searchInputRef.current.focus(); // מפעיל מיקוד אוטומטי
+    }
+  }, [isSearchOpen]);
 
   return (
     <div className="header">
@@ -31,6 +39,7 @@ const Header = () => {
             type="text"
             placeholder="Search for movies..."
             className="search-input"
+            ref={searchInputRef} // מחבר את השדה ל-useRef
           />
         </div>
       )}

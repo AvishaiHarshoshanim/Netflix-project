@@ -46,4 +46,27 @@
   .logout-btn:hover {
     background-color: #f40612;
   }
+
+  .search-box {
+    position: absolute;
+    top: 67px; /* מיקום מתחת לכפתור */
+    left: 50%; /* ממורכז */
+    transform: translateX(-50%); /* ממורכז בצורה מדויקת */
+    background-color: white;
+    padding: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    width: 250px; /* תגדיר את הרוחב לפי הצורך */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .search-input {
+    border: none;
+    outline: none;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
   
