@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"; // כדי לקבל את ה-query מהנתיב
 import Header from "../HomePage/components/Header";
+import MovieItem from "../HomePage/components/MovieItem";
 import "./SearchPage.css"; // נשתמש בקובץ CSS מאוחר יותר לעיצוב
 
 const SearchPage = () => {
@@ -16,7 +17,7 @@ const SearchPage = () => {
         if (res.status === 204) {
           // אם אין תוצאות
           setResults(null);
-          setError("לא נמצאו התאמות לחיפוש, כדאי לנסות מילות מפתח שונות.");
+          setError("No matches were found for the search, you should try different keywords");
         } else {
           return res.json();
         }
@@ -45,7 +46,11 @@ const SearchPage = () => {
         {isLoading && <p>טוען תוצאות...</p>} {/* מצב טעינה */}
         {error && <p className="error-message">{error}</p>} {/* הודעת שגיאה */}
         {results && (
-          <pre className="search-results">{JSON.stringify(results, null, 2)}</pre> // תוצאות בפורמט JSON
+            <ul className="search-results">
+                {results.results.map((movie) => (
+                    <MovieItem key={movie._id} movie={movie} />
+                ))}
+            </ul>
         )}
       </div>
     </div>

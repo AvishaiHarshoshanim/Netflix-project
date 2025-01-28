@@ -8,9 +8,13 @@
     position: relative; /* כדי לוודא שהתוכן יופיע מעל הרקע */
 }
   
-  .search-results {
-    margin-top: 20px;
-  }
+.search-results {
+    display: flex;
+    flex-direction: column; /* יציג כל סרט בשורה נפרדת */
+    align-items: center; /* ימרכז את הסרטים */
+    gap: 15px; /* רווח בין הסרטים */
+    padding: 20px;
+}
 
   .error-message {
     color: #e50914; /* אדום בולט כמו של Netflix */
