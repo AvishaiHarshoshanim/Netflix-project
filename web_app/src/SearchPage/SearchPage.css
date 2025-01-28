@@ -1,0 +1,43 @@
+.search-page {
+    padding: 20px;
+    text-align: center;
+    min-height: 100vh; /* לוודא שהתמונה תתפרס על כל המסך */
+    background-size: cover; /* כיסוי מלא */
+    background-position: center; /* מיקום התמונה */
+    background-repeat: no-repeat; /* למנוע חזרה */
+    position: relative; /* כדי לוודא שהתוכן יופיע מעל הרקע */
+}
+  
+  .search-results {
+    margin-top: 20px;
+  }
+
+  .error-message {
+    color: #e50914; /* אדום בולט כמו של Netflix */
+    font-size: 1.2em; /* טקסט טיפה גדול */
+    font-weight: bold; /* טקסט מובלט */
+    margin: 100px auto; /* רווחים למעלה ולמטה */
+    text-align: center; /* מרכז את הטקסט */
+    background-color: #fff5f5; /* רקע ורדרד */
+    padding: 15px; /* מרווח פנימי */
+    border: 1px solid #e50914; /* מסגרת אדומה */
+    border-radius: 5px; /* פינות עגולות */
+    max-width: 400px; /* להגביל את הרוחב */
+  }
+
+  .search-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1; /* לוודא שהתמונה לא תחסום את התוכן */
+}
+
+.background-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+  
+  

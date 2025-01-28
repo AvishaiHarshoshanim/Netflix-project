@@ -5,6 +5,7 @@ import "./Header.css";
 const Header = () => {
   const navigate = useNavigate();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const searchInputRef = useRef(null);
 
   // פונקציה לפתיחה/סגירה של החיפוש
@@ -18,6 +19,13 @@ const Header = () => {
       searchInputRef.current.focus(); // מפעיל מיקוד אוטומטי
     }
   }, [isSearchOpen]);
+
+  const handleSearch = (event) => {
+    if (event.key === "Enter" && searchQuery.trim() !== "") {
+      navigate(`/search/${searchQuery.trim()}`); // נווט ל־SearchPage עם ה-query
+      setSearchQuery(""); // נקה את שדה החיפוש
+    }
+  };
 
   return (
     <div className="header">
@@ -40,6 +48,9 @@ const Header = () => {
             placeholder="Search for movies..."
             className="search-input"
             ref={searchInputRef} // מחבר את השדה ל-useRef
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleSearch}
           />
         </div>
       )}
