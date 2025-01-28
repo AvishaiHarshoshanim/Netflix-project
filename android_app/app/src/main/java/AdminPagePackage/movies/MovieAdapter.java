@@ -48,6 +48,7 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
         TextView movieName = convertView.findViewById(R.id.movie_name);
         TextView movieCategories = convertView.findViewById(R.id.movie_categories);
         TextView movieDirector = convertView.findViewById(R.id.movie_director);
+        TextView movieActors = convertView.findViewById(R.id.movie_actors);
         ImageView moviePoster = convertView.findViewById(R.id.movie_poster);
         TextView videoName = convertView.findViewById(R.id.video_name);
 
@@ -65,6 +66,9 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
 
             // Set director
             movieDirector.setText(movie.getDirector());
+
+            movieActors.setText((movie.getActors()));
+
             // Handle the picture URL to replace localhost with 10.0.2.2
             String imageUrl = movie.getImageURL();
 
