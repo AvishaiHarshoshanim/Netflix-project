@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:gravity="center_vertical">
+
+    <!-- Title TextView -->
+    <TextView
+        android:id="@+id/category_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_marginEnd="16dp"
+        android:layout_weight="1" />
+
+    <!-- Subtitle TextView -->
+    <TextView
+        android:id="@+id/category_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="11sp"
+        android:layout_marginEnd="16dp"
+        android:layout_weight="1" />
+
+    <!-- Edit Button -->
+    <Button
+        android:id="@+id/edit_category_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit"
+        android:layout_marginEnd="8dp"/>
+
+    <!-- Delete Button -->
+    <Button
+        android:id="@+id/delete_category_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"/>
+
+</LinearLayout>

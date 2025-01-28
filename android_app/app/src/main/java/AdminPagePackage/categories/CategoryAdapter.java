@@ -1,4 +1,4 @@
-package AdminPagePackage;
+package AdminPagePackage.categories;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,8 +14,6 @@ import androidx.annotation.Nullable;
 import com.example.android_app.R;
 
 import java.util.List;
-
-import AdminPagePackage.categories.Category;
 
 public class CategoryAdapter extends ArrayAdapter<Category> {
 

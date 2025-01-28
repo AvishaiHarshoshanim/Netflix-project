@@ -1,4 +1,4 @@
-package AdminPagePackage;
+package AdminPagePackage.categories;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;

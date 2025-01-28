@@ -1,62 +1,97 @@
-package AdminPagePackage;
+package AdminPagePackage.movies;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.bumptech.glide.Glide;
 import com.example.android_app.R;
 
 import java.util.List;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
+public class MovieAdapter extends ArrayAdapter<Movie> {
 
-    private final List<AdminPagePackage.Movie> movies;
-    private final OnDeleteClickListener deleteClickListener;
+    private final OnMovieActionListener actionListener;
 
-    public interface OnDeleteClickListener {
-        void onDeleteClick(String title);
+    public MovieAdapter(@NonNull Context context, @NonNull List<Movie> movies, OnMovieActionListener listener) {
+        super(context, 0, movies);
+        this.actionListener = listener;
     }
 
-    public MovieAdapter(List<AdminPagePackage.Movie> movies, OnDeleteClickListener deleteClickListener) {
-        this.movies = movies;
-        this.deleteClickListener = deleteClickListener;
+    public interface OnMovieActionListener {
+        void onEditMovie(Movie movie);
+        void onDeleteMovie(Movie movie);
     }
 
     @NonNull
     @Override
-    public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_movie, parent, false);
-        return new MovieViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-        AdminPagePackage.Movie movie = movies.get(position);
-        holder.movieTitle.setText(movie.getTitle());
-        holder.movieCategory.setText("(" + movie.getCategory() + ")");
-        holder.deleteButton.setOnClickListener(v -> deleteClickListener.onDeleteClick(movie.getTitle()));
-    }
-
-    @Override
-    public int getItemCount() {
-        return movies.size();
-    }
-
-    static class MovieViewHolder extends RecyclerView.ViewHolder {
-        TextView movieTitle, movieCategory;
-        Button deleteButton;
-
-        public MovieViewHolder(@NonNull View itemView) {
-            super(itemView);
-            movieTitle = itemView.findViewById(R.id.movie_title);
-            movieCategory = itemView.findViewById(R.id.movie_category);
-            deleteButton = itemView.findViewById(R.id.delete_movie_button);
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_movie, parent, false);
         }
+
+        // Get the current movie
+        Movie movie = getItem(position);
+
+        // Bind data to views
+        TextView movieName = convertView.findViewById(R.id.movie_name);
+        TextView movieCategories = convertView.findViewById(R.id.movie_categories);
+        TextView movieDirector = convertView.findViewById(R.id.movie_director);
+        ImageView moviePoster = convertView.findViewById(R.id.movie_poster);
+        Button editButton = convertView.findViewById(R.id.edit_movie_button);
+        Button deleteButton = convertView.findViewById(R.id.delete_movie_button);
+
+
+        // Set data to the views
+        if (movie != null) {
+            movieName.setText(movie.getMovieName());
+
+            // Set categories (you could join them into a comma-separated string)
+            String categories = String.join(", ", movie.getCategories());
+            movieCategories.setText(categories);
+
+            // Set director
+            movieDirector.setText(movie.getDirector());
+
+            // Handle the picture URL to replace localhost with 10.0.2.2
+            String imageUrl = movie.getPictureURL();
+            if (imageUrl != null && imageUrl.contains("localhost")) {
+                imageUrl = imageUrl.replace("localhost", "10.0.2.2");
+            }
+
+            // Set image using Glide or Picasso (for example, if pictureURL is available)
+            Glide.with(getContext())
+                    .load(imageUrl)
+                    .placeholder(R.drawable.ic_movie_poster_placeholder)
+                    .into(moviePoster);
+
+            // Set button click listeners
+            editButton.setOnClickListener(v -> {
+                if (actionListener != null) {
+                    actionListener.onEditMovie(movie);
+                }
+            });
+
+            deleteButton.setOnClickListener(v -> {
+                if (actionListener != null) {
+                    actionListener.onDeleteMovie(movie);
+                }
+            });
+        }
+
+        return convertView;
+    }
+
+    @Override
+    public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        return super.getView(position, convertView, parent);
     }
 }
-

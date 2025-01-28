@@ -81,9 +81,8 @@ const getMoviesByCategory = async (req, res) => {
     }
 };
 
-const createMovie = async (req, res) => {
+const createMovie = async (req, res) => {    
     const jsonedMovieData = JSON.parse(req.body.movieData);
-
     try {
         const fields = ['movieName', 'categories', 'director'];
         const missing = [];

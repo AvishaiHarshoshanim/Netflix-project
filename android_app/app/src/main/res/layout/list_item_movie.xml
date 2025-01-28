@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:gravity="start"
+    tools:ignore="ExtraText">
+
+    <!-- First row for Movie Name, Categories, Director -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="start"
+        android:layout_marginBottom="8dp">
+
+        <!-- Movie Name TextView -->
+        <TextView
+            android:id="@+id/movie_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:layout_marginEnd="16dp" />
+
+        <!-- Categories TextView -->
+        <TextView
+            android:id="@+id/movie_categories"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12sp"
+            android:textColor="@android:color/darker_gray"
+            android:layout_marginEnd="16dp" />
+
+        <!-- Director TextView -->
+        <TextView
+            android:id="@+id/movie_director"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12sp"
+            android:textColor="@android:color/darker_gray"
+            android:layout_marginEnd="16dp" />
+
+        <!-- Actors TextView -->
+        <TextView
+            android:id="@+id/movie_actors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+    <!-- Movie Poster/Image (Optional, if the pictureURL is available) -->
+    <ImageView
+        android:id="@+id/movie_poster"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:contentDescription="movie_poster"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_movie_poster_placeholder" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginTop="8dp"
+    android:layout_marginLeft="5dp"
+    >
+    <!-- Edit Button -->
+    <Button
+        android:id="@+id/edit_movie_button"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="Edit"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp" />
+
+    <!-- Delete Button -->
+    <Button
+        android:id="@+id/delete_movie_button"
+        android:layout_width="89dp"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        android:layout_marginTop="8dp" />
+</LinearLayout>
+</LinearLayout>
+</LinearLayout>
