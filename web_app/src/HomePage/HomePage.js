@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import HeroSection from './components/HeroSection';
 import Header from './components/Header';
+import MovieItem from "./components/MovieItem";
 import './HomePage.css';
 
 
@@ -32,26 +33,14 @@ const HomePage = () => {
             <h2 className="category-title">{category.category}</h2>
             <ul className="movies-list">
               {category.movies.map((movie) => (
-                <li key={movie._id} className="movie-item">
-                <div className="movie-container">
-                  {/* If the film does not have a picture, we will put a default picture */}
-                  <img 
-                    src={movie.pictureURL ? movie.pictureURL : '/images/Deductive image for film.webp'} 
-                    alt={movie.movieName} 
-                    className="movie-image" 
-                  />
-                  <div className="movie-title-overlay">
-                    {movie.movieName}
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+                <MovieItem key={movie._id} movie={movie} /> // שימוש ברכיב
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
 };
 
 export default HomePage;
