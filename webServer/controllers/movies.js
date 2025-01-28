@@ -123,12 +123,21 @@ const createMovie = async (req, res) => {
                 validCategories = [noCategory.name]
             }
 
-            var pictureName =  null;
-            var pictureURL = null;
+            var imageName =  null;
+            var imageURL = null;
 
-            if (req.file) {
-                pictureURL = `http://localhost:${process.env.USER_TO_WEB_PORT}/${req.file.path}`;
-                pictureName =  req.file.filename;
+            if (req.files.pictureFileToAdd && req.files.pictureFileToAdd[0]) {
+                imageName =  req.files.pictureFileToAdd[0].filename;
+                imageURL = `http://localhost:${process.env.USER_TO_WEB_PORT}/${req.files.pictureFileToAdd[0].path}`;
+            }
+
+            var videoName = null;
+            var videoURL = null;
+
+            // If video file exists, process it
+            if (req.files.videoFileToAdd && req.files.videoFileToAdd[0]) {
+                videoName = req.files.videoFileToAdd[0].filename;
+                videoURL = `http://localhost:${process.env.USER_TO_WEB_PORT}/${req.files.videoFileToAdd[0].path}`;
             }
 
             try {
@@ -138,8 +147,10 @@ const createMovie = async (req, res) => {
                     categoryIds,
                     jsonedMovieData.director,
                     jsonedMovieData.actors,
-                    pictureName,
-                    pictureURL
+                    imageName,
+                    imageURL,
+                    videoName,
+                    videoURL
                 ));
             } catch (error) {
                 return res.status(400).json({ error: error.message });
@@ -227,17 +238,28 @@ const updateMovie = async (req, res) => {
                 validCategories = [noCategory.name]
             }
 
-            var pictureName =  null;
-            var pictureURL = null;
+            var imageName =  null;
+            var imageURL = null;
 
-            if (req.file) {
-                pictureURL = `http://localhost:${process.env.USER_TO_WEB_PORT}/${req.file.path}`;
-                pictureName =  req.file.filename;
+            if (req.files.pictureFileToUpdate && req.files.pictureFileToUpdate[0]) {
+                imageName =  req.files.pictureFileToUpdate[0].filename;
+                imageURL = `http://localhost:${process.env.USER_TO_WEB_PORT}/${req.files.pictureFileToUpdate[0].path}`;
             } else {
-                pictureName = jsonedMovieData.pictureName;
-                pictureURL = jsonedMovieData.pictureURL
+                imageName = jsonedMovieData.imageName;
+                imageURL = jsonedMovieData.imageURL
             }
 
+            var videoName = null;
+            var videoURL = null;
+
+            // If video file exists, process it
+            if (req.files.videoFileToUpdate && req.files.videoFileToUpdate[0]) {
+                videoName = req.files.videoFileToUpdate[0].filename;
+                videoURL = `http://localhost:${process.env.USER_TO_WEB_PORT}/${req.files.videoFileToUpdate[0].path}`;
+            } else {
+                videoName = jsonedMovieData.videoName;
+                videoURL = jsonedMovieData.videoURL
+            }
 
             try {
                 // Process valid categories
@@ -245,8 +267,10 @@ const updateMovie = async (req, res) => {
                 const updatedMovieData = {
                     ...jsonedMovieData,
                     categories: categoryIds,
-                    pictureName,
-                    pictureURL
+                    imageName,
+                    imageURL,
+                    videoName,
+                    videoURL                    
                 };
 
                 const movie = await movieService.replaceMovie(id, updatedMovieData);

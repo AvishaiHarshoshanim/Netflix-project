@@ -92,16 +92,26 @@ public class MovieRepository {
     public void insertMovie(Movie movie, MovieInsertCallback callback) {
 
         File imageFile = movie.getImageFile();
+        File videoFile = movie.getVideoFile();
+
         MultipartBody.Part imagePart = null;
-        if (imageFile!=null){
+        MultipartBody.Part videoPart = null;
+
+
+        if (imageFile != null){
             RequestBody imageRequestBody = RequestBody.create(MediaType.parse("image/*"), imageFile);
             imagePart = MultipartBody.Part.createFormData("pictureFileToAdd", movie.getImageName(), imageRequestBody);
+        }
+
+        if (videoFile != null){
+            RequestBody videoRequestBody = RequestBody.create(MediaType.parse("video/*"), videoFile);
+            videoPart = MultipartBody.Part.createFormData("videoFileToAdd", movie.getVideoName(), videoRequestBody);
         }
 
         // Convert movie data to JSON
         RequestBody movieDataRequestBody = RequestBody.create(MediaType.parse("application/json"), new Gson().toJson(movie));
 
-        webServiceAPI.createMovie(imagePart, movieDataRequestBody).enqueue(new Callback<Movie>() {
+        webServiceAPI.createMovie(imagePart, videoPart, movieDataRequestBody).enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -122,35 +132,43 @@ public class MovieRepository {
 
     public void updateMovie(Movie movieToEdit, Movie updatedContent, MovieUpdateCallback callback) {
 
-        // Prepare the movie data (excluding the file)
+        // Prepare the movie data (excluding the files)
         JSONObject movieData = new JSONObject();
         try {
             movieData.put("movieName", updatedContent.getMovieName());
             movieData.put("director", updatedContent.getDirector());
             movieData.put("actors", updatedContent.getActors());
-            movieData.put("categories", new JSONArray(updatedContent.getCategories()));  // Assuming it's a list of category IDs or names
-            movieData.put("pictureName", updatedContent.getImageName());
-            //movieData.put("pictureURL", updatedContent.getImageURL());
+            movieData.put("categories", new JSONArray(updatedContent.getCategories()));
+            movieData.put("imageName", updatedContent.getImageName());
+            movieData.put("imageURL", updatedContent.getImageURL());
+            movieData.put("videoName", updatedContent.getVideoName());
+            movieData.put("videoURL", updatedContent.getVideoURL());
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        // Convert movie data into RequestBody (the movieData is sent as a JSON string)
-        RequestBody movieDataRequestBody = RequestBody.create(MediaType.parse("application/json"), movieData.toString());
 
         // Create MultipartBody.Part for movieData
         MultipartBody.Part movieDataPart = MultipartBody.Part.createFormData("movieData", movieData.toString());
 
         // Create MultipartBody.Part for the image file if it exists
         MultipartBody.Part imagePart = null;
+        MultipartBody.Part videoPart = null;
+
+        File videoFile = updatedContent.getVideoFile();
         File imageFile = updatedContent.getImageFile();
+
         if (imageFile != null) {
             RequestBody imageRequestBody = RequestBody.create(MediaType.parse("image/*"), imageFile);
             imagePart = MultipartBody.Part.createFormData("pictureFileToUpdate", updatedContent.getImageName(), imageRequestBody);
         }
 
+        if (videoFile != null) {
+            RequestBody videoRequestBody = RequestBody.create(MediaType.parse("video/*"), videoFile);
+            videoPart = MultipartBody.Part.createFormData("videoFileToUpdate", updatedContent.getVideoName(), videoRequestBody);
+        }
+
         // Make the API call
-        webServiceAPI.updateMovie(movieToEdit.get_id(), movieDataPart, imagePart).enqueue(new Callback<Void>() {
+        webServiceAPI.updateMovie(movieToEdit.get_id(), movieDataPart, imagePart, videoPart).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
@@ -169,59 +187,6 @@ public class MovieRepository {
             }
         });
     }
-
-
-//    public void updateMovie(Movie movieToEdit, Movie updatedContent, MovieUpdateCallback callback) {
-//
-//        File imageFile = updatedContent.getImageFile();
-//        MultipartBody.Part imagePart = null;
-//        if (imageFile!=null){
-//            RequestBody imageRequestBody = RequestBody.create(MediaType.parse("image/*"), imageFile);
-//            imagePart = MultipartBody.Part.createFormData("pictureFileToUpdate", updatedContent.getImageName(), imageRequestBody);
-//        }
-//
-//        // Convert movie data to JSON
-//        RequestBody movieDataRequestBody = RequestBody.create(MediaType.parse("application/json"), new Gson().toJson(updatedContent));
-//
-//        webServiceAPI.updateMovie(movieToEdit.get_id(), imagePart, movieDataRequestBody).enqueue(new Callback<Void>() {
-//            @Override
-//            public void onResponse(Call<Void> call, Response<Void> response) {
-//                if (response.isSuccessful()) {
-//                    new Thread(() -> {
-//                        movieDao.updateMovie(movieToEdit, updatedContent);
-//                        callback.onMovieUpdated();  // Notify ViewModel that movie is updated
-//                    }).start();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Void> call, Throwable t) {
-//                Log.println(Log.ERROR,"on fail", t.toString());
-//            }
-//        });
-//    }
-
-//    public void updateMovie(Movie movieToEdit, Movie updatedContent, MovieUpdateCallback callback) {
-//        webServiceAPI.updateMovie(movieToEdit.get_id(), updatedContent).enqueue(new Callback<Void>() {
-//            @Override
-//            public void onResponse(Call<Void> call, Response<Void> response) {
-//                if (response.code() == 200) {  // 200 means successful update
-//                    new Thread(() -> {
-//                        movieDao.updateMovie(movieToEdit, updatedContent);
-//                        callback.onMovieUpdated();  // Notify ViewModel that movie is updated
-//                    }).start();
-//                    Log.println(Log.ERROR, "updateMovie in repo", "good");
-//                } else {
-//                    Log.println(Log.ERROR, "updateMovie in repo", "response.code() != 204");
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Void> call, Throwable t) {
-//                Log.println(Log.ERROR, "updateMovie in repo", "onfailure");
-//            }
-//        });
-//    }
 
     public void deleteMovie(Movie movie, MovieDeleteCallback callback) {
         webServiceAPI.deleteMovie(movie.get_id()).enqueue(new Callback<Void>() {
@@ -250,6 +215,8 @@ public class MovieRepository {
             public void onResponse(Call<List<Movie>> call, Response<List<Movie>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     new Thread(() -> {
+                        Log.println(Log.DEBUG, "FETCH ", response.body().toString());
+
                         List<Movie> moviesFromServer = response.body();
 
                         // Fetch all category IDs from the movies received

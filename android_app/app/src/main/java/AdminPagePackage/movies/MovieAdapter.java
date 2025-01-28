@@ -1,6 +1,8 @@
 package AdminPagePackage.movies;
 
 import android.content.Context;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,7 @@ import android.widget.Button;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,6 +49,8 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
         TextView movieCategories = convertView.findViewById(R.id.movie_categories);
         TextView movieDirector = convertView.findViewById(R.id.movie_director);
         ImageView moviePoster = convertView.findViewById(R.id.movie_poster);
+        TextView videoName = convertView.findViewById(R.id.video_name);
+
         Button editButton = convertView.findViewById(R.id.edit_movie_button);
         Button deleteButton = convertView.findViewById(R.id.delete_movie_button);
 
@@ -60,18 +65,26 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
 
             // Set director
             movieDirector.setText(movie.getDirector());
-
             // Handle the picture URL to replace localhost with 10.0.2.2
-            String imageUrl = movie.getPictureURL();
+            String imageUrl = movie.getImageURL();
+
             if (imageUrl != null && imageUrl.contains("localhost")) {
                 imageUrl = imageUrl.replace("localhost", "10.0.2.2");
             }
 
-            // Set image using Glide or Picasso (for example, if pictureURL is available)
+            // Handle the video URL to replace localhost with 10.0.2.2
+            String videoUrl = movie.getVideoURL();
+            if (videoUrl != null && videoUrl.contains("localhost")) {
+                videoUrl = videoUrl.replace("localhost", "10.0.2.2");
+            }
+
             Glide.with(getContext())
                     .load(imageUrl)
                     .placeholder(R.drawable.ic_movie_poster_placeholder)
                     .into(moviePoster);
+
+            videoName.setText(movie.getVideoName());
+
 
             // Set button click listeners
             editButton.setOnClickListener(v -> {

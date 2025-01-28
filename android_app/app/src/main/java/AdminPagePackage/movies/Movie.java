@@ -18,10 +18,13 @@ public class Movie {
     private List<String> categories;
     private String director;
     private String actors;
-    private String pictureName;
-    private String pictureURL;
+    private String imageURL;
     private File imageFile;
     private String imageName;
+    private String videoURL;
+    private File videoFile;
+    private String videoName;
+
 
     @NonNull
     public String get_id() {
@@ -64,20 +67,36 @@ public class Movie {
         this.actors = actors;
     }
 
-    public String getPictureName() {
-        return pictureName;
+    public String getVideoName() {
+        return videoName;
     }
 
-    public void setPictureName(String pictureName) {
-        this.pictureName = pictureName;
+    public void setVideoName(String videoName) {
+        this.videoName = videoName;
     }
 
-    public String getPictureURL() {
-        return pictureURL;
+    public String getVideoURL() {
+        return videoURL;
     }
 
-    public void setPictureURL(String pictureURL) {
-        this.pictureURL = pictureURL;
+    public void setVideoURL(String videoURL) {
+        this.videoURL = videoURL;
+    }
+
+    public File getVideoFile() {
+        return videoFile;
+    }
+
+    public void setVideoFile(File videoFile) {
+        this.videoFile = videoFile;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 
     public File getImageFile() {
@@ -96,7 +115,7 @@ public class Movie {
         this.imageName = imageName;
     }
 
-    public Movie(@NonNull String _id, String movieName, List<String> categories, String director, String actors, File imageFile, String imageName) {
+    public Movie(@NonNull String _id, String movieName, List<String> categories, String director, String actors, File imageFile, String imageName, File videoFile, String videoName) {
         this._id = _id;
         this.movieName = movieName;
         this.categories = categories;
@@ -104,6 +123,8 @@ public class Movie {
         this.actors = actors;
         this.imageFile = imageFile;
         this.imageName = imageName;
+        this.videoFile = videoFile;
+        this.videoName = videoName;
     }
 
     @Override
@@ -114,8 +135,6 @@ public class Movie {
                 ", categories=" + categories +
                 ", director='" + director + '\'' +
                 ", actors='" + actors + '\'' +
-                ", pictureName='" + pictureName + '\'' +
-                ", pictureURL='" + pictureURL + '\'' +
                 '}';
     }
 }

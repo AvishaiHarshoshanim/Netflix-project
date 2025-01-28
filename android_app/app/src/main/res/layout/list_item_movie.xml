@@ -51,16 +51,17 @@
             android:id="@+id/movie_actors"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:textColor="@android:color/darker_gray"
             android:textSize="12sp" />
     </LinearLayout>
 
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="8dp">
     <!-- Movie Poster/Image (Optional, if the pictureURL is available) -->
     <ImageView
         android:id="@+id/movie_poster"
@@ -70,6 +71,14 @@
         android:contentDescription="movie_poster"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_movie_poster_placeholder" />
+    <TextView
+        android:id="@+id/video_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="12dp" />
+
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"

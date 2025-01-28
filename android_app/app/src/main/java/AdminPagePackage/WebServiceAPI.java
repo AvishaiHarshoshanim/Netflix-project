@@ -46,14 +46,16 @@ public interface WebServiceAPI {
     @Multipart
     @POST("movies")
     Call<Movie> createMovie(@Part MultipartBody.Part pictureFileToAdd,
-                                   @Part("movieData") RequestBody movieData);
+                            @Part MultipartBody.Part videoFileToAdd,
+                            @Part("movieData") RequestBody movieData);
 
     // Update an existing movie
     @Multipart
     @PUT("movies/{id}")
     Call<Void> updateMovie(@Path("id") String _id,
                            @Part MultipartBody.Part movieData,
-                           @Part MultipartBody.Part pictureFileToUpdate);
+                           @Part MultipartBody.Part pictureFileToUpdate,
+                           @Part MultipartBody.Part videoFileToUpdate);
 
     // Delete a movie by ID
     @DELETE("movies/{id}")

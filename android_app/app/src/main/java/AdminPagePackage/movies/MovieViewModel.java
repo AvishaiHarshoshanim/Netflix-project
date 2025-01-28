@@ -62,8 +62,6 @@ public class MovieViewModel extends AndroidViewModel {
     }
 
     public void refreshMovies() {
-        Log.println(Log.INFO,"refreshMovies", "geting movies");
-
         // Update the LiveData
         movieRepository.fetchAndStoreMovies(allMovies::postValue);
     }
