@@ -36,6 +36,9 @@ const Header = () => {
         <span className="header-link" onClick={toggleSearch}>
           SEARCH
         </span>
+        <span className="header-link" onClick={() => navigate("/movies")}>
+        MOVIES
+      </span>
       </div>
       <button className="logout-btn" onClick={() => alert("Logged out!")}>
         LOGOUT

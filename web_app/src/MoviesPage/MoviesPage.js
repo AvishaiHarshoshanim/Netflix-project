@@ -1,26 +1,25 @@
 import React, { useState, useEffect } from "react";
-import HeroSection from './components/HeroSection';
-import Header from './components/Header';
-import MovieItem from "./components/MovieItem";
-import './HomePage.css';
+import Header from "../HomePage/components/Header";
+import HeroSection from "../HomePage/components/HeroSection";
+import MovieItem from "../HomePage/components/MovieItem";
+import "../HomePage/HomePage.css";
 
 
-const HomePage = () => {
+const MoviesPage = () => {
   const [categoriesWithMovies, setCategoriesWithMovies] = useState([]);
-  const userId = "67976958346fafd6e5653e5b";                                 // נצטרך פה לקלוט את הת.ז. של המשתמש שנכנס למערכת
 
   useEffect(() => {
-    // Fetch categories with movies for the specific user
-    fetch("http://localhost:5000/api/movies", {
+    fetch("http://localhost:5000/api/movies/categories/withMovies", {
       method: "GET",
       headers: {
-        "Accept": "application/json",
-        "userId": userId // Add userId to the headers
-      }
+        Accept: "application/json",
+      },
     })
       .then((response) => response.json())
       .then((data) => setCategoriesWithMovies(data))
-      .catch((error) => console.error("Error fetching categories and movies:", error));
+      .catch((error) =>
+        console.error("Error fetching categories and movies:", error)
+      );
   }, []);
 
   return (
@@ -33,7 +32,7 @@ const HomePage = () => {
             <h2 className="category-title">{category.category}</h2>
             <ul className="movies-list">
               {category.movies.map((movie) => (
-                <MovieItem key={movie._id} movie={movie} /> 
+                <MovieItem key={movie._id} movie={movie} />
               ))}
             </ul>
           </div>
@@ -43,4 +42,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default MoviesPage;

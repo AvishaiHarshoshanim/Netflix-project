@@ -42,4 +42,8 @@ router.post('/:id/recommend', moviesController.addUserMovie);
 // Route to search movies by query
 router.get('/search/:query', moviesController.searchMovies);
 
+router.route('/categories/withMovies')
+    .get(moviesController.getCategoriesWithMovies); 
+
+
 module.exports = router;

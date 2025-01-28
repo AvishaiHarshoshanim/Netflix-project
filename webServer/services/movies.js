@@ -26,6 +26,14 @@ const getPromotedCategories = async () => {
     return await Categories.find({ promoted: true });
 };
 
+const getAllCategories = async () => {
+    try {
+        return await Categories.find(); 
+    } catch (err) {
+        throw new Error("Error fetching categories: " + err.message);
+    }
+};
+
 // return movies according to thier categories
 const getMoviesByCategory = async (categoryId, userId) => {
     const watchedMovieIds = await getMoviesWatchedByUser(userId);
@@ -308,4 +316,4 @@ async function searchMoviesInDatabase(query) {
 }
 
 
-module.exports = { getMoviesWatchedByUser, getPromotedCategories, getMoviesByCategory, createMovie, getMovieById, replaceMovie, deleteMovieById, getRecommendationsFromServer, addUserMovieToServer, searchMoviesInDatabase, isUserExists, addMoviesToViewingHistory, isMovieExists, getAllMovies };
+module.exports = { getMoviesWatchedByUser, getPromotedCategories, getMoviesByCategory, createMovie, getMovieById, replaceMovie, deleteMovieById, getRecommendationsFromServer, addUserMovieToServer, searchMoviesInDatabase, isUserExists, addMoviesToViewingHistory, isMovieExists, getAllMovies, getAllCategories };

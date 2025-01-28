@@ -420,5 +420,32 @@ async function searchMovies(req, res) {
     }
 }
 
+const getCategoriesWithMovies = async (req, res) => {
+    try {
+        const categories = await movieService.getAllCategories();  
+        const categoriesWithMovies = [];
 
-module.exports = { createMovie, getMovie, updateMovie, deleteMovie, getMoviesByCategory, getRecommendations, addUserMovie, searchMovies, getAllMovies };
+        for (const category of categories) {
+            const movies = await movieService.getMoviesByCategory(category._id); 
+
+            if (movies.length > 0) {
+                categoriesWithMovies.push({
+                    category: category.name,
+                    movies: movies,  
+                });
+            }
+        }
+
+        if (categoriesWithMovies.length === 0) {
+            return res.status(200).json([]);  
+        }
+
+        res.status(200).json(categoriesWithMovies);
+    } catch (error) {
+        console.error('Error in getCategoriesWithMovies:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
+module.exports = { createMovie, getMovie, updateMovie, deleteMovie, getMoviesByCategory, getRecommendations, addUserMovie, searchMovies, getAllMovies, getCategoriesWithMovies };
