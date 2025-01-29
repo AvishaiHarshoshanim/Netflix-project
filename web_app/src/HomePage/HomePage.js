@@ -10,7 +10,6 @@ const HomePage = () => {
   const userId = "67976958346fafd6e5653e5b";                                 // נצטרך פה לקלוט את הת.ז. של המשתמש שנכנס למערכת
 
   useEffect(() => {
-    // Fetch categories with movies for the specific user
     fetch("http://localhost:5000/api/movies", {
       method: "GET",
       headers: {
