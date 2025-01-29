@@ -7,7 +7,7 @@ const MovieItem = ({ movie }) => {
       <div className="movie-container">
         {/*If the movie has no image we will use a default image*/}
         <img
-          src={movie.pictureURL ? movie.pictureURL : "/images/Deductive image for film.webp"}
+          src={movie.imageURL ? movie.imageURL : "/images/default image for film.webp"}
           alt={movie.movieName}
           className="movie-image"
         />
