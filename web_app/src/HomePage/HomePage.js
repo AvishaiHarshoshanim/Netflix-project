@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import HeroSection from './components/HeroSection';
-import Header from './components/Header';
 import MovieItem from "./components/MovieItem";
 import './HomePage.css';
 
@@ -24,7 +23,6 @@ const HomePage = () => {
 
   return (
     <div>
-      <Header />
       <HeroSection />
       <div className="categories-section">
         {categoriesWithMovies.map((category) => (
