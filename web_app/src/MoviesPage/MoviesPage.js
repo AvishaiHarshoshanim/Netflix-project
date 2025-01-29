@@ -5,7 +5,7 @@ import MovieItem from "../HomePage/components/MovieItem";
 import "../HomePage/HomePage.css";
 
 
-const MoviesPage = () => {
+const MoviesPage = ({userId}) => {
   const [categoriesWithMovies, setCategoriesWithMovies] = useState([]);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const MoviesPage = () => {
             <h2 className="category-title">{category.category}</h2>
             <ul className="movies-list">
               {category.movies.map((movie) => (
-                <MovieItem key={movie._id} movie={movie} />
+                <MovieItem key={movie._id} movie={movie} userId={userId} />
               ))}
             </ul>
           </div>

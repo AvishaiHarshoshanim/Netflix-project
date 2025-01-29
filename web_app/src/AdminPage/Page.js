@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Page.css';
 import CategoryManager from './Components/CategoryManager';
 import MovieManager from './Components/MovieManager';
+// import Header from '../HomePage/components/Header';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
