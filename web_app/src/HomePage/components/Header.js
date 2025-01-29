@@ -8,22 +8,19 @@ const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const searchInputRef = useRef(null);
 
-  // פונקציה לפתיחה/סגירה של החיפוש
   const toggleSearch = () => {
     setIsSearchOpen((prev) => !prev);
   };
 
-  // אפקט שמפעיל מיקוד בשדה החיפוש כשהחלונית נפתחת
   React.useEffect(() => {
     if (isSearchOpen && searchInputRef.current) {
-      searchInputRef.current.focus(); // מפעיל מיקוד אוטומטי
+      searchInputRef.current.focus(); 
     }
   }, [isSearchOpen]);
 
   const handleSearch = (event) => {
     if (event.key === "Enter" && searchQuery.trim() !== "") {
-      navigate(`/search/${searchQuery.trim()}`); // נווט ל־SearchPage עם ה-query
-      setSearchQuery(""); // נקה את שדה החיפוש
+      navigate(`/search/${searchQuery.trim()}`); 
     }
   };
 
@@ -33,24 +30,24 @@ const Header = () => {
         <span className="header-link" onClick={() => navigate("/")}>
           HOME
         </span>
+        <span className="header-link" onClick={() => navigate("/movies")}>
+          MOVIES
+        </span>
         <span className="header-link" onClick={toggleSearch}>
           SEARCH
         </span>
-        <span className="header-link" onClick={() => navigate("/movies")}>
-        MOVIES
-      </span>
       </div>
       <button className="logout-btn" onClick={() => alert("Logged out!")}>
         LOGOUT
       </button>
-      {/* חלונית החיפוש */}
+      {/*the search-box*/}
       {isSearchOpen && (
         <div className="search-box">
           <input
             type="text"
             placeholder="Search for movies..."
             className="search-input"
-            ref={searchInputRef} // מחבר את השדה ל-useRef
+            ref={searchInputRef} 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={handleSearch}
