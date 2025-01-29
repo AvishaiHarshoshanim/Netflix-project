@@ -216,6 +216,15 @@
   border-radius: 10px; /* Rounded corners */
 }
 
+.movie-detail-row video {
+  flex: 1; /* Let content take the remaining space */
+  display: flex; /* Block-level element for images */
+  /*margin: 10px 200px; /* Add top and bottom margin */
+  max-width: 300px; /* Make it responsive */
+  border: 1px solid #ccc; /* Subtle border for the image */
+  border-radius: 10px; /* Rounded corners */
+}
+
 .list-group-item .actions {
   display: flex; /* Use flexbox for button alignment */
   justify-content: flex-start; /* Align buttons to the left */

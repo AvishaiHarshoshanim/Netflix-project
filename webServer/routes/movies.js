@@ -11,27 +11,35 @@ const storage = multer.diskStorage({
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir, { recursive: true }); // Create directory if it doesn't exist
         }
-        cb(null, dir);
+        cb(null, dir); // Store both images and videos in the same directory
     },
     filename: (req, file, cb) => {
-        cb(null, path.basename(file.originalname, path.extname(file.originalname)) + '-' + Date.now() + path.extname(file.originalname));
+        const fileName = path.basename(file.originalname, path.extname(file.originalname)) + '-' + Date.now();
+        cb(null, fileName + path.extname(file.originalname)); // Append file extension based on type (image/video)
     },
 });
 
 const upload = multer({ storage });
 
+// Define fields for both image and video uploads
 router.route('/')
     .get(moviesController.getMoviesByCategory)
-    .post(upload.single('pictureFileToAdd'), moviesController.createMovie);
+    .post(upload.fields([
+        { name: 'pictureFileToAdd', maxCount: 1 },
+        { name: 'videoFileToAdd', maxCount: 1 },
+    ]), moviesController.createMovie);
 
 router.route('/all')
     .get(moviesController.getAllMovies);
 
+
 router.route('/:id')
     .get(moviesController.getMovie)
-    .put(upload.single('pictureFileToUpdate'), moviesController.updateMovie)
+    .put(upload.fields([
+        { name: 'pictureFileToUpdate', maxCount: 1 },
+        { name: 'videoFileToUpdate', maxCount: 1 },
+    ]), moviesController.updateMovie)
     .delete(moviesController.deleteMovie);
-
     
 // route to get recommendations for id movie
 router.get('/:id/recommend', moviesController.getRecommendations);
