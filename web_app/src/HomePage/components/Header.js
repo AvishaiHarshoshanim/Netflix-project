@@ -24,13 +24,18 @@ const Header = () => {
     }
   };
 
+  const handleNavigation = (path) => {
+    navigate(path);
+    window.scrollTo(0, 0); // Scroll straight to the top of the page
+  };
+
   return (
     <div className="header">
       <div className="header-links">
-        <span className="header-link" onClick={() => navigate("/")}>
+        <span className="header-link" onClick={() => handleNavigation("/")}>
           HOME
         </span>
-        <span className="header-link" onClick={() => navigate("/movies")}>
+        <span className="header-link" onClick={() => handleNavigation("/movies")}>
           MOVIES
         </span>
         <span className="header-link" onClick={toggleSearch}>
