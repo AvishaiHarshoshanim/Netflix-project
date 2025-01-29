@@ -36,24 +36,24 @@ const Header = () => {
         <span className="header-link" onClick={toggleSearch}>
           SEARCH
         </span>
+        {/*the search-box*/}
+        {isSearchOpen && (
+          <div className="search-box">
+            <input
+              type="text"
+              placeholder="Search for movies..."
+              className="search-input"
+              ref={searchInputRef}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={handleSearch}
+            />
+          </div>
+        )}
       </div>
       <button className="logout-btn" onClick={() => alert("Logged out!")}>
         LOGOUT
       </button>
-      {/*the search-box*/}
-      {isSearchOpen && (
-        <div className="search-box">
-          <input
-            type="text"
-            placeholder="Search for movies..."
-            className="search-input"
-            ref={searchInputRef} 
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={handleSearch}
-          />
-        </div>
-      )}
     </div>
   );
 };
