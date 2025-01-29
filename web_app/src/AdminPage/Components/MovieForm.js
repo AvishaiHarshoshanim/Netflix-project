@@ -1,5 +1,4 @@
 import React from 'react';
-import { useEffect } from 'react';
 import DropdownCheckbox from './DropdownCheckbox';
 
 const MovieForm = ({ categories, addMovie, newMovie, setNewMovie }) => {
