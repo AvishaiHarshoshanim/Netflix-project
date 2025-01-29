@@ -12,56 +12,74 @@ const MovieDetailsPopup = ({ movieId, userId, onClose }) => {
   const navigate = useNavigate();
   
   const handlePlay = () => {
+    updateRecServer();
     navigate("/watch", { state: { videoURL: movie.videoURL } });
   };
 
-  useEffect(() => {
-    const fetchMovieDetails = async () => {
-      try {
-        const response = await fetch(`http://localhost:5000/api/movies/${movieId}`, {
-          method: "GET",
-          headers: { "Accept": "application/json" }
-        });
+  const fetchMovieDetails = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/movies/${movieId}`, {
+        method: "GET",
+        headers: { "Accept": "application/json" }
+      });
 
-        if (!response.ok) throw new Error("Failed to fetch movie details");
+      if (!response.ok) throw new Error("Failed to fetch movie details");
 
+      const data = await response.json();
+      setMovie(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchRecoMovies = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/movies/${movieId}/recommend`, {
+        method: "GET",
+        headers: { "Accept": "application/json", "userId": userId }
+      });
+
+      if (!response.ok) {
+        console.log(response)
+        throw new Error("Failed to fetch reco movies");
+      } 
+
+      if (response.status === 200) {
         const data = await response.json();
-        setMovie(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+        setRecoMovies(data.recommendations);
+      } else {
+        setRecoMovies([])
       }
-    };
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const fetchRecoMovies = async () => {
-      try {
-        const response = await fetch(`http://localhost:5000/api/movies/${movieId}/recommend`, {
-          method: "GET",
-          headers: { "Accept": "application/json", "userId": userId }
-        });
+  const updateRecServer = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/movies/${movieId}/recommend`, {
+        method: "POST",
+        headers: { "Accept": "application/json", "userId": userId }
+      });
 
-        if (!response.ok) {
-          console.log(response)
-          throw new Error("Failed to fetch reco movies");
-        } 
+      if (!response.ok) {
+        console.log(response)
+        throw new Error("Failed to update rec server");
+      } 
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        if (response.status === 200) {
-          const data = await response.json();
-          setRecoMovies(data.recommendations);
-        } else {
-          setRecoMovies([])
-        }
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
+  useEffect(() => {
     fetchRecoMovies();
     fetchMovieDetails();
-
   }, [movieId]);
 
   if (loading) return <div className="custom-modal"><div className="modal-content">Loading...</div></div>;
