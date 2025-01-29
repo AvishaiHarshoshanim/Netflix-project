@@ -1,13 +1,24 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import HomePage from "./HomePage/HomePage";
+import AdminPage from "./AdminPage/Page";
+import SearchPage from "./SearchPage/SearchPage";
+import MoviesPage from "./MoviesPage/MoviesPage";
 import './App.css';
-import AdminPage from './AdminPage/Page';
 
 function App() {
   return (
-    <div className="App">
-      {/* David and lior! here yo can replace the AdminPage with your page */}
-      <AdminPage>  
-      </AdminPage>
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+        <Route path="/" element={<>
+            <HomePage />
+            <AdminPage />
+          </>} />
+          <Route path="/search/:query" element={<SearchPage />} />
+          <Route path="/movies" element={<MoviesPage />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

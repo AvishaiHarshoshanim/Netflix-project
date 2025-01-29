@@ -1,0 +1,59 @@
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom"; 
+import Header from "../HomePage/components/Header";
+import MovieItem from "../HomePage/components/MovieItem";
+import "./SearchPage.css"; 
+
+const SearchPage = () => {
+  const { query } = useParams(); 
+  const [results, setResults] = useState(null); 
+  const [isLoading, setIsLoading] = useState(true); 
+  const [error, setError] = useState(null); 
+
+  useEffect(() => {
+    setIsLoading(true); 
+    fetch(`http://localhost:5000/api/movies/search/${query}`)
+      .then((res) => {
+        if (res.status === 204) {
+          setResults(null);
+          setError("No matches were found for the search, you should try different keywords");
+        } else {
+          return res.json();
+        }
+      })
+      .then((data) => {
+        if (data) {
+          setResults(data);
+          setError(null); 
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching search results:", err);
+        setError("Error loading search results");
+      })
+      .finally(() => setIsLoading(false));
+  }, [query]);
+
+  return (
+    <div>
+      <Header />
+      <div className="search-background">
+        <img src="/images/netflix-like_background.webp" alt="Background" className="background-image" />
+      </div>
+      <div className="search-page">
+        <h1>Search Results for: {query}</h1>
+        {isLoading && <p>Loading results...</p>} 
+        {error && <p className="error-message">{error}</p>} 
+        {results && (
+            <ul className="search-results">
+                {results.results.map((movie) => (
+                    <MovieItem key={movie._id} movie={movie} />
+                ))}
+            </ul>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default SearchPage;
