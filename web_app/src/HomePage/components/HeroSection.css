@@ -61,29 +61,29 @@
 }
 
 .hero-buttons .btn-primary {
-    background: linear-gradient(90deg, #e50914, #f40612); /* מעבר צבעים מגניב */
-    color: white; /* צבע טקסט לבן */
-    padding: 12px 25px; /* קצת יותר גודל לכפתור */
-    font-size: 1.1em; /* טקסט יותר גדול */
-    border: none; /* בלי גבול */
-    border-radius: 30px; /* פינות עגולות מאוד */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* צל עדין */
-    transition: all 0.3s ease; /* מעבר עדין לכל שינוי */
+    background: linear-gradient(90deg, #e50914, #f40612); 
+    color: white; 
+    padding: 12px 25px; 
+    font-size: 1.1em; 
+    border: none;
+    border-radius: 30px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); 
+    transition: all 0.3s ease; 
     cursor: pointer;
-    font-weight: bold; /* טקסט מובלט */
+    font-weight: bold; 
 }
 
 .hero-buttons .btn-primary:hover {
-    background: linear-gradient(90deg, #f40612, #e50914); /* אפקט hover הפוך */
-    transform: scale(1.1); /* מעט גדילה */
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4); /* צל יותר מודגש */
-    color: white; /* צבע טקסט קבוע */
-    transition: all 0.3s ease; /* מעבר עדין */
+    background: linear-gradient(90deg, #f40612, #e50914); 
+    transform: scale(1.1); 
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4); 
+    color: white; 
+    transition: all 0.3s ease; 
 }
 
 .hero-buttons .btn-primary:active {
-    transform: scale(1); /* חזרה לגודל המקורי בעת לחיצה */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* פחות צל */
+    transform: scale(1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); 
 }
 
 .hero-buttons .btn-secondary {

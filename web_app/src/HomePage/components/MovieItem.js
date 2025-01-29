@@ -1,11 +1,11 @@
 import React from "react";
-import "./MovieItem.css"; // קובץ CSS נפרד לעיצוב הסרט
+import "./MovieItem.css"; 
 
 const MovieItem = ({ movie }) => {
   return (
     <li className="movie-item">
       <div className="movie-container">
-        {/* אם לסרט אין תמונה, נשתמש בתמונת ברירת מחדל */}
+        {/*If the movie has no image we will use a default image*/}
         <img
           src={movie.pictureURL ? movie.pictureURL : "/images/Deductive image for film.webp"}
           alt={movie.movieName}

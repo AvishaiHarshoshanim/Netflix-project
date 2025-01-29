@@ -1,11 +1,11 @@
 .movie-item {
     list-style: none;
     padding: 0;
-    border: none; /* מסיר גבול */
+    border: none; 
     background-color: #222;
     color: white;
     border-radius: 5px;
-    flex: 0 0 auto; /* לאפשר גלילה ולא מתיחה */
+    flex: 0 0 auto; 
     width: 200px;
     height: 100px;
     position: relative;
@@ -27,8 +27,8 @@
     border-radius: 5px;
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-sizing: border-box; /* לכלול את הגבולות וה-padding בחישוב הגודל */
-    border: none; /* הסרת הגבולות */
+    box-sizing: border-box; 
+    border: none; 
 }
 
 .movie-image {
@@ -38,8 +38,8 @@
 }
 
 .movie-container:hover {
-    transform: scale(1.05); /* להגדיל מעט בעת ריחוף */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* הצללה */
+    transform: scale(1.05); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); 
 }
 
 .movie-title-overlay {
@@ -47,10 +47,10 @@
     bottom: 0;
     width: 100%;
     padding: 5px;
-    background: rgba(0, 0, 0, 0.7); /* רקע כהה למחצה */
+    background: rgba(0, 0, 0, 0.7); 
     color: white;
     text-align: center;
     font-size: 1em;
     font-weight: bold;
-    box-sizing: border-box; /* לכלול padding בחישוב גודל האלמנט */
+    box-sizing: border-box; 
 }

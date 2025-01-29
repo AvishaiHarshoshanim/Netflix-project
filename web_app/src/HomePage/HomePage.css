@@ -1,7 +1,7 @@
 .categories-section {
     margin-top: 0;
     padding: 20px;
-    background-color: #141414; /* רקע כהה */
+    background-color: #141414; 
   }
   
   .category-block {
@@ -19,7 +19,7 @@
   .movies-list {
     display: flex;
     gap: 10px;
-    overflow-x: auto; /* מאפשר גלילה אופקית */
+    overflow-x: auto; 
     padding: 10px 0;
   }
   

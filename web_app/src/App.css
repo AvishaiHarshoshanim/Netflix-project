@@ -35,14 +35,3 @@
     transform: rotate(360deg);
   }
 }
-
-.dark-mode {
-  background-color: #121212; 
-  color: white; 
-}
-
-
-.light-mode {
-  background-color: #013A63; 
-  color: black; 
-}

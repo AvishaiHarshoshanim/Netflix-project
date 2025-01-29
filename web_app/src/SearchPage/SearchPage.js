@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"; // כדי לקבל את ה-query מהנתיב
+import { useParams } from "react-router-dom"; 
 import Header from "../HomePage/components/Header";
 import MovieItem from "../HomePage/components/MovieItem";
-import "./SearchPage.css"; // נשתמש בקובץ CSS מאוחר יותר לעיצוב
+import "./SearchPage.css"; 
 
 const SearchPage = () => {
-  const { query } = useParams(); // נשלוף את ה-query מהכתובת
-  const [results, setResults] = useState(null); // נשמור את תוצאות החיפוש
-  const [isLoading, setIsLoading] = useState(true); // מצב טעינה
-  const [error, setError] = useState(null); // שגיאות אפשריות
+  const { query } = useParams(); 
+  const [results, setResults] = useState(null); 
+  const [isLoading, setIsLoading] = useState(true); 
+  const [error, setError] = useState(null); 
 
   useEffect(() => {
-    setIsLoading(true); // מפעילים מצב טעינה
+    setIsLoading(true); 
     fetch(`http://localhost:5000/api/movies/search/${query}`)
       .then((res) => {
         if (res.status === 204) {
-          // אם אין תוצאות
           setResults(null);
           setError("No matches were found for the search, you should try different keywords");
         } else {
@@ -25,12 +24,12 @@ const SearchPage = () => {
       .then((data) => {
         if (data) {
           setResults(data);
-          setError(null); // אין שגיאות
+          setError(null); 
         }
       })
       .catch((err) => {
         console.error("Error fetching search results:", err);
-        setError("תקלה בטעינת תוצאות החיפוש.");
+        setError("Error loading search results");
       })
       .finally(() => setIsLoading(false));
   }, [query]);
@@ -43,8 +42,8 @@ const SearchPage = () => {
       </div>
       <div className="search-page">
         <h1>Search Results for: {query}</h1>
-        {isLoading && <p>טוען תוצאות...</p>} {/* מצב טעינה */}
-        {error && <p className="error-message">{error}</p>} {/* הודעת שגיאה */}
+        {isLoading && <p>Loading results...</p>} 
+        {error && <p className="error-message">{error}</p>} 
         {results && (
             <ul className="search-results">
                 {results.results.map((movie) => (

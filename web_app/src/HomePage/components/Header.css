@@ -55,7 +55,7 @@
     background-color: white;
     padding: 5px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    width: 200px; /* רוחב תיבת החיפוש*/
+    width: 200px; /*Width of the search box*/
     display: flex;
     justify-content: center;
     align-items: center;
