@@ -23,7 +23,7 @@ const HomePage = ({userId}) => {
 
   return (
     <div>
-      <HeroSection />
+      <HeroSection userId={userId} />
       <div className="categories-section">
         {categoriesWithMovies.map((category) => (
           <div key={category.category} className="category-block">

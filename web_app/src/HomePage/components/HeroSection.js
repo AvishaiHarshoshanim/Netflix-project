@@ -1,10 +1,55 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import './HeroSection.css';
 
-const HeroSection = () => {
-
+const HeroSection = ({ userId }) => {
     const videoRef = useRef(null);
     const [isMuted, setIsMuted] = useState(true);
+    const [videoURL, setVideoUrl] = useState(null);
+
+    console.log("userId from HeroSection:", userId);
+
+
+    useEffect(() => {
+        if (!userId) return; 
+        
+        console.log("Fetching random movie for user:", userId);
+    
+        fetch("http://localhost:5000/api/movies", {
+            method: "GET",
+            headers: {
+                "Accept": "application/json",
+                "userId": userId 
+            }
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log("Fetched movies data:", data);
+            
+            const allMovies = data.flatMap(category => category.movies);
+            if (allMovies.length === 0) {
+                console.error("No movies available.");
+                setVideoUrl(null);
+                return;
+            }
+    
+            const randomMovie = allMovies[Math.floor(Math.random() * allMovies.length)];
+            console.log("Selected movie videoURL:", randomMovie.videoURL);
+
+    
+            if (!randomMovie.videoURL) {
+                console.error("Selected movie has no videoURL.");
+                setVideoUrl(null);
+                return;
+            }
+    
+            setVideoUrl(randomMovie.videoURL);
+        })
+        .catch((error) => {
+            console.error("Error fetching movies:", error);
+            setVideoUrl(null);
+        });
+    
+    }, [userId]); 
 
     const toggleMute = () => {
         if (videoRef.current) {
@@ -17,15 +62,18 @@ const HeroSection = () => {
     return (
         <div className="hero-section">
             {/* Video Background */}
-            <video className="hero-video" autoPlay loop muted ref={videoRef}>
-            <source src="/videos/video_720.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-            </video>
+            {videoURL ? (
+                <video className="hero-video" autoPlay loop muted ref={videoRef}>
+                    <source src={videoURL} type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+            ) : (
+                <p>Loading video...</p>
+            )}
 
             {/* Overlay Content */}
-            <div className="hero-content">
-                
-            </div>
+            <div className="hero-content"></div>
+
             {/* Mute/Unmute Button */}
             <button className="mute-button" onClick={toggleMute}>
                 <img
