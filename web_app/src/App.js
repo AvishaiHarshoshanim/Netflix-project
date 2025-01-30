@@ -22,7 +22,7 @@ function App() {
     document.body.className = theme;
   }, [theme]);
   
-  const userId = "679a3db25f4cedde9d4d1742";                                 // נצטרך פה לקלוט את הת.ז. של המשתמש שנכנס למערכת
+  const userId = "67976958346fafd6e5653e5b";                                 // נצטרך פה לקלוט את הת.ז. של המשתמש שנכנס למערכת
 
   return (
     <Router>
