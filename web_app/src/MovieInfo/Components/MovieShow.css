@@ -1,0 +1,25 @@
+.movie-show {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: black;
+  }
+  
+  .video-player {
+    width: 80%;
+    max-width: 1000px;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 65px;
+    right: 200px;
+    background: red;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+  }
+  

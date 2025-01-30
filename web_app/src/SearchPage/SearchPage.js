@@ -4,7 +4,7 @@ import Header from "../HomePage/components/Header";
 import MovieItem from "../HomePage/components/MovieItem";
 import "./SearchPage.css"; 
 
-const SearchPage = () => {
+const SearchPage = ({userId}) => {
   const { query } = useParams(); 
   const [results, setResults] = useState(null); 
   const [isLoading, setIsLoading] = useState(true); 
@@ -47,7 +47,7 @@ const SearchPage = () => {
         {results && (
             <ul className="search-results">
                 {results.results.map((movie) => (
-                    <MovieItem key={movie._id} movie={movie} />
+                    <MovieItem key={movie._id} movie={movie} userId={userId} />
                 ))}
             </ul>
         )}

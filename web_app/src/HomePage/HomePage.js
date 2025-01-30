@@ -5,11 +5,11 @@ import MovieItem from "./components/MovieItem";
 import './HomePage.css';
 
 
-const HomePage = () => {
+const HomePage = ({userId}) => {
   const [categoriesWithMovies, setCategoriesWithMovies] = useState([]);
-  const userId = "67976958346fafd6e5653e5b";                                 // נצטרך פה לקלוט את הת.ז. של המשתמש שנכנס למערכת
 
   useEffect(() => {
+    console.log(userId)
     fetch("http://localhost:5000/api/movies", {
       method: "GET",
       headers: {
@@ -32,7 +32,7 @@ const HomePage = () => {
             <h2 className="category-title">{category.category}</h2>
             <ul className="movies-list">
               {category.movies.map((movie) => (
-                <MovieItem key={movie._id} movie={movie} /> 
+                <MovieItem key={movie._id} movie={movie} userId={userId} /> 
               ))}
             </ul>
           </div>
