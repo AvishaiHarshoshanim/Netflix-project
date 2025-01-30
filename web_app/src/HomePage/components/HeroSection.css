@@ -60,9 +60,7 @@
     transition: background-color 0.3s ease;
 }
 
-.hero-buttons .btn-primary {
-    background: linear-gradient(90deg, #e50914, #f40612); 
-    color: white; 
+.hero-buttons .btn-primary { 
     padding: 12px 25px; 
     font-size: 1.1em; 
     border: none;
@@ -74,10 +72,8 @@
 }
 
 .hero-buttons .btn-primary:hover {
-    background: linear-gradient(90deg, #f40612, #e50914); 
     transform: scale(1.1); 
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4); 
-    color: white; 
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);  
     transition: all 0.3s ease; 
 }
 
@@ -85,6 +81,27 @@
     transform: scale(1);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); 
 }
+
+.dark-mode .btn-primary {
+    background: linear-gradient(90deg, #e50914, #f40612);
+    color: white;
+}
+
+.dark-mode .btn-primary:hover {
+    background: linear-gradient(90deg, #f40612, #e50914);
+    transform: scale(1.1);
+}
+
+.light-mode .btn-primary {
+    background: linear-gradient(90deg, #007bff, #0056b3);
+    color: white;
+}
+
+.light-mode .btn-primary:hover {
+    background: linear-gradient(90deg, #0056b3, #007bff);
+    transform: scale(1.1);
+}
+
 
 .hero-buttons .btn-secondary {
     background-color: rgba(255, 255, 255, 0.8);
