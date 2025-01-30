@@ -7,20 +7,12 @@ const UsersSchema = new Schema({
         required: true,
         unique: true
     },
-    firstName: {
-        type: String,
-        required: true,
-    },
-    lastName: { 
+    Name: {
         type: String,
         required: true,
     },
     picture: {
         type: String, 
-    },
-    email: {
-        type: String,
-        required: true
     },
     password: {
         type: String, 

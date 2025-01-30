@@ -6,7 +6,7 @@ const userService = require('../services/users');
 // Create a user with the required fields
 const createUser = async (req, res) => {
     try {
-        const fields = ['userName', 'firstName', 'lastName', 'email', 'password'];
+        const fields = ['userName', 'Name', 'password'];
         const missing = [];
 
         // Check for missing fields
@@ -21,35 +21,14 @@ const createUser = async (req, res) => {
                 errors: [`The following field(s) are missing: ${missing.join(', ')}`],
             });
         }
-
-        // If picture is provided, validate that it exists in the uploads directory
-        const picture = req.body.picture;
-        if (picture) {
-            // Create the full path for the picture
-            const picturePath = path.join(__dirname, '../uploads', picture);
-
-            // If the picture file does not exist, return an error
-            if (!fs.existsSync(picturePath)) {
-                return res.status(400).json({
-                    errors: [`Picture file "${picture}" does not exist in the uploads directory.`],
-                });
-            }
-        }
-        const email = req.body.email; 
-        const emailReg = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-    if (!emailReg.test(email)) {
-        return res.status(400).json({
-            errors: ['Invalid email'], 
-    });
-}
+    //checks if there is a pictuer if so pictuer is file name of the pictuer
+    const picture = req.file ? req.file.filename : null;
 
         // Try to create the user
         const user = await userService.createUser(
             req.body.userName,
-            req.body.firstName,
-            req.body.lastName,
+            req.body.Name,
             picture ? `/uploads/${picture}` : undefined, // Set picture path
-            req.body.email,
             req.body.password
         );
 

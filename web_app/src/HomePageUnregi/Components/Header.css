@@ -1,0 +1,12 @@
+
+.logo {
+  background-image: url('../../AdminPage/Netflix_Logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 200px;
+  height: 200px;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+}

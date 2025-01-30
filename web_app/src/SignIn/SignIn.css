@@ -1,0 +1,53 @@
+.block {
+    width: 400px;
+    margin: 0 auto; /* Horizontally center */
+    position: relative;
+    top: 50%; /* Vertically center */
+    transform: translateY(30%); /* Adjust vertical alignment */
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.85); /* Dark translucent background */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+    text-align: center;
+    color: white;
+    font-family: Arial, sans-serif;
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Add border for debugging */
+  }
+  
+  .home-page-background::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../AdminPage/netflix-like_background.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+    opacity: 0.8;
+    z-index: -1;
+  }
+ /* Input Fields */
+.input {
+    background-color: transparent;
+    padding: 15px;
+    width: 100%; /* Take full width of the parent container */
+    border: 2px solid white;
+    border-radius: 5px;
+    color: white;
+    font-size: 1em;
+  }
+  
+  .input::placeholder {
+    color: rgba(255, 255, 255, 0.7); /* Semi-transparent white for placeholder */
+  }
+  
+  .input:focus {
+    outline: none;
+    border-color: red; /* Red border when focused */
+    box-shadow: 0 0 5px red; /* Red glow */
+    background-color: transparent;
+    color: white;
+  }
