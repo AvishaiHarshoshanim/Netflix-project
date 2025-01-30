@@ -29,6 +29,13 @@
     max-width: 400px; 
   }
 
+  
+  .light-mode .error-message {
+    color: #007bff;
+    background-color: #fff5f5; 
+    border: 1px solid #007bff; 
+}
+
   .search-background {
     position: fixed;
     top: 0;

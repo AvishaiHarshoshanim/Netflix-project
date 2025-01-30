@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"; 
-import Header from "../HomePage/components/Header";
 import MovieItem from "../HomePage/components/MovieItem";
 import "./SearchPage.css"; 
 
@@ -36,7 +35,6 @@ const SearchPage = ({userId}) => {
 
   return (
     <div>
-      <Header />
       <div className="search-background">
         <img src="/images/netflix-like_background.webp" alt="Background" className="background-image" />
       </div>

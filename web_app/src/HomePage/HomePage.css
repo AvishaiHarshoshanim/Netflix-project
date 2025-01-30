@@ -1,7 +1,6 @@
 .categories-section {
     margin-top: 0;
-    padding: 20px;
-    background-color: #141414; 
+    padding: 20px; 
   }
   
   .category-block {
@@ -22,5 +21,14 @@
     overflow-x: auto; 
     padding: 10px 0;
   }
+
+  .light-mode .categories-section {
+    background-color: #1b4d3e; /* ירוק כהה במצב Light Mode */
+}
+
+.dark-mode .categories-section {
+    background-color: #141414; /* שחור במצב Dark Mode (נשאר כמו שהיה) */
+}
+
   
   

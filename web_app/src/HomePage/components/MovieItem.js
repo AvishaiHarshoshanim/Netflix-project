@@ -10,7 +10,7 @@ const MovieItem = ({ movie, userId }) => {
       <li className="movie-item" onClick={() => setIsModalOpen(true)}>
         <div className="movie-container">
           <img
-            src={movie.imageURL || "/images/default-movie.jpg"}
+            src={movie.imageURL ? movie.imageURL : "/images/default image for film.webp"}
             alt={movie.movieName}
             className="movie-image"
           />
