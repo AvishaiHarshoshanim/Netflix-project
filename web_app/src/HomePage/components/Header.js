@@ -2,12 +2,14 @@ import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
 
-const Header = ({ toggleTheme, theme }) => {
-
+const Header = ({ toggleTheme, theme, userId }) => {
   const navigate = useNavigate();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const searchInputRef = useRef(null);
+
+  const adminId = "67976958346fafd6e5653e5b";  // Defining the manager's id
+  const isAdmin = userId === adminId;
 
   const toggleSearch = () => {
     setIsSearchOpen((prev) => !prev);
@@ -50,18 +52,21 @@ const Header = ({ toggleTheme, theme }) => {
             />
           </div>
         )}
+
+        {/* button that will only be shown to the administrator */}
+        {isAdmin && (
+          <span className="header-link admin-link" onClick={() => handleNavigation("/admin")}>ADMIN PAGE</span>
+        )}
       </div>
 
 
-<button className="theme-toggle-btn" onClick={toggleTheme}>
-  {theme === "light-mode" ? "🌙 Dark Mode" : "☀️ Light Mode"}
-</button>
+      <button className="theme-toggle-btn" onClick={toggleTheme}>
+        {theme === "light-mode" ? "🌙 Dark Mode" : "☀️ Light Mode"}
+      </button>
 
-<button className="logout-btn" onClick={() => alert("Logged out!")}>
-  LOGOUT
-</button>
-</div>
-);
+      <button className="logout-btn" onClick={() => alert("Logged out!")}>LOGOUT</button>
+    </div>
+  );
 };
 
 export default Header;

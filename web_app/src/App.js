@@ -27,7 +27,7 @@ function App() {
   return (
     <Router>
       <div className={`App ${theme}`}>
-      <Header toggleTheme={toggleTheme} theme={theme} />
+      <Header toggleTheme={toggleTheme} theme={theme} userId={userId} />
         <Routes>
         <Route path="/" element={<>
             <HomePage userId={userId}/>
