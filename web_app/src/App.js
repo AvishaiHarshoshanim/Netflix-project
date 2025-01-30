@@ -5,12 +5,13 @@ import AdminPage from "./AdminPage/Page";
 import SearchPage from "./SearchPage/SearchPage";
 import MoviesPage from "./MoviesPage/MoviesPage";
 import Header from "./HomePage/components/Header";
+import MovieDetails from "./MovieInfo/Components/MovieDetailsPopup";
+import MovieShow from "./MovieInfo/Components/MovieShow";
 import './App.css';
 
 function App() {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light-mode");
   
-
   const toggleTheme = () => {
     const newTheme = theme === "light-mode" ? "dark-mode" : "light-mode";
     setTheme(newTheme);
@@ -20,15 +21,22 @@ function App() {
   useEffect(() => {
     document.body.className = theme;
   }, [theme]);
+  
+  const userId = "679a3db25f4cedde9d4d1742";                                 // נצטרך פה לקלוט את הת.ז. של המשתמש שנכנס למערכת
 
   return (
     <Router>
       <div className={`App ${theme}`}>
       <Header toggleTheme={toggleTheme} theme={theme} />
         <Routes>
-        <Route path="/" element={<><HomePage /><AdminPage /></>} />
-          <Route path="/search/:query" element={<SearchPage />} />
-          <Route path="/movies" element={<MoviesPage />} />
+        <Route path="/" element={<>
+            <HomePage userId={userId}/>
+            <AdminPage userId={userId}/>
+          </>} />
+          <Route path="/search/:query" element={<SearchPage userId={userId}/>} />
+          <Route path="/movies" element={<MoviesPage userId={userId}/>} />
+          <Route path="/movies/:movieId" element={<MovieDetails userId={userId} />}/>
+          <Route path="/watch" element={<MovieShow />} />
         </Routes>
       </div>
     </Router>

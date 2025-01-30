@@ -186,7 +186,7 @@ async function getRecommendationsFromServer(userId, movieId) {
                 const convertedMovies = await Promise.all(
                     movieIdsForRecServer.map(async (idForRec) => {
                         const movie = await Movie.findOne({ movieIdForRecServer: idForRec });
-                        return movie ? movie._id.toString() : null;
+                        return movie ? movie : null;
                     })
                 );
 
