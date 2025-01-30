@@ -39,10 +39,22 @@
     text-decoration: none;
     transition: color 0.3s ease;
   }
+
+.dark-mode .header-link:hover {
+  color: #e50914;
+}
+
+.light-mode .header-link {
+  color: #007bff;
+}
+
+.light-mode .header-link:hover {
+  color: #0056b3;
+}
+
+
+
   
-  .header-link:hover {
-    color: #e50914; 
-  }
   
   .logout-btn {
     border: none;
