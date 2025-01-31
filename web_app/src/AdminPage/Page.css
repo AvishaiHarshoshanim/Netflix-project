@@ -32,7 +32,18 @@
   background-color: rgba(255, 255, 255, 0.2); /* Brighter background on hover */
 }
 
-.admin-page-header {
+.light-mode .admin-page-header {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(255, 255, 255);
+  text-align: center;
+  padding: 40px 20px;
+}
+.dark-mode .admin-page-header {
   position: relative;
   width: 100%;
   height: 100vh;
@@ -68,20 +79,6 @@
   font: 3.5em;
 }
 
-.logo {
-  background-image: url('./Netflix_Logo.png');
-  background-size: contain; /* To fit the image to the div */
-  background-repeat: no-repeat;
-  width: 200px; /* Set the size you need */
-  height: 200px; /* Set the size you need */
-
-  /* Positioning the logo in the top left corner */
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 10; /* Optional, to ensure it stays on top of other content */
-}
-
 
 .managment-list h2 {
   color: #ffffff;
@@ -108,7 +105,7 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.btn-primary {
+.actions .btn-primary {
   background-color: #e50914;
   border: none;
 }
@@ -238,3 +235,13 @@
   font-size: 14px; /* Ensure text size is appropriate */
   line-height: 1.2; /* Improve vertical text alignment */
 }
+
+.actions .btn-edit {
+background: #006bde;
+color: white;
+}
+
+.actions .btn-edit:hover {
+  background: #0259b6;
+  color: white;
+  }

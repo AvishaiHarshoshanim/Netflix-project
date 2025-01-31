@@ -8,7 +8,6 @@ const HomePage = ({userId}) => {
   const [categoriesWithMovies, setCategoriesWithMovies] = useState([]);
 
   useEffect(() => {
-    console.log(userId)
     fetch("http://localhost:5000/api/movies", {
       method: "GET",
       headers: {
