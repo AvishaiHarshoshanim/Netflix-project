@@ -13,7 +13,7 @@ const MovieShow = () => {
 
   return (
     <div className="movie-show">
-      <button className="close-button" onClick={() => navigate(-1)}>Close</button>
+      <button className="close-movie-button" onClick={() => navigate(-1)}>Close</button>
       <video className="video-player" controls autoPlay>
         <source src={videoURL} type="video/mp4" />
         Your browser does not support the video tag.

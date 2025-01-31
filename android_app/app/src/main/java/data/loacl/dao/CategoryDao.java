@@ -1,4 +1,4 @@
-package AdminPagePackage.categories;
+package data.loacl.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -8,6 +8,8 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import java.util.List;
+
+import AdminPagePackage.categories.Category;
 
 @Dao
 public interface CategoryDao {

@@ -1,9 +1,9 @@
 package AdminPagePackage.movies;
 import AdminPagePackage.categories.Category;
-import AdminPagePackage.categories.CategoryRepository;
+import data.repositories.CategoryRepository;
+import data.repositories.MovieRepository;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;

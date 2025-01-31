@@ -44,7 +44,6 @@ const AdminPage = () => {
   return (
     <div>
       <header className="admin-page-header">
-      <div className="logo"></div>
       <h1 className="text-center mb-4">Admin Page</h1>
         <ul className='managment-list'>
           <li className='managment-block'>

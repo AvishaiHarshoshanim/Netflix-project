@@ -9,6 +9,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
+import data.repositories.CategoryRepository;
+
 public class CategoryViewModel extends AndroidViewModel {
     private final CategoryRepository categoryRepository;
     private final MutableLiveData<List<Category>> allCategories;
