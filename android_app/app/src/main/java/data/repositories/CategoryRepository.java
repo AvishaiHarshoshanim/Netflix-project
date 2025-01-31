@@ -1,4 +1,4 @@
-package AdminPagePackage.categories;
+package data.repositories;
 
 import android.app.Application;
 import android.os.Handler;
@@ -10,8 +10,11 @@ import androidx.room.Room;
 
 import java.util.List;
 
-import AdminPagePackage.AppDB;
-import AdminPagePackage.WebServiceAPI;
+import AdminPagePackage.categories.Category;
+import data.loacl.AppDB;
+import data.remote.WebServiceAPI;
+
+import data.loacl.dao.CategoryDao;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

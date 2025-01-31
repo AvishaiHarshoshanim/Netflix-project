@@ -1,4 +1,4 @@
-package AdminPagePackage;
+package features.adminPage;
 
 import android.os.Bundle;
 import android.widget.Button;

@@ -1,4 +1,4 @@
-package AdminPagePackage.movies;
+package data.repositories;
 
 import android.app.Application;
 import android.os.Handler;
@@ -18,10 +18,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import AdminPagePackage.AppDB;
-import AdminPagePackage.WebServiceAPI;
+import AdminPagePackage.movies.Movie;
+import data.loacl.AppDB;
+import data.remote.WebServiceAPI;
 import AdminPagePackage.categories.Category;
-import AdminPagePackage.categories.CategoryDao;
+import data.loacl.dao.CategoryDao;
+import data.loacl.dao.MovieDao;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
