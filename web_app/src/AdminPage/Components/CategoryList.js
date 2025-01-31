@@ -44,7 +44,7 @@ const CategoryList = ({ categories, editingCategory, setEditingCategory, updateC
                             </div>
                             <div className='actions'>
                                 <button
-                                    className="btn btn-primary btn-sm ms-2"
+                                    className="btn btn-edit btn-sm ms-2"
                                     onClick={() => setEditingCategory(category)}
                                 >
                                     Edit

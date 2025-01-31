@@ -145,7 +145,7 @@ const MovieList = ({ movies, categories, editingMovie, setEditingMovie, deleteMo
 
                             <div className="actions">
                                 <button
-                                    className="btn btn-primary btn-sm ms-2"
+                                    className="btn btn-edit btn-sm ms-2"
                                     onClick={() => setEditingMovie(movie)}
                                 >
                                     Edit

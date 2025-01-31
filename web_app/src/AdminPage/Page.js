@@ -44,13 +44,12 @@ const AdminPage = () => {
   return (
     <div>
       <header className="admin-page-header">
-      <h1 className="text-center mb-4">Admin Page</h1>
         <ul className='managment-list'>
           <li className='managment-block'>
-          <CategoryManager categories={categories} setCategories={setCategories} movies={movies} setMovies={setMovies}/>
+            <CategoryManager categories={categories} setCategories={setCategories} movies={movies} setMovies={setMovies} />
           </li>
           <li className='managment-block'>
-          <MovieManager categories={categories} movies={movies} setMovies={setMovies} />
+            <MovieManager categories={categories} movies={movies} setMovies={setMovies} />
           </li>
         </ul>
       </header>

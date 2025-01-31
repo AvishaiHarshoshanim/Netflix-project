@@ -80,7 +80,7 @@ const MovieDetailsPopup = ({ movieId, userId, onClose }) => {
   useEffect(() => {
     fetchRecoMovies();
     fetchMovieDetails();
-  }, [movieId]);
+  });
 
   if (loading) return <div className="custom-modal"><div className="modal-content">Loading...</div></div>;
   if (error) return <div className="custom-modal"><div className="modal-content">Error: {error}</div></div>;

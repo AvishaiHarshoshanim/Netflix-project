@@ -8,7 +8,7 @@ const Header = ({ toggleTheme, theme, userId }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const searchInputRef = useRef(null);
 
-  const adminId = "67976958346fafd6e5653e5b";  // Defining the manager's id
+  const adminId = "679a3db25f4cedde9d4d1742";  // Defining the manager's id
   const isAdmin = userId === adminId;
 
   const toggleSearch = () => {
@@ -34,6 +34,7 @@ const Header = ({ toggleTheme, theme, userId }) => {
 
   return (
     <div className="header">
+      <div className="logo" src="./NETBLIX.png"> </div>
       <div className="header-links">
         <span className="header-link" onClick={() => handleNavigation("/")}>HOME</span>
         <span className="header-link" onClick={() => handleNavigation("/movies")}>MOVIES</span>
