@@ -23,12 +23,9 @@
   }
 
   .light-mode .categories-section {
-    background-color: #1b4d3e; /* ירוק כהה במצב Light Mode */
+    background-color: #1b4d3e; 
 }
 
 .dark-mode .categories-section {
-    background-color: #141414; /* שחור במצב Dark Mode (נשאר כמו שהיה) */
+    background-color: #141414; 
 }
-
-  
-  
