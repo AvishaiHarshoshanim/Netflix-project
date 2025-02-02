@@ -1,5 +1,6 @@
 const tokenService = require("../services/token");
-
+const jwt = require("jsonwebtoken");
+const key = require("../config").secretKey;
 // Function to create a new token
 const generateToken = async (req, res) => {
   const userName = req.body.userName; // extract the values ​​of userName from the body of the request
@@ -19,5 +20,22 @@ if (!userName || !password) {
     res.status(401).json({ error: "Invalid username or password" });
   }
 };
+const processLogin = (req, res) => {
+  const { username, password } = req.body;
 
-module.exports = { generateToken };
+  user = getUserByName;
+  if(getUserByName) {
+      return res.status(404).json({ errors: ['User not found']}) }
+  }
+  if ( user.password === password) {
+    const token = jwt.sign({ username }, key, { expiresIn: "1h" }); // Generate a token
+    return res.status(201).json({ token });
+  } else {
+    return res.status(404).json({ error: "Invalid username and/or password" });
+  }
+
+const index = (req, res) => {
+  res.json({ data: "secret data", user: req.user.username });
+};
+
+module.exports = { generateToken, processLogin };

@@ -3,6 +3,6 @@ const router = express.Router();
 const tokenController = require('../controllers/token');
 
 // Route for generating a token for user authentication
-router.post('/', tokenController.generateToken);
-
+router.post('/', tokenController.processLogin);
+router.get("/", isLoggedIn, index);
 module.exports = router;

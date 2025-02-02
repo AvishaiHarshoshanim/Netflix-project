@@ -2,11 +2,12 @@ const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
 const userService = require('../services/users');
+const jwt = require("jsonwebtoken");
+const key = require("../config").secretKey;
 
-// Create a user with the required fields
 const createUser = async (req, res) => {
     try {
-        const fields = ['userName', 'Name', 'password'];
+        const fields = ['userName', 'name', 'password'];
         const missing = [];
 
         // Check for missing fields
@@ -21,29 +22,27 @@ const createUser = async (req, res) => {
                 errors: [`The following field(s) are missing: ${missing.join(', ')}`],
             });
         }
-    //checks if there is a pictuer if so pictuer is file name of the pictuer
-    const picture = req.file ? req.file.filename : null;
+
+        const picture = req.file ? req.file.filename : null;
 
         // Try to create the user
         const user = await userService.createUser(
             req.body.userName,
-            req.body.Name,
-            picture ? `/uploads/${picture}` : undefined, // Set picture path
+            req.body.name,
+            picture ? `/uploads/${picture}` : undefined,
             req.body.password
         );
 
         if (user) {
-            // If user is created successfully
             return res.status(201).json(user);
         } else {
-            // If username or email is already taken
             return res.status(400).json({
-                errors: ['Username is already taken or this email is already in the system.'],
+                errors: ['Username is already taken'],
             });
         }
     } catch (error) {
-        console.error('Error in createUser:', error);
-        return res.status(500).json({ error: 'Internal server error' });
+        console.error('Error in createUser:', error.message); // Log the actual error message
+        return res.status(500).json({ error: `Internal server error: ${error.message}` });
     }
 };
 
@@ -67,6 +66,26 @@ const getUser = async (req, res) => {
         console.error('Error in getUser:', error);
         return res.status(500).json({ error: 'Internal server error' });
     }
-};
 
-module.exports = { createUser, getUser };
+    const index = (req, res) => {
+        return res.json({ data: "secret data", user: req.user.username });
+      }
+      const isLoggedIn = (req, res, next) => {
+        if (req.headers.authorization) {
+        const token = req.headers.authorization.split(" ")[1];
+        try {
+        const data = jwt.verify(token, key);
+        console.log('The logged in user is: ' + data.username);
+        return next()
+        } catch (err) {
+        return res.status(401).send("Invalid Token");
+        }
+        }
+        else
+        return res.status(403).send('Token required');
+        }
+              
+    };  
+
+
+module.exports = { createUser, getUser, isLoggedIn };

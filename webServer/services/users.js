@@ -1,5 +1,7 @@
 const Users = require('../models/users');
 const Counter = require('../models/counters');
+const mongoose = require('mongoose');
+
 
 // function to generate a unique identifier
 const getNextIdForRecServer = async () => {
@@ -12,7 +14,7 @@ const getNextIdForRecServer = async () => {
 };
 
 // Function that creates a new user
-const createUser = async (userName, firstName, lastName, picture, email, password) => {
+const createUser = async (userName, name, picture, password) => {
     const idForRecServer = await getNextIdForRecServer();  
   
     // Check if a user with the given userName already exists
@@ -20,12 +22,9 @@ const createUser = async (userName, firstName, lastName, picture, email, passwor
     if (existingUser) {
         return null;
     }
-    if(await Users.findOne({ email })) {
-        return null;
-    }
 
     // Create a new user
-    const user = new Users({userName, firstName, lastName, email, password, idForRecServer});
+    const user = new Users({userName, name, password, idForRecServer});
 
     // Set the picture if provided
     if (picture) {
@@ -44,6 +43,10 @@ const getUserById = async (id) => {
 // Function to fetch all users
 const getUsers = async () => {
     return await Users.find({});
+};
+getUserByName = async (userName) => {
+    const user = await Users.findById({userName}).select();
+    return user;
 };
 
 module.exports = { createUser, getUserById, getUsers };

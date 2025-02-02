@@ -1,131 +1,112 @@
 import React, { useState } from "react";
+import Password from "./Component/Password";
+import ProfilePic from "./Component/ProfilePic";
+import axios from "axios";
 import "./SignUp.css";
 
 function SignUp() {
   const [inputs, setInputs] = useState({
+    userName: "",
+    name: "",
     password: "",
     confirmPassword: "",
+    profilePicture: null,
   });
 
-  const [validation, setValidation] = useState({
-    hasLowercase: false,
-    hasUppercase: false,
-    hasNumber: false,
-    hasMinLength: false,
-    confirmPasswordValid: null,
-  });
-
-  const [showValidationBox, setShowValidationBox] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-
     setInputs((prevInputs) => ({
       ...prevInputs,
       [name]: value,
     }));
-
-    if (name === "password") {
-      setValidation((prevValidation) => ({
-        ...prevValidation,
-        hasLowercase: /[a-z]/.test(value),
-        hasUppercase: /[A-Z]/.test(value),
-        hasNumber: /[0-9]/.test(value),
-        hasMinLength: value.length >= 8,
-      }));
-
-      // Revalidate confirm password if already filled
-      if (inputs.confirmPassword) {
-        setValidation((prevValidation) => ({
-          ...prevValidation,
-          confirmPasswordValid: inputs.confirmPassword === value,
-        }));
-      }
-    }
-
-    if (name === "confirmPassword") {
-      setValidation((prevValidation) => ({
-        ...prevValidation,
-        confirmPasswordValid: value === inputs.password,
-      }));
-    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-    if (
-      !validation.hasLowercase ||
-      !validation.hasUppercase ||
-      !validation.hasNumber ||
-      !validation.hasMinLength ||
-      !validation.confirmPasswordValid
-    ) {
+    if (passwordError || confirmPasswordError) {
       alert("Please fix validation errors before submitting.");
       return;
     }
 
-    alert("Form submitted successfully!");
-  };
+    const formDataToSend = new FormData();
+    formDataToSend.append("userName", inputs.userName);
+    formDataToSend.append("name", inputs.name);
+    formDataToSend.append("password", inputs.password);
 
-  // Check if password is fully valid
-  const isPasswordValid =
-    validation.hasLowercase &&
-    validation.hasUppercase &&
-    validation.hasNumber &&
-    validation.hasMinLength;
+    if (inputs.profilePicture) {
+      formDataToSend.append("profilePicture", inputs.profilePicture);
+    }
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/users", formDataToSend);
+      console.log("User created successfully:", response.data);
+      alert("User created successfully!");
+    } catch (err) {
+      if (err.response) {
+        console.error("Error creating user:", err.response.data);
+        alert(err.response.data.errors ? err.response.data.errors.join(", ") : "Failed to create user");
+      } else {
+        console.error("Network error:", err);
+        alert("An error occurred. Please try again.");
+      }
+    }
+  };
 
   return (
     <div className="home-page-background">
       <div className="block">
         <form onSubmit={handleSubmit}>
-          {/* Password */}
-          <div className="form-group mb-3">
-            <label htmlFor="password">Password</label>
+          <h2>Sign Up</h2>
+
+          {/* Username Input */}
+          <div className="form-group mb-5">
             <input
-              type="password"
-              id="password"
-              className={`form-control ${isPasswordValid ? "is-valid" : "is-invalid"}`}
-              placeholder="Enter your password"
-              name="password"
-              value={inputs.password}
+              type="text"
+              id="userName"
+              className="form-control"
+              placeholder="Enter username"
+              name="userName"
+              value={inputs.userName}
               onChange={handleChange}
-              onFocus={() => setShowValidationBox(true)}
-              onBlur={() => setShowValidationBox(false)}
               required
             />
           </div>
 
-          {/* Show validation box only when password field is focused and invalid */}
-          {showValidationBox && !isPasswordValid && (
-            <div id="password-message" className="password-validation-box">
-              <p>Password must contain: a lowercase letter, an uppercase letter,a number, minimum 8 characters</p>
-            </div>
-          )}
-
-          {/* Confirm Password */}
-          <div className="form-group mb-3">
-            <label htmlFor="confirmPassword">Confirm Password</label>
+          {/* Name Input */}
+          <div className="form-group mb-5">
             <input
-              type="password"
-              id="confirmPassword"
-              className={`form-control ${
-                validation.confirmPasswordValid === null
-                  ? ""
-                  : validation.confirmPasswordValid
-                  ? "is-valid"
-                  : "is-invalid"
-              }`}
-              placeholder="Confirm Password"
-              name="confirmPassword"
-              value={inputs.confirmPassword}
+              type="text"
+              id="name"
+              className="form-control"
+              placeholder="Enter name"
+              name="name"
+              value={inputs.name}
               onChange={handleChange}
               required
             />
-            {validation.confirmPasswordValid === false && (
-              <div className="invalid-feedback">Passwords do not match.</div>
-            )}
           </div>
+
+          {/* Password Component */}
+          <Password
+            password={inputs.password}
+            setPassword={(value) => setInputs((prev) => ({ ...prev, password: value }))}
+            confirmPassword={inputs.confirmPassword}
+            setConfirmPassword={(value) => setInputs((prev) => ({ ...prev, confirmPassword: value }))}
+            passwordError={passwordError}
+            setPasswordError={setPasswordError}
+            confirmPasswordError={confirmPasswordError}
+            setConfirmPasswordError={setConfirmPasswordError}
+          />
+
+          {/* Profile Picture Component */}
+          <ProfilePic
+            profilePicture={inputs.profilePicture}
+            setProfilePicture={(file) => setInputs((prev) => ({ ...prev, profilePicture: file }))}
+          />
 
           {/* Submit Button */}
           <button type="submit" className="btn btn-danger mt-3">

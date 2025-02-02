@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./SignIn.css";
-
+import axios from "axios";
 function SignIn() {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
-    email: "",
+    userName: "",
     password: "",
   });
 
@@ -16,8 +16,19 @@ function SignIn() {
 
   const handleSubmit = (event) => {
     event.preventDefault(); // Prevents page reload
-    console.log(inputs);    // Logs form inputs
-  };
+    const response = axios.post("http://localhost:5000/api/Tokens", {
+      username,
+      password,
+    });
+
+    const { token } = response.data;
+
+    // Save token to localStorage
+    localStorage.setItem("jwtToken", token);
+
+    setMessage("Login successful! Token saved to localStorage.");
+    setError("");
+  }; 
 
   return (
     <div className="home-page-background">
@@ -26,12 +37,11 @@ function SignIn() {
           <div className="form-group mb-5">
             <p>Sign In</p>
             <input
-              type="email"
-              name="email" // Added
+              type="userName"
+              name="userName" // Added
               className="form-control input"
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-              placeholder="Enter email"
+              id="exampleInputUserName1"
+              placeholder="Enter user name"
               onChange={handleChange}
             />
           </div>
