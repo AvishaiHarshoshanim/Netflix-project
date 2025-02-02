@@ -86,13 +86,20 @@ const createMovie = async (movieName, categories, director, actors, imageName, i
 };
 
 const getMovieById = async (movieId) => {
-    return await Movie.findById(movieId).select('-movieIdForRecServer').populate('categories');
+    const movie = await Movie.findById(movieId)
+        .select('-movieIdForRecServer')
+        .populate('categories');
+
+    // Convert categories to an array of strings
+    const transformedMovie = movie.toObject();
+    transformedMovie.categories = transformedMovie.categories.map(cat => cat.name); 
+
+    return transformedMovie;
 };
+
 const replaceMovie = async (movieId, replace) => {
     return await Movie.findByIdAndUpdate(movieId, replace, { new: true }).populate('categories');
 };
-
-
 
 async function deleteMovieFromRecServer(userId, movieId) {
     try {

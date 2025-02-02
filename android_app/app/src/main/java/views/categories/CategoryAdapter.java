@@ -1,4 +1,4 @@
-package AdminPagePackage.categories;
+package views.categories;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -1,4 +1,4 @@
-package AdminPagePackage.movies;
+package views.movies;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;

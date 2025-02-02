@@ -1,4 +1,4 @@
-package AdminPagePackage.movies;
+package views.movies;
 
 import androidx.room.TypeConverter;
 

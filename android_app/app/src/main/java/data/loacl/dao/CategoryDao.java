@@ -9,7 +9,7 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import AdminPagePackage.categories.Category;
+import views.categories.Category;
 
 @Dao
 public interface CategoryDao {

@@ -1,4 +1,4 @@
-package AdminPagePackage.movies;
+package views.movies;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,7 +13,7 @@ import com.example.android_app.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import AdminPagePackage.categories.Category;
+import views.categories.Category;
 
 public class SpinnerAdapter extends BaseAdapter {
 

@@ -1,4 +1,4 @@
-package AdminPagePackage.categories;
+package views.categories;
 
 import android.app.Application;
 

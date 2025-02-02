@@ -1,5 +1,5 @@
-package AdminPagePackage.movies;
-import AdminPagePackage.categories.Category;
+package views.movies;
+import views.categories.Category;
 import data.repositories.CategoryRepository;
 import data.repositories.MovieRepository;
 
@@ -17,7 +17,6 @@ public class MovieViewModel extends AndroidViewModel {
     private CategoryRepository categoryRepository;
     private final MutableLiveData<List<Movie>> allMovies;
     private final MutableLiveData<List<Category>> allCategories;
-
 
     public MovieViewModel(@NonNull Application application) {
         super(application);
@@ -64,5 +63,21 @@ public class MovieViewModel extends AndroidViewModel {
     public void refreshMovies() {
         // Update the LiveData
         movieRepository.fetchAndStoreMovies(allMovies::postValue);
+    }
+
+    public void fetchMovieDetails(String movieId) {
+        movieRepository.fetchMovieDetails(movieId, movie -> {
+            List<Movie> currentMovies = allMovies.getValue();
+            if (currentMovies != null) {
+                // Find and update the movie in the list
+                for (int i = 0; i < currentMovies.size(); i++) {
+                    if (currentMovies.get(i).get_id().equals(movieId)) {
+                        currentMovies.set(i, movie); // Update the movie in the list
+                        allMovies.postValue(currentMovies); // Notify observers with updated list
+                        break;
+                    }
+                }
+            }
+        });
     }
 }

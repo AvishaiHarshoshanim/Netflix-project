@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        // David and lior! replace "features.adminPage.AdminPage" to your page
+        // David and lior! replace "AdminPage" to your page
         Intent intent = new Intent(MainActivity.this, AdminPage.class);
         startActivity(intent);
 

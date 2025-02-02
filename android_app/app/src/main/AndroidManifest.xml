@@ -22,6 +22,9 @@
             android:name="features.adminPage.AdminPage"
             android:exported="false" />
         <activity
+            android:name="features.MovieDetails.MovieDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
