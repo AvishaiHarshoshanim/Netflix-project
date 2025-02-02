@@ -7,9 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.android_app.R;
 
-import AdminPagePackage.categories.CategoryManagerFragment;
-import AdminPagePackage.movies.MovieManagerFragment;
-
 public class AdminPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {

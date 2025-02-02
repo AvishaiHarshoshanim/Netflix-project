@@ -117,7 +117,6 @@ const createMovie = async (req, res) => {
             if (jsonedMovieData.categories.length !== 0){
                 validCategories = jsonedMovieData.categories.filter(category => category.trim().length > 0);
             }
-
             if (validCategories.length === 0) {
                 let noCategory = await mongoose.model('Category').findOne({ name: 'no_category' }).exec();
                 if (!noCategory) {
@@ -128,6 +127,18 @@ const createMovie = async (req, res) => {
                 }
                 validCategories = [noCategory.name]
             }
+        } else {
+            let noCategory = await mongoose.model('Category').findOne({ name: 'no_category' }).exec();
+                if (!noCategory) {
+                    noCategory = new mongoose.model('Category')({
+                        name: 'no_category',
+                    });
+                    await noCategory.save();
+                }
+                validCategories = [noCategory.name]
+        }
+
+            
 
             var imageName =  null;
             var imageURL = null;
@@ -161,10 +172,6 @@ const createMovie = async (req, res) => {
             } catch (error) {
                 return res.status(400).json({ error: error.message });
             }
-        }
-
-        // If we get here, something went wrong with categories
-        return res.status(400).json({ error: 'Invalid categories format' });
     } catch (error) {
         console.error('Error in createMovie:', error);
         return res.status(500).json({ error: 'Internal server error' });

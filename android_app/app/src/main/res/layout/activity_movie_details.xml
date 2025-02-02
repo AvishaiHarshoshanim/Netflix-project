@@ -1,0 +1,44 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/movie_poster"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"/>
+
+    <TextView
+        android:id="@+id/movie_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/movie_director"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Director:"/>
+
+    <TextView
+        android:id="@+id/movie_actors"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Actors:"/>
+
+    <TextView
+        android:id="@+id/movie_categories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Categories:"/>
+
+    <VideoView
+        android:id="@+id/movie_video"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"/>
+
+</LinearLayout>

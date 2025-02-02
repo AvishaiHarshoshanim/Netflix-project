@@ -9,7 +9,7 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import AdminPagePackage.movies.Movie;
+import views.movies.Movie;
 
 @Dao
 public interface MovieDao {

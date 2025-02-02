@@ -1,4 +1,4 @@
-package AdminPagePackage.categories;
+package features.adminPage;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +16,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.android_app.R;
+
+import views.categories.Category;
+import views.categories.CategoryAdapter;
+import views.categories.CategoryViewModel;
 
 public class CategoryManagerFragment extends Fragment implements CategoryAdapter.OnCategoryActionListener {
 

@@ -1,8 +1,7 @@
-package AdminPagePackage.movies;
+package views.movies;
 
 import android.content.Context;
-import android.net.Uri;
-import android.util.Log;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import android.widget.Button;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +17,8 @@ import com.bumptech.glide.Glide;
 import com.example.android_app.R;
 
 import java.util.List;
+
+import features.MovieDetails.MovieDetailsActivity;
 
 public class MovieAdapter extends ArrayAdapter<Movie> {
 
@@ -101,6 +101,12 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
                 if (actionListener != null) {
                     actionListener.onDeleteMovie(movie);
                 }
+            });
+
+            convertView.setOnClickListener(v -> {
+                Intent intent = new Intent(getContext(), MovieDetailsActivity.class);
+                intent.putExtra("MOVIE_ID", movie.get_id());
+                getContext().startActivity(intent);
             });
         }
 

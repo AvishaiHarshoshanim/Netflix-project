@@ -4,24 +4,19 @@ import android.app.Application;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.room.Room;
-
 import com.google.gson.Gson;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import AdminPagePackage.movies.Movie;
+import views.movies.Movie;
 import data.loacl.AppDB;
 import data.remote.WebServiceAPI;
-import AdminPagePackage.categories.Category;
+import views.categories.Category;
 import data.loacl.dao.CategoryDao;
 import data.loacl.dao.MovieDao;
 import okhttp3.MediaType;
@@ -56,6 +51,10 @@ public class MovieRepository {
 
     public interface MovieExistsCallback {
         void onMovieChecked(boolean exists);
+    }
+
+    public interface MovieDetailsCallback {
+        void onMovieFetched(Movie movie);
     }
 
     public MovieRepository(Application application) {
@@ -269,5 +268,24 @@ public class MovieRepository {
         return null; // Return null if no category with the given ID is found
     }
 
+    public void fetchMovieDetails(String movieId, MovieDetailsCallback callback) {
+        webServiceAPI.getMovieById(movieId).enqueue(new Callback<Movie>() {
+            @Override
+            public void onResponse(Call<Movie> call, Response<Movie> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    new Thread(() -> {
+                        Movie movieToEdit = movieDao.getMovieById(response.body().get_id()); // Fetch the existing movie
+                        movieDao.updateMovie(movieToEdit, response.body()); // Update it with new data
+                        callback.onMovieFetched(response.body()); // Notify ViewModel
+                    }).start();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Movie> call, Throwable t) {
+                Log.e("MovieRepository", "Failed to fetch movie details", t);
+            }
+        });
+    }
 }
 

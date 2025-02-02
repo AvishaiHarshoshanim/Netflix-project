@@ -10,7 +10,7 @@ import androidx.room.Room;
 
 import java.util.List;
 
-import AdminPagePackage.categories.Category;
+import views.categories.Category;
 import data.loacl.AppDB;
 import data.remote.WebServiceAPI;
 

@@ -1,7 +1,6 @@
-package AdminPagePackage.movies;
+package features.adminPage;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -11,44 +10,38 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.database.Cursor;
-
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
 import android.Manifest;
 import com.example.android_app.R;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
+import views.movies.Movie;
+import views.movies.MovieAdapter;
+import views.movies.MovieViewModel;
+import views.movies.SpinnerAdapter;
 
 public class MovieManagerFragment extends Fragment implements MovieAdapter.OnMovieActionListener {
 
     private MovieViewModel movieViewModel;
     private EditText movieNameInput;
-    private EditText videoNameInput;
     private EditText directorInput;
     private EditText actorsInput;
     private Spinner categorySpinner;
@@ -59,7 +52,6 @@ public class MovieManagerFragment extends Fragment implements MovieAdapter.OnMov
     private File videoFile;
     private String imageName;
     private String videoName;
-
     private Button addMovieButton;
     private Button updateMovieButton;
     private Button cancelEditButton;
@@ -131,9 +123,6 @@ public class MovieManagerFragment extends Fragment implements MovieAdapter.OnMov
                     Toast.makeText(getContext(), "No video selected", Toast.LENGTH_SHORT).show();
                 }
             });
-    // Permission request code
-    private static final int REQUEST_CODE_READ_IMAGE = 100;
-    private static final int REQUEST_CODE_READ_VIDEO = 200;
 
     @Nullable
     @Override
@@ -326,32 +315,6 @@ public class MovieManagerFragment extends Fragment implements MovieAdapter.OnMov
         }
         return null;
     }
-
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-//                                           @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//
-//        if (requestCode == REQUEST_CODE_READ_IMAGE) {
-//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                // Permission granted, proceed with file selection
-//                openImagePicker();
-//            } else {
-//                // Permission denied
-//                Toast.makeText(getContext(), "Permission denied to read your external storage", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//        if (requestCode == REQUEST_CODE_READ_VIDEO) {
-//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                // Permission granted, proceed with file selection
-//                openVideoPicker();
-//            } else {
-//                // Permission denied
-//                Toast.makeText(getContext(), "Permission denied to read your external storage", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
 
     @Override
     public void onEditMovie(Movie movie) {

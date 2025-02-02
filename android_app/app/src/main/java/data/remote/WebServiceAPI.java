@@ -1,7 +1,7 @@
 package data.remote;
 
-import AdminPagePackage.categories.Category;
-import AdminPagePackage.movies.Movie;
+import views.categories.Category;
+import views.movies.Movie;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
