@@ -1,5 +1,6 @@
 package data.remote;
 
+import retrofit2.http.Header;
 import views.categories.Category;
 import views.movies.Movie;
 import okhttp3.MultipartBody;
@@ -59,5 +60,11 @@ public interface WebServiceAPI {
     // Delete a movie by ID
     @DELETE("movies/{id}")
     Call<Void> deleteMovie(@Path("id") String _id);
+
+    @GET("movies/{id}/recommend")
+    Call<List<Movie>> getRecMovies(@Header("userId") String userId, @Path("id") int movieId);
+
+    @POST("movies/{id}/recommend")
+    Call<Void> updateRecServer(@Header("userId") String userId, @Path("id") int movieId);
 
 }

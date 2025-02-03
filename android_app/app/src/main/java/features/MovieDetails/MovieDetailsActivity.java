@@ -1,11 +1,9 @@
 package features.MovieDetails;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,12 +17,16 @@ import java.util.List;
 import views.movies.Movie;
 import views.movies.MovieViewModel;
 
+import android.content.Intent;
+import android.widget.Button;
+
 public class MovieDetailsActivity extends AppCompatActivity {
 
     private MovieViewModel movieViewModel;
     private ImageView moviePoster;
     private TextView movieName, movieDirector, movieActors, movieCategories;
-    private VideoView movieVideo;
+    private Button playVideoButton;
+    private String videoUrl;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,12 +38,16 @@ public class MovieDetailsActivity extends AppCompatActivity {
         movieDirector = findViewById(R.id.movie_director);
         movieActors = findViewById(R.id.movie_actors);
         movieCategories = findViewById(R.id.movie_categories);
-        movieVideo = findViewById(R.id.movie_video);
+        playVideoButton = findViewById(R.id.play_video_button);
 
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
 
         // Get movie ID from intent
         String movieId = getIntent().getStringExtra("MOVIE_ID");
+
+        //String userId = getIntent().getStringExtra("USER_ID");
+        String userId = "679a3db25f4cedde9d4d1742";
+
 
         if (movieId != null) {
             movieViewModel.fetchMovieDetails(movieId);
@@ -60,6 +66,16 @@ public class MovieDetailsActivity extends AppCompatActivity {
                     Log.e("MovieDetailsActivity", "Movies not found");
                 }
             });
+
+            // Handle Play Video button click
+            playVideoButton.setOnClickListener(v -> {
+                if (videoUrl != null && !videoUrl.isEmpty()) {
+                    Intent intent = new Intent(MovieDetailsActivity.this, MovieShowActivity.class);
+                    intent.putExtra("VIDEO_URL", videoUrl);
+                    startActivity(intent);
+                }
+            });
+
         }
     }
 
@@ -84,11 +100,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
             Glide.with(this).load(imageUrl).into(moviePoster);
         }
 
-        // Play movie video
-        String videoUrl = movie.getVideoURL() != null ? movie.getVideoURL().replace("localhost", "10.0.2.2") : "";
-        if (!videoUrl.isEmpty()) {
-            movieVideo.setVideoURI(Uri.parse(videoUrl));
-            movieVideo.start();
-        }
+        // Store video URL for later use
+        videoUrl = movie.getVideoURL() != null ? movie.getVideoURL().replace("localhost", "10.0.2.2") : "";
     }
 }
