@@ -1,5 +1,9 @@
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
+import HomePageUnregi from "./HomePageUnregi/Components/HomePageUnregi";
+import SignIn from "./SignIn/SignIn";
+import SignUp from "./SignUp/SignUp";
 import HomePage from "./HomePage/HomePage";
 import AdminPage from "./AdminPage/Page";
 import SearchPage from "./SearchPage/SearchPage";
@@ -22,13 +26,16 @@ function App() {
     document.body.className = theme;
   }, [theme]);
   
-  const userId = "679a3db25f4cedde9d4d1742";                                 // נצטרך פה לקלוט את הת.ז. של המשתמש שנכנס למערכת
+  const userId = "679a3db25f4cedde9d4d1742"; // נצטרך פה לקלוט את הת.ז. של המשתמש שנכנס למערכת
 
   return (
     <Router>
       <div className={`App ${theme}`}>
       <Header toggleTheme={toggleTheme} theme={theme} userId={userId} />
         <Routes>
+          <Route path="/" element={<HomePageUnregi />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route path="/" element={<><HomePage userId={userId}/></>} />
           <Route path="/search/:query" element={<SearchPage userId={userId}/>} />
           <Route path="/movies" element={<MoviesPage userId={userId}/>} />

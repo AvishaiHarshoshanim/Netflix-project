@@ -1,0 +1,14 @@
+.get-started-button {
+    padding: 10px 30px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.5em;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  
+  .get-started-button:hover {
+    background-color: darkred;
+  }

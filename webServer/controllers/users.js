@@ -2,11 +2,13 @@ const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
 const userService = require('../services/users');
+const jwt = require("jsonwebtoken");
+const key = require("../config/config").secretKey;
 
-// Create a user with the required fields
+
 const createUser = async (req, res) => {
     try {
-        const fields = ['userName', 'firstName', 'lastName', 'email', 'password'];
+        const fields = ['userName', 'name', 'password'];
         const missing = [];
 
         // Check for missing fields
@@ -22,49 +24,26 @@ const createUser = async (req, res) => {
             });
         }
 
-        // If picture is provided, validate that it exists in the uploads directory
-        const picture = req.body.picture;
-        if (picture) {
-            // Create the full path for the picture
-            const picturePath = path.join(__dirname, '../uploads', picture);
-
-            // If the picture file does not exist, return an error
-            if (!fs.existsSync(picturePath)) {
-                return res.status(400).json({
-                    errors: [`Picture file "${picture}" does not exist in the uploads directory.`],
-                });
-            }
-        }
-        const email = req.body.email; 
-        const emailReg = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-    if (!emailReg.test(email)) {
-        return res.status(400).json({
-            errors: ['Invalid email'], 
-    });
-}
+        const picture = req.file ? req.file.filename : null;
 
         // Try to create the user
         const user = await userService.createUser(
             req.body.userName,
-            req.body.firstName,
-            req.body.lastName,
-            picture ? `/uploads/${picture}` : undefined, // Set picture path
-            req.body.email,
+            req.body.name,
+            picture ? `/uploads/${picture}` : undefined,
             req.body.password
         );
 
         if (user) {
-            // If user is created successfully
             return res.status(201).json(user);
         } else {
-            // If username or email is already taken
             return res.status(400).json({
-                errors: ['Username is already taken or this email is already in the system.'],
+                errors: ['Username is already taken'],
             });
         }
     } catch (error) {
-        console.error('Error in createUser:', error);
-        return res.status(500).json({ error: 'Internal server error' });
+        console.error('Error in createUser:', error.message); // Log the actual error message
+        return res.status(500).json({ error: `Internal server error: ${error.message}` });
     }
 };
 
@@ -88,6 +67,27 @@ const getUser = async (req, res) => {
         console.error('Error in getUser:', error);
         return res.status(500).json({ error: 'Internal server error' });
     }
-};
+}
 
-module.exports = { createUser, getUser };
+    const isLoggedIn = (req, res, next) => {
+        if (req.headers.authorization) {
+          const token = req.headers.authorization.split(" ")[1];
+          try {
+            const data = jwt.verify(token, key);
+            req.user = data;
+            console.log("User authenticated:", data);
+            return next();
+          } catch (err) {
+            return res.status(401).send("Invalid Token");
+          }
+        } else {
+          return res.status(403).send("Token required");
+        }
+      }
+
+
+      const index = (req, res) => {
+        res.json({ data: "secret data", user: req.user.username });
+      };
+      
+      module.exports = { createUser, getUser, isLoggedIn, index };

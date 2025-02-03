@@ -1,0 +1,92 @@
+.home-page-background {
+  min-height: 100vh; /* Change from height to min-height */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Change from center to flex-start */
+  padding: 300px 0 50px 0; /* Add padding-top to push content down and padding-bottom for space */
+  background-image: url('../AdminPage/netflix-like_background.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* Keep background fixed while scrolling */
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.block {
+  width: 350px; /* Adjust width */
+  padding: 40px; /* Padding inside the box */
+  background-color: rgba(0, 0, 0, 0.8); /* Slightly darker black background */
+  border-radius: 8px; /* Slightly round corners */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Soft shadow for depth */
+  text-align: center; /* Center-align text */
+  color: white; /* White text color */
+  font-family: Arial, sans-serif; /* Standard font */
+  margin: 200px auto; /* Adjust vertical spacing with margin-top */
+}
+.form-group {
+  margin-bottom: 25px; /* Increased spacing between input fields */
+}
+
+.form-control {
+  width: 100%; /* Full width of container */
+  padding: 15px; /* Larger padding for better spacing */
+  font-size: 1.2em; /* Increase font size */
+  border-radius: 5px; /* Round corners */
+  border: 1px solid #555; /* Neutral gray border */
+  background-color: #333; /* Dark gray background to match the box */
+  color: white; /* White text */
+  transition: border-color 0.3s ease; /* Smooth border transition */
+}
+
+.form-control:focus {
+  outline: none; /* Remove default outline */
+  border-color: red; /* Red border on focus */
+}
+
+.input {
+  background-color: transparent; /* Transparent background */
+  color: white; /* White text color */
+  margin-bottom: 15px; /* Space between inputs */
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.7); /* Semi-transparent white placeholder text */
+}
+
+.input-file {
+  display: block;
+  width: 100%; /* Full width */
+  padding: 10px; /* Padding for file input */
+  margin-top: 10px; /* Space above file input */
+  border: 2px solid white; /* White border */
+  border-radius: 5px; /* Rounded corners */
+  background-color: transparent; /* Transparent background */
+  color: white; /* White text */
+  font-size: 1em; /* Font size to match others */
+  cursor: pointer; /* Pointer cursor */
+}
+
+.input-file-label {
+  color: white;
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.btn {
+  width: 100%; /* Button width matches input fields */
+  padding: 15px; /* Padding for larger button */
+  font-size: 1.5em; /* Increase font size for the button */
+  border-radius: 5px; /* Rounded corners */
+}
+
+.btn-danger {
+  background-color: red; /* Red background */
+  border: none; /* No border */
+  color: white; /* White text */
+}
+
+.btn-danger:hover {
+  background-color: darkred; /* Darker red on hover */
+}

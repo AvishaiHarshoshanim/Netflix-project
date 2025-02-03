@@ -2,41 +2,35 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const UsersSchema = new Schema({
-    userName: {
+    userName: { 
         type: String,
         required: true,
         unique: true
     },
-    firstName: {
+    name: {
         type: String,
         required: true,
     },
-    lastName: { 
-        type: String,
-        required: true,
-    },
-    picture: {
+    picture: { type: String },
+    password: { 
         type: String, 
+        required: true 
     },
-    email: {
+    role: {
         type: String,
-        required: true
-    },
-    password: {
-        type: String, 
-        required: true,
-    },
+        enum: ["user", "manager"], 
+        default: "user",
+      },
     viewingHistory: [
         {
-            type: mongoose.Schema.Types.ObjectId, 
-            ref: 'Movies'
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Movies',
         },
     ],
     idForRecServer: {
         type: Number,
         required: true,
-        unique: true  // This field must be unique
+        unique: true,
     }
 });
-
 module.exports = mongoose.model('Users', UsersSchema);
