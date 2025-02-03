@@ -20,7 +20,16 @@ const MoviesSchema = new Schema({
     actors: { 
         type: String,
     },
-    picture: {
+    imageName: {
+        type: String, 
+    },
+    imageURL: {
+        type: String, 
+    },
+    videoName: {
+        type: String, 
+    },
+    videoURL: {
         type: String, 
     },
     movieIdForRecServer: { 

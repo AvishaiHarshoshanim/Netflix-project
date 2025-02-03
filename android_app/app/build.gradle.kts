@@ -32,6 +32,36 @@ android {
 }
 
 dependencies {
+    //implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation(libs.okhttp3.okhttp)
+
+    //implementation("com.google.code.gson:gson:2.10.1")
+    implementation(libs.google.gson)
+
+    //implementation("androidx.lifecycle:lifecycle-viewmodel:2.8.7")
+    implementation(libs.lifecycle.viewmodel)
+
+    //implementation("androidx.lifecycle:lifecycle-livedata:2.8.7")
+    implementation(libs.lifecycle.livedata)
+
+    //implementation("androidx.room:room-runtime:2.6.1")
+    implementation(libs.room.runtime)
+
+    //annotationProcessor("androidx.room:room-compiler:2.6.1")
+    annotationProcessor(libs.room.compiler)
+
+    //implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation(libs.retrofit)
+
+    //implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation(libs.converter.gson)
+
+    implementation("com.github.bumptech.glide:glide:4.15.1")
+    //implementation(libs.com.github.bumptech.glide.glide)
+
+    annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
+    //annotationProcessor(libs.github.compiler)
+
 
     implementation(libs.appcompat)
     implementation(libs.material)

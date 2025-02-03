@@ -32,7 +32,18 @@
   background-color: rgba(255, 255, 255, 0.2); /* Brighter background on hover */
 }
 
-.admin-page-header {
+.light-mode .admin-page-header {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(255, 255, 255);
+  text-align: center;
+  padding: 40px 20px;
+}
+.dark-mode .admin-page-header {
   position: relative;
   width: 100%;
   height: 100vh;
@@ -68,20 +79,6 @@
   font: 3.5em;
 }
 
-.logo {
-  background-image: url('./Netflix_Logo.png');
-  background-size: contain; /* To fit the image to the div */
-  background-repeat: no-repeat;
-  width: 200px; /* Set the size you need */
-  height: 200px; /* Set the size you need */
-
-  /* Positioning the logo in the top left corner */
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 10; /* Optional, to ensure it stays on top of other content */
-}
-
 
 .managment-list h2 {
   color: #ffffff;
@@ -108,7 +105,7 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.btn-primary {
+.actions .btn-primary {
   background-color: #e50914;
   border: none;
 }
@@ -207,16 +204,25 @@
   text-align: left; /* Align text to the left */
 }
 
-.movie-details img {
-  display: block; /* Block-level element for images */
-  margin: 10px 200px; /* Add top and bottom margin */
+.movie-detail-row img {
+  flex: 1; /* Let content take the remaining space */
+  display: flex; /* Block-level element for images */
+  /*margin: 10px 200px; /* Add top and bottom margin */
   max-width: 300px; /* Make it responsive */
   border: 1px solid #ccc; /* Subtle border for the image */
   border-radius: 10px; /* Rounded corners */
-  object-fit: contain; /* Ensure the image is displayed properly */
 }
 
-.actions {
+.movie-detail-row video {
+  flex: 1; /* Let content take the remaining space */
+  display: flex; /* Block-level element for images */
+  /*margin: 10px 200px; /* Add top and bottom margin */
+  max-width: 300px; /* Make it responsive */
+  border: 1px solid #ccc; /* Subtle border for the image */
+  border-radius: 10px; /* Rounded corners */
+}
+
+.list-group-item .actions {
   display: flex; /* Use flexbox for button alignment */
   justify-content: flex-start; /* Align buttons to the left */
   align-items: center; /* Ensure buttons are vertically aligned and not stretched */
@@ -225,7 +231,17 @@
 
 .actions .btn {
   min-width: 80px; /* Optional: Ensures buttons have consistent width */
-  padding: 5px 10px; /* Adjust padding for a balanced look */
+  padding: 5px auto; /* Adjust padding for a balanced look */
   font-size: 14px; /* Ensure text size is appropriate */
   line-height: 1.2; /* Improve vertical text alignment */
 }
+
+.actions .btn-edit {
+background: #006bde;
+color: white;
+}
+
+.actions .btn-edit:hover {
+  background: #0259b6;
+  color: white;
+  }

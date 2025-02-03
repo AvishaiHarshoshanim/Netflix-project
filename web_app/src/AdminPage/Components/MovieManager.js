@@ -10,12 +10,17 @@ const MovieManager = ({ categories, movies, setMovies }) => {
     categories: [],
     director: '',
     actors: '',
-    pictureName: '',
-    pictureFile: null,
-    pictureURL: '', 
+    imageName: '',
+    imageFile: null,
+    imageURL: '',
+    videoName: '',
+    videoFile: null,
+    videoURL: ''
   });
 
   const addMovie = () => {
+    console.log('newMovie before submission:', newMovie); // Log the newMovie object before submission
+
     if (!newMovie.movieName) {
       alert("Movie name is required");
       return;
@@ -38,9 +43,12 @@ const MovieManager = ({ categories, movies, setMovies }) => {
     // Append movie data as JSON string
     formData.append('movieData', JSON.stringify(movieData));
 
-    // Append the file
-    if (newMovie.pictureFile) {
-      formData.append('pictureFileToAdd', newMovie.pictureFile);
+    if (newMovie.imageFile) {
+      formData.append('pictureFileToAdd', newMovie.imageFile);
+    }
+
+    if (newMovie.videoFile) {
+      formData.append('videoFileToAdd', newMovie.videoFile);
     }
 
     fetch('http://localhost:5000/api/movies', {
@@ -61,7 +69,7 @@ const MovieManager = ({ categories, movies, setMovies }) => {
             }
             return;
           });
-        } else if (response.status === 201) {
+        } else if (response.status === 201) {          
           // Successfully created movie
           return response.json();
         } else {
@@ -82,16 +90,13 @@ const MovieManager = ({ categories, movies, setMovies }) => {
             categories: transformedCategories, // Replace IDs with names
           };
 
-          const MovieToSave = {
-            ...transformedMovie,
-            pictureFile: newMovie.pictureFile,
-            pictureName: newMovie.pictureName,
-            pictureURL: newMovie.pictureURL
-          };
+          setMovies([...movies, transformedMovie]);
 
-          setMovies([...movies, MovieToSave]);
+          setNewMovie({ _id: '', movieName: '', categories: [], director: '', actors: '', imageName: '', imageFile: null, imageURL: '', videoName: '', videoFile: null, videoURL: ''});
 
-          setNewMovie({ movieName: '', categories: [], director: '', actors: '', pictureName: '', pictureFile: null });
+          // Manually reset the file input elements (if necessary)
+          document.getElementById("imageInput").value = null;
+          document.getElementById("videoInput").value = null;
         }
       })
       .catch((error) => console.error('Error adding movie:', error));
@@ -123,6 +128,10 @@ const MovieManager = ({ categories, movies, setMovies }) => {
       director: editingMovie.director,
       actors: editingMovie.actors,
       categories: editingMovie.categories,
+      imageName: editingMovie.imageName,
+      imageURL: editingMovie.imageURL,
+      videoName: editingMovie.videoName,
+      videoURL: editingMovie.videoURL,
     };
 
     const formData = new FormData();
@@ -130,9 +139,12 @@ const MovieManager = ({ categories, movies, setMovies }) => {
     // Append movie data as JSON string
     formData.append('movieData', JSON.stringify(movieData));
 
-    // Append the file
-    if (editingMovie.pictureFile) {
-      formData.append('pictureFileToUpdate', editingMovie.pictureFile);
+    if (editingMovie.imageFile) {
+      formData.append('pictureFileToUpdate', editingMovie.imageFile);
+    }
+
+    if (editingMovie.videoFile) {
+      formData.append('videoFileToAdd', editingMovie.videoFile);
     }
 
     fetch(`http://localhost:5000/api/movies/${movie._id}`, {
@@ -165,9 +177,6 @@ const MovieManager = ({ categories, movies, setMovies }) => {
           const transformedMovie = {
             ...updatedMovie,
             categories: updatedMovie.categories.map((category) => category.name),
-            pictureFile: editingMovie.pictureFile,
-            pictureName: editingMovie.pictureName,
-            pictureURL: editingMovie.pictureURL
           };
 
           // Update the movies state with the modified movie

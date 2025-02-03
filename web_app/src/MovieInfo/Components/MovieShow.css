@@ -1,0 +1,39 @@
+.movie-show {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: black;
+  position: relative;
+}
+
+.video-player {
+  width: 70%;
+  max-width: 1000px;
+  position: relative;
+  z-index: 2;
+}
+
+.close-movie-button {
+  position: absolute;
+  top:70px;
+  right: 190px;
+  background: red;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  z-index: 3;
+}
+
+@media (max-width: 768px) {
+  .close-movie-button {
+      top: 5px;
+      right: 5px;
+      padding: 8px 12px;
+      font-size: 14px;
+  }
+}

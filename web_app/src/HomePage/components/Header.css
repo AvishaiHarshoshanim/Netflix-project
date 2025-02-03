@@ -1,0 +1,139 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: black;
+    color: white;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    font-family: Arial, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+
+.light-mode .header {
+    background-color: #013220;
+}
+
+
+.dark-mode .header {
+    background-color: black;
+}
+  
+  .header-links {
+    display: flex;
+    justify-content: flex-start; 
+    flex: 1;
+    gap: 20px;
+    margin-left: 440px; /* Moves the buttons (search, movies, home) to the right */
+  }
+  
+  .header-link {
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+.dark-mode .header-link:hover {
+  color: #e50914;
+}
+
+.light-mode .header-link {
+  color: #007bff;
+}
+
+.light-mode .header-link:hover {
+  color: #0056b3;
+}
+
+
+.logo {
+  background-image: url('./NETBLIX.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 110px;
+  height: 110px;
+  position: fixed;
+  top: 10px;
+  left: 20px;
+  z-index: 10;
+}
+  
+  
+  .logout-btn {
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
+  }
+
+  .dark-mode .logout-btn {
+    background-color: #e50914; 
+    color: white;
+}
+
+.dark-mode .logout-btn:hover {
+  background-color: #800000; 
+}
+
+.light-mode .logout-btn {
+  background-color: #007bff; 
+  color: white;
+}
+
+.light-mode .logout-btn:hover {
+  background-color: #0056b3;
+}
+  
+  
+.search-box {
+  position: absolute;
+  top: 50%;
+  right: 350px;
+  transform: translateY(-50%); 
+  background-color: white;
+  padding: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  width: 200px; /*Width of the search box*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  height: 35px;
+}
+
+
+.search-input {
+  border: none;
+  outline: none;
+  padding: 1px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.theme-toggle-btn {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+  border-radius: 20px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.theme-toggle-btn:hover {
+  background-color: white;
+  color: black;
+}
+  
+  

@@ -4,32 +4,43 @@ const moviesController = require('../controllers/movies');
 const multer = require('multer');
 const path = require('path');
 const userController = require('../controllers/users');
+const fs = require('fs');
 
-
-// Set up multer to handle file uploads
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './uploads/'); // You can change this directory to where you want to store the images
+        const dir = './uploads/';
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true }); // Create directory if it doesn't exist
+        }
+        cb(null, dir); // Store both images and videos in the same directory
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname)); // Use timestamp to avoid file name collisions
+        const fileName = path.basename(file.originalname, path.extname(file.originalname)) + '-' + Date.now();
+        cb(null, fileName + path.extname(file.originalname)); // Append file extension based on type (image/video)
     },
 });
 
 const upload = multer({ storage });
 
+// Define fields for both image and video uploads
 router.route('/')
     .get(moviesController.getMoviesByCategory)
-    .post(upload.single('pictureFileToAdd'), moviesController.createMovie);
+    .post(upload.fields([
+        { name: 'pictureFileToAdd', maxCount: 1 },
+        { name: 'videoFileToAdd', maxCount: 1 },
+    ]), moviesController.createMovie);
 
 router.route('/all')
     .get(moviesController.getAllMovies);
 
+
 router.route('/:id')
     .get(moviesController.getMovie)
-    .put(upload.single('pictureFileToUpdate'), moviesController.updateMovie)
+    .put(upload.fields([
+        { name: 'pictureFileToUpdate', maxCount: 1 },
+        { name: 'videoFileToUpdate', maxCount: 1 },
+    ]), moviesController.updateMovie)
     .delete(moviesController.deleteMovie);
-
     
 // route to get recommendations for id movie
 router.get('/:id/recommend', userController.isLoggedIn, moviesController.getRecommendations);
@@ -39,5 +50,9 @@ router.post('/:id/recommend', moviesController.addUserMovie);
 
 // Route to search movies by query
 router.get('/search/:query', moviesController.searchMovies);
+
+router.route('/categories/withMovies')
+    .get(moviesController.getCategoriesWithMovies); 
+
 
 module.exports = router;

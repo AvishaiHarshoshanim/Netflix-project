@@ -26,6 +26,14 @@ const getPromotedCategories = async () => {
     return await Categories.find({ promoted: true });
 };
 
+const getAllCategories = async () => {
+    try {
+        return await Categories.find(); 
+    } catch (err) {
+        throw new Error("Error fetching categories: " + err.message);
+    }
+};
+
 // return movies according to thier categories
 const getMoviesByCategory = async (categoryId, userId) => {
     const watchedMovieIds = await getMoviesWatchedByUser(userId);
@@ -37,7 +45,7 @@ const getMoviesByCategory = async (categoryId, userId) => {
 
 const getAllMovies = async () => { return await Movie.find({}); };
 
-const createMovie = async (movieName, categories, director, actors, picture) => {
+const createMovie = async (movieName, categories, director, actors, imageName, imageURL, videoName, videoURL) => {
     try {
         // Check if the movie already exists
         const existingMovie = await Movie.findOne({ movieName: movieName });
@@ -57,9 +65,16 @@ const createMovie = async (movieName, categories, director, actors, picture) => 
             movieIdForRecServer,
         });
 
-        // If there's a picture uploaded, save the file path
-        if (picture) {
-            movie.picture = picture; // Store the file path (you can change this to the URL if you need)
+        // If there's a picture uploaded, save the file path and name
+        if (imageName) {
+            movie.imageName = imageName;
+            movie.imageURL = imageURL;
+        }
+
+        // If there's a video uploaded, save the file path and name
+        if (videoName) {
+            movie.videoName = videoName;
+            movie.videoURL = videoURL;
         }
 
         // Save the movie to the database
@@ -71,13 +86,20 @@ const createMovie = async (movieName, categories, director, actors, picture) => 
 };
 
 const getMovieById = async (movieId) => {
-    return await Movie.findById(movieId).select('-movieIdForRecServer').populate('categories');
+    const movie = await Movie.findById(movieId)
+        .select('-movieIdForRecServer')
+        .populate('categories');
+
+    // Convert categories to an array of strings
+    const transformedMovie = movie.toObject();
+    transformedMovie.categories = transformedMovie.categories.map(cat => cat.name); 
+
+    return transformedMovie;
 };
+
 const replaceMovie = async (movieId, replace) => {
     return await Movie.findByIdAndUpdate(movieId, replace, { new: true }).populate('categories');
 };
-
-
 
 async function deleteMovieFromRecServer(userId, movieId) {
     try {
@@ -171,7 +193,7 @@ async function getRecommendationsFromServer(userId, movieId) {
                 const convertedMovies = await Promise.all(
                     movieIdsForRecServer.map(async (idForRec) => {
                         const movie = await Movie.findOne({ movieIdForRecServer: idForRec });
-                        return movie ? movie._id.toString() : null;
+                        return movie ? movie : null;
                     })
                 );
 
@@ -307,4 +329,4 @@ async function searchMoviesInDatabase(query) {
 }
 
 
-module.exports = { getMoviesWatchedByUser, getPromotedCategories, getMoviesByCategory, createMovie, getMovieById, replaceMovie, deleteMovieById, getRecommendationsFromServer, addUserMovieToServer, searchMoviesInDatabase, isUserExists, addMoviesToViewingHistory, isMovieExists, getAllMovies };
+module.exports = { getMoviesWatchedByUser, getPromotedCategories, getMoviesByCategory, createMovie, getMovieById, replaceMovie, deleteMovieById, getRecommendationsFromServer, addUserMovieToServer, searchMoviesInDatabase, isUserExists, addMoviesToViewingHistory, isMovieExists, getAllMovies, getAllCategories };

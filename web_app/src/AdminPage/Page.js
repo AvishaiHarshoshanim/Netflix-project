@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Page.css';
 import CategoryManager from './Components/CategoryManager';
 import MovieManager from './Components/MovieManager';
+// import Header from '../HomePage/components/Header';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
@@ -43,14 +44,12 @@ const AdminPage = () => {
   return (
     <div>
       <header className="admin-page-header">
-      <div className="logo"></div>
-      <h1 className="text-center mb-4">Admin Page</h1>
         <ul className='managment-list'>
           <li className='managment-block'>
-          <CategoryManager categories={categories} setCategories={setCategories} movies={movies} setMovies={setMovies}/>
+            <CategoryManager categories={categories} setCategories={setCategories} movies={movies} setMovies={setMovies} />
           </li>
           <li className='managment-block'>
-          <MovieManager categories={categories} movies={movies} setMovies={setMovies} />
+            <MovieManager categories={categories} movies={movies} setMovies={setMovies} />
           </li>
         </ul>
       </header>

@@ -1,0 +1,24 @@
+<!-- category_item_with_checkbox.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <!-- Category name TextView -->
+    <TextView
+        android:id="@+id/category_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Category Name"
+        android:textSize="16sp"
+        android:paddingStart="10dp" />
+
+    <!-- Checkbox for selecting the category -->
+    <CheckBox
+        android:id="@+id/category_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="10dp" />
+</LinearLayout>

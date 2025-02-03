@@ -4,9 +4,6 @@ const usersService = require('../services/users');
 const categoryService = require('../services/category');
 const general = require('../services/general');
 const fs = require('fs');
-const cors = require('cors');
-const multer = require('multer');
-const express = require('express');
 
 //shuffel the array
 function shuffle(arr) {
@@ -63,19 +60,25 @@ const getMoviesByCategory = async (req, res) => {
         for (const category of promotedCategories) {
             const movies = await movieService.getMoviesByCategory(category._id, userId);
             const shuffledMovies = shuffle(movies);
-            moviesByCategories.push({
-                category: category.name,
-                movies: shuffledMovies.slice(0, 20),
-            });
+
+            // Only include categories with movies
+            if (shuffledMovies.length > 0) {
+                moviesByCategories.push({
+                    category: category.name,
+                    movies: shuffledMovies.slice(0, 20),
+                });
+            }
         }
 
         const watchAgainMovies = await movieService.getMoviesWatchedByUser(userId);
         const last20Movies = shuffle(watchAgainMovies.slice(-20));
 
-        moviesByCategories.push({
-            category: 'Watch Again',
-            movies: last20Movies,
-        });
+        if (last20Movies.length > 0) {
+            moviesByCategories.push({
+                category: 'Watch Again',
+                movies: last20Movies,
+            });
+        }
 
         return res.status(200).json(moviesByCategories);
     } catch (error) {
@@ -84,12 +87,10 @@ const getMoviesByCategory = async (req, res) => {
     }
 };
 
-const createMovie = async (req, res) => {
-    
+const createMovie = async (req, res) => {    
     const jsonedMovieData = JSON.parse(req.body.movieData);
-
     try {
-        const fields = ['movieName', 'categories', 'director', 'actors'];
+        const fields = ['movieName', 'categories', 'director'];
         const missing = [];
 
         // Push the missing fields into missing
@@ -116,7 +117,6 @@ const createMovie = async (req, res) => {
             if (jsonedMovieData.categories.length !== 0){
                 validCategories = jsonedMovieData.categories.filter(category => category.trim().length > 0);
             }
-
             if (validCategories.length === 0) {
                 let noCategory = await mongoose.model('Category').findOne({ name: 'no_category' }).exec();
                 if (!noCategory) {
@@ -127,9 +127,35 @@ const createMovie = async (req, res) => {
                 }
                 validCategories = [noCategory.name]
             }
+        } else {
+            let noCategory = await mongoose.model('Category').findOne({ name: 'no_category' }).exec();
+                if (!noCategory) {
+                    noCategory = new mongoose.model('Category')({
+                        name: 'no_category',
+                    });
+                    await noCategory.save();
+                }
+                validCategories = [noCategory.name]
+        }
 
-            // If a picture is provided, validate the file path
-            const picture = req.file ? req.file.filename : null;  // Get filename from multer upload
+            
+
+            var imageName =  null;
+            var imageURL = null;
+
+            if (req.files.pictureFileToAdd && req.files.pictureFileToAdd[0]) {
+                imageName =  req.files.pictureFileToAdd[0].filename;
+                imageURL = `http://localhost:${process.env.USER_TO_WEB_PORT}/${req.files.pictureFileToAdd[0].path}`;
+            }
+
+            var videoName = null;
+            var videoURL = null;
+
+            // If video file exists, process it
+            if (req.files.videoFileToAdd && req.files.videoFileToAdd[0]) {
+                videoName = req.files.videoFileToAdd[0].filename;
+                videoURL = `http://localhost:${process.env.USER_TO_WEB_PORT}/${req.files.videoFileToAdd[0].path}`;
+            }
 
             try {
                 const categoryIds = await getCategoryIdsFromNames(validCategories);
@@ -138,15 +164,14 @@ const createMovie = async (req, res) => {
                     categoryIds,
                     jsonedMovieData.director,
                     jsonedMovieData.actors,
-                    picture
+                    imageName,
+                    imageURL,
+                    videoName,
+                    videoURL
                 ));
             } catch (error) {
                 return res.status(400).json({ error: error.message });
             }
-        }
-
-        // If we get here, something went wrong with categories
-        return res.status(400).json({ error: 'Invalid categories format' });
     } catch (error) {
         console.error('Error in createMovie:', error);
         return res.status(500).json({ error: 'Internal server error' });
@@ -181,7 +206,7 @@ const updateMovie = async (req, res) => {
     const jsonedMovieData = JSON.parse(req.body.movieData);
 
     try {
-        const fields = ['movieName', 'categories', 'director', 'actors'];
+        const fields = ['movieName', 'categories', 'director'];
         const missing = [];
 
         // Push the missing fields into missing
@@ -226,9 +251,28 @@ const updateMovie = async (req, res) => {
                 validCategories = [noCategory.name]
             }
 
-            // If a picture is provided, validate the file path
-            const picture = req.file ? req.file.filename : null;  // Get filename from multer upload
+            var imageName =  null;
+            var imageURL = null;
 
+            if (req.files.pictureFileToUpdate && req.files.pictureFileToUpdate[0]) {
+                imageName =  req.files.pictureFileToUpdate[0].filename;
+                imageURL = `http://localhost:${process.env.USER_TO_WEB_PORT}/${req.files.pictureFileToUpdate[0].path}`;
+            } else {
+                imageName = jsonedMovieData.imageName;
+                imageURL = jsonedMovieData.imageURL
+            }
+
+            var videoName = null;
+            var videoURL = null;
+
+            // If video file exists, process it
+            if (req.files.videoFileToUpdate && req.files.videoFileToUpdate[0]) {
+                videoName = req.files.videoFileToUpdate[0].filename;
+                videoURL = `http://localhost:${process.env.USER_TO_WEB_PORT}/${req.files.videoFileToUpdate[0].path}`;
+            } else {
+                videoName = jsonedMovieData.videoName;
+                videoURL = jsonedMovieData.videoURL
+            }
 
             try {
                 // Process valid categories
@@ -236,7 +280,10 @@ const updateMovie = async (req, res) => {
                 const updatedMovieData = {
                     ...jsonedMovieData,
                     categories: categoryIds,
-                    picture: picture
+                    imageName,
+                    imageURL,
+                    videoName,
+                    videoURL                    
                 };
 
                 const movie = await movieService.replaceMovie(id, updatedMovieData);
@@ -403,5 +450,32 @@ async function searchMovies(req, res) {
     }
 }
 
+const getCategoriesWithMovies = async (req, res) => {
+    try {
+        const categories = await movieService.getAllCategories();  
+        const categoriesWithMovies = [];
 
-module.exports = { createMovie, getMovie, updateMovie, deleteMovie, getMoviesByCategory, getRecommendations, addUserMovie, searchMovies, getAllMovies };
+        for (const category of categories) {
+            const movies = await movieService.getMoviesByCategory(category._id); 
+
+            if (movies.length > 0) {
+                categoriesWithMovies.push({
+                    category: category.name,
+                    movies: movies,  
+                });
+            }
+        }
+
+        if (categoriesWithMovies.length === 0) {
+            return res.status(200).json([]);  
+        }
+
+        res.status(200).json(categoriesWithMovies);
+    } catch (error) {
+        console.error('Error in getCategoriesWithMovies:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
+module.exports = { createMovie, getMovie, updateMovie, deleteMovie, getMoviesByCategory, getRecommendations, addUserMovie, searchMovies, getAllMovies, getCategoriesWithMovies };

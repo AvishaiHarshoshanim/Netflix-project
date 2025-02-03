@@ -1,0 +1,31 @@
+.categories-section {
+    margin-top: 0;
+    padding: 20px; 
+  }
+  
+  .category-block {
+    margin-bottom: 30px;
+  }
+  
+  .category-title {
+    font-size: 1.8em;
+    color: white;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-align: left;
+  }
+  
+  .movies-list {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto; 
+    padding: 10px 0;
+  }
+
+  .light-mode .categories-section {
+    background-color: #1b4d3e; 
+}
+
+.dark-mode .categories-section {
+    background-color: #141414; 
+}
