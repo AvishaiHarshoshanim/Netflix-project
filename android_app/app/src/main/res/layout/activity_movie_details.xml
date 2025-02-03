@@ -36,9 +36,12 @@
         android:layout_height="wrap_content"
         android:text="Categories:"/>
 
-    <VideoView
-        android:id="@+id/movie_video"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"/>
+    <Button
+        android:id="@+id/play_video_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Play Video"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>
