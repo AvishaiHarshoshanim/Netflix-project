@@ -10,7 +10,7 @@ function SignUp() {
     name: "",
     password: "",
     confirmPassword: "",
-    profilePicture: null,
+    picture: null, // Updated field name
   });
 
   const [passwordError, setPasswordError] = useState("");
@@ -37,8 +37,8 @@ function SignUp() {
     formDataToSend.append("name", inputs.name);
     formDataToSend.append("password", inputs.password);
 
-    if (inputs.profilePicture) {
-      formDataToSend.append("profilePicture", inputs.profilePicture);
+    if (inputs.picture) {
+      formDataToSend.append("picture", inputs.picture); // Updated field name
     }
 
     try {
@@ -104,8 +104,8 @@ function SignUp() {
 
           {/* Profile Picture Component */}
           <ProfilePic
-            profilePicture={inputs.profilePicture}
-            setProfilePicture={(file) => setInputs((prev) => ({ ...prev, profilePicture: file }))}
+            profilePicture={inputs.picture} // Updated prop
+            setProfilePicture={(file) => setInputs((prev) => ({ ...prev, picture: file }))} // Updated prop
           />
 
           {/* Submit Button */}

@@ -3,7 +3,8 @@ const fs = require('fs');
 const path = require('path');
 const userService = require('../services/users');
 const jwt = require("jsonwebtoken");
-const key = require("../config").secretKey;
+const key = require("../config/config").secretKey;
+
 
 const createUser = async (req, res) => {
     try {
@@ -66,26 +67,27 @@ const getUser = async (req, res) => {
         console.error('Error in getUser:', error);
         return res.status(500).json({ error: 'Internal server error' });
     }
+}
 
-    const index = (req, res) => {
-        return res.json({ data: "secret data", user: req.user.username });
-      }
-      const isLoggedIn = (req, res, next) => {
+    const isLoggedIn = (req, res, next) => {
         if (req.headers.authorization) {
-        const token = req.headers.authorization.split(" ")[1];
-        try {
-        const data = jwt.verify(token, key);
-        console.log('The logged in user is: ' + data.username);
-        return next()
-        } catch (err) {
-        return res.status(401).send("Invalid Token");
+          const token = req.headers.authorization.split(" ")[1];
+          try {
+            const data = jwt.verify(token, key);
+            req.user = data;
+            console.log("User authenticated:", data);
+            return next();
+          } catch (err) {
+            return res.status(401).send("Invalid Token");
+          }
+        } else {
+          return res.status(403).send("Token required");
         }
-        }
-        else
-        return res.status(403).send('Token required');
-        }
-              
-    };  
+      }
 
 
-module.exports = { createUser, getUser, isLoggedIn };
+      const index = (req, res) => {
+        res.json({ data: "secret data", user: req.user.username });
+      };
+      
+      module.exports = { createUser, getUser, isLoggedIn, index };

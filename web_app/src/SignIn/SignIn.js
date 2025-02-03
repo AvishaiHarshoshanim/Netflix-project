@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./SignIn.css";
 import axios from "axios";
+import "./SignIn.css";
+
 function SignIn() {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
@@ -14,45 +15,55 @@ function SignIn() {
     setInputs((values) => ({ ...values, [name]: value }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault(); // Prevents page reload
-    const response = axios.post("http://localhost:5000/api/Tokens", {
-      username,
-      password,
-    });
 
-    const { token } = response.data;
+    try {
+      // Send login request with correct values
+      const response = await axios.post("http://localhost:5000/api/Tokens", {
+        userName: inputs.userName, 
+        password: inputs.password,
+      });
 
-    // Save token to localStorage
-    localStorage.setItem("jwtToken", token);
+      // Get token from response
+      const { token } = response.data;
 
-    setMessage("Login successful! Token saved to localStorage.");
-    setError("");
-  }; 
+      // Save token to localStorage
+      localStorage.setItem("jwtToken", token);
+
+      alert("Login successful! Token saved.");
+      navigate("/"); // Redirect to home page after login
+    } catch (error) {
+      console.error("Login failed:", error.response?.data || error.message);
+      alert("Invalid username or password");
+    }
+  };
 
   return (
     <div className="home-page-background">
       <div className="block">
+      <h2>Sign In</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group mb-5">
-            <p>Sign In</p>
             <input
-              type="userName"
-              name="userName" // Added
+              type="text"
+              name="userName"
               className="form-control input"
-              id="exampleInputUserName1"
               placeholder="Enter user name"
+              value={inputs.userName}
               onChange={handleChange}
+              required
             />
           </div>
           <div className="form-group mb-4">
             <input
               type="password"
-              name="password" // Added
+              name="password"
               className="form-control input"
-              id="exampleInputPassword1"
               placeholder="Password"
+              value={inputs.password}
               onChange={handleChange}
+              required
             />
           </div>
           <button type="submit" className="btn btn-danger mt-3">

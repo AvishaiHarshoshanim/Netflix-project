@@ -3,6 +3,8 @@ const router = express.Router();
 const moviesController = require('../controllers/movies');
 const multer = require('multer');
 const path = require('path');
+const userController = require('../controllers/users');
+
 
 // Set up multer to handle file uploads
 const storage = multer.diskStorage({
@@ -30,7 +32,7 @@ router.route('/:id')
 
     
 // route to get recommendations for id movie
-router.get('/:id/recommend', moviesController.getRecommendations);
+router.get('/:id/recommend', userController.isLoggedIn, moviesController.getRecommendations);
 
 // route to add a user's view of id movie
 router.post('/:id/recommend', moviesController.addUserMovie);

@@ -1,34 +1,35 @@
 .block {
-    width: 400px;
-    margin: 0 auto; /* Horizontally center */
-    position: relative;
-    top: 50%; /* Vertically center */
-    transform: translateY(30%); /* Adjust vertical alignment */
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.85); /* Dark translucent background */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
-    text-align: center;
-    color: white;
-    font-family: Arial, sans-serif;
-    border: 1px solid rgba(255, 255, 255, 0.3); /* Add border for debugging */
-  }
+  width: 400px;
+  margin: 0 auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-70%);  /* Changed from 30% to -30% to move it up */
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.85);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  color: white;
+  font-family: Arial, sans-serif;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
   
   .home-page-background::before {
     content: "";
-    position: absolute;
+    position: fixed;  /* Change from 'absolute' to 'fixed' */
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh;  /* Use viewport height instead of percentage */
     background-image: url('../AdminPage/netflix-like_background.webp');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+    background-attachment: fixed;  /* Add this line to keep background fixed while scrolling */
+    background-color: rgba(0, 0, 0, 0.5);
     opacity: 0.8;
     z-index: -1;
-  }
+}
  /* Input Fields */
 .input {
     background-color: transparent;
@@ -40,6 +41,12 @@
     font-size: 1em;
   }
   
+  .input-file-label {
+    color: white;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+  }
   .input::placeholder {
     color: rgba(255, 255, 255, 0.7); /* Semi-transparent white for placeholder */
   }
@@ -51,3 +58,13 @@
     background-color: transparent;
     color: white;
   }
+  .btn-danger {
+  background-color: red; /* Red background */
+  border: none; /* No border */
+  color: white; /* White text */
+  cursor: pointer;
+}
+
+.btn-danger:hover {
+  background-color: darkred; /* Darker red on hover */
+}

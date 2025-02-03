@@ -21,7 +21,7 @@ const upload = multer({ storage });
 // Routes
 router
     .route('/')
-    .post(upload.single('profilePicture'), usersController.createUser); // Handle file uploads with multer
+    .post(upload.single('picture'), usersController.createUser); // Handle file uploads with multer
 
 router
     .route('/:id')

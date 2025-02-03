@@ -44,9 +44,9 @@ const getUserById = async (id) => {
 const getUsers = async () => {
     return await Users.find({});
 };
-getUserByName = async (userName) => {
-    const user = await Users.findById({userName}).select();
+const getUserByName = async (userName) => {
+    const user = await Users.findOne({ userName });
     return user;
 };
 
-module.exports = { createUser, getUserById, getUsers };
+module.exports = { createUser, getUserById, getUsers, getUserByName };
