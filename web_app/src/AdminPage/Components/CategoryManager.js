@@ -6,6 +6,9 @@ const CategoryManager = ({ categories, setCategories, movies, setMovies }) => {
     const [newCategory, setNewCategory] = useState({ name: String, promoted: Boolean, _id: String });
     const [editingCategory, setEditingCategory] = useState(null);
 
+    const API_PORT = process.env.REACT_APP_USER_TO_WEB_PORT;
+    const API_URL = `http://localhost:${API_PORT}/api`;
+
     const addCategory = () => {
         // Check if category name is empty
         if (!newCategory.name) {
@@ -13,7 +16,7 @@ const CategoryManager = ({ categories, setCategories, movies, setMovies }) => {
             return;
         }
 
-        fetch('http://localhost:5000/api/categories', {
+        fetch(`${API_URL}/categories`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -55,7 +58,7 @@ const CategoryManager = ({ categories, setCategories, movies, setMovies }) => {
             alert("no_category canot be deleted")
             return;
         }
-        fetch(`http://localhost:5000/api/categories/${categoryId}`, {
+        fetch(`${API_URL}/categories/${categoryId}`, {
             method: 'DELETE',
         })
             .then(() => {
@@ -76,7 +79,7 @@ const CategoryManager = ({ categories, setCategories, movies, setMovies }) => {
             alert("no_category canot be edited")
             return;
         }
-        fetch(`http://localhost:5000/api/categories/${category._id}`, {
+        fetch(`${API_URL}/categories/${category._id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',

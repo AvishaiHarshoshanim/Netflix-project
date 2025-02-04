@@ -3,6 +3,18 @@
   font-weight: bold;
 }
 
+.home-page-background {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: black;
+  text-align: center;
+  padding: 40px 20px;
+}
+
 .home-page-background::before {
   content: "";
   position: absolute;
@@ -13,16 +25,16 @@
   background-image: url('../../AdminPage/netflix-like_background.webp');
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
-  background-color: rgba(0, 0, 0, 0.5);
-  opacity: 0.8;
-  z-index: -1;
+  opacity: 0.3;
+  z-index: 1;
   pointer-events: none;
 }
 
 .content {
+  position: relative;
   text-align: center;
   margin-top: 10%;
+  z-index: 1;
 }
 
 .content h1 {

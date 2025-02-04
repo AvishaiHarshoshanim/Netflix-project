@@ -9,59 +9,67 @@ const MovieDetailsPopup = ({ movieId, userId, onClose }) => {
   const [error, setError] = useState(null);
   const [recoMovies, setRecoMovies] = useState([]);
 
+  const API_PORT = process.env.REACT_APP_USER_TO_WEB_PORT;
+  const API_URL = `http://localhost:${API_PORT}/api`;
+
   const navigate = useNavigate();
-  
   const handlePlay = () => {
     updateRecServer();
     navigate("/watch", { state: { videoURL: movie.videoURL } });
   };
 
-  const fetchMovieDetails = async () => {
-    try {
-      const response = await fetch(`http://localhost:5000/api/movies/${movieId}`, {
-        method: "GET",
-        headers: { "Accept": "application/json" }
-      });
-
-      if (!response.ok) throw new Error("Failed to fetch movie details");
-
-      const data = await response.json();
-      setMovie(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchRecoMovies = async () => {
-    try {
-      const response = await fetch(`http://localhost:5000/api/movies/${movieId}/recommend`, {
-        method: "GET",
-        headers: { "Accept": "application/json", "userId": userId }
-      });
-
-      if (!response.ok) {
-        console.log(response)
-        throw new Error("Failed to fetch reco movies");
-      } 
-
-      if (response.status === 200) {
+  useEffect(() => {
+    const fetchMovieDetails = async () => {
+      try {
+        const response = await fetch(`${API_URL}/movies/${movieId}`, {
+          method: "GET",
+          headers: { "Accept": "application/json" }
+        });
+  
+        if (!response.ok) throw new Error("Failed to fetch movie details");
+  
         const data = await response.json();
-        setRecoMovies(data.recommendations);
-      } else {
-        setRecoMovies([])
+        setMovie(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+  
+    const fetchRecoMovies = async () => {
+      try {
+        const response = await fetch(`${API_URL}/movies/${movieId}/recommend`, {
+          method: "GET",
+          headers: { "Accept": "application/json", "userId": userId }
+        });
+  
+        if (!response.ok) {
+          console.log(response);
+          throw new Error("Failed to fetch reco movies");
+        }
+  
+        if (response.status === 200) {
+          const data = await response.json();
+          setRecoMovies(data.recommendations);
+        } else {
+          setRecoMovies([]);
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchMovieDetails();
+    fetchRecoMovies();
+  }, [movieId, userId, API_URL]);
+  
 
   const updateRecServer = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/movies/${movieId}/recommend`, {
+      const response = await fetch(`${API_URL}/movies/${movieId}/recommend`, {
         method: "POST",
         headers: { "Accept": "application/json", "userId": userId }
       });
@@ -77,11 +85,6 @@ const MovieDetailsPopup = ({ movieId, userId, onClose }) => {
     }
   };
 
-  useEffect(() => {
-    fetchRecoMovies();
-    fetchMovieDetails();
-  });
-
   if (loading) return <div className="custom-modal"><div className="modal-content">Loading...</div></div>;
   if (error) return <div className="custom-modal"><div className="modal-content">Error: {error}</div></div>;
   if (!movie) return null;
@@ -94,7 +97,7 @@ const MovieDetailsPopup = ({ movieId, userId, onClose }) => {
         <h2 className="modal-title">{movie.movieName}</h2>
         <p><strong>Director:</strong> {movie.director}</p>
         <p><strong>Actors:</strong> {movie.actors}</p>
-        <p><strong>Categories:</strong> {movie.categories.map(c => c.name).join(", ")}</p>
+        <p><strong>Categories:</strong> {movie.categories.join(", ")}</p>
         <button className="play-button" onClick={handlePlay}>
           ▶ Play
         </button>

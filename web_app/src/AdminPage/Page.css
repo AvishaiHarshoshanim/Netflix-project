@@ -7,29 +7,29 @@
   max-width: 75%;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  background-color: rgba(0, 0, 0, 0.7); /* Darker background for contrast */
+  background-color: rgba(0, 0, 0, 0.7);
   list-style-type: none;
   z-index: 1;
   overflow-y: scroll;
 }
 
 .managment-block {
-  background-color: rgba(255, 255, 255, 0.1); /* Light translucent background for contrast */
-  border: 1px solid rgba(255, 255, 255, 0.2); /* Border with slight transparency */
-  border-radius: 8px; /* Rounded corners */
-  margin-bottom: 1rem; /* Space between blocks */
-  padding: 1rem; /* Inner padding for content spacing */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   transition: transform 0.2s, background-color 0.2s;
 }
 
 .managment-block:last-child {
-  margin-bottom: 0; /* Remove margin for the last block */
+  margin-bottom: 0;
 }
 
 .managment-block:hover {
-  transform: translateY(-4px); /* Slight lift on hover */
-  background-color: rgba(255, 255, 255, 0.2); /* Brighter background on hover */
+  transform: translateY(-4px);
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .light-mode .admin-page-header {
@@ -73,7 +73,7 @@
 .admin-page-header h1 {
   position: relative;
   z-index: 1;
-  color: #e50914; /* Netflix red */
+  color: #e50914;
   font-weight: bold;
   margin: 2px;
   font: 3.5em;
@@ -163,77 +163,74 @@
   }
 }
 
-/* Style for required field asterisk */
 .form-label .text-danger {
-  color: #e50914; /* Netflix red for emphasis */
+  color: #e50914;
 }
 
 .movie-details {
-  background-color: #f9f9f9; /* Light background for better readability */
-  border: 1px solid #e0e0e0; /* Subtle border for separation */
-  border-radius: 8px; /* Rounded corners for modern look */
-  padding: 20px; /* Inner spacing */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  width: 100%; /* Set a maximum width for layout consistency */
-  margin: 20px auto; /* Center the div on the page */
-  font-family: Arial, sans-serif; /* Clean and readable font */
-  line-height: 1.6; /* Better spacing between lines */
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
 }
 
 .movie-detail-row {
-  display: flex; /* Arrange label and content side-by-side */
-  justify-content: flex-start; /* Align items to the left */
-  align-items: center; /* Vertically center-align the items */
-  padding: 10px 0; /* Add spacing between rows */
-  border-bottom: 1px solid #ddd; /* Divider between rows */
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
 }
 
 .movie-detail-row:last-child {
-  border-bottom: none; /* Remove border from the last row */
+  border-bottom: none;
 }
 
 .movie-detail-label {
-  font-weight: bold; /* Emphasize labels */
-  color: #333; /* Darker text for contrast */
-  flex: 0 0 40%; /* Allocate fixed width for labels */
+  font-weight: bold;
+  color: #333;
+  flex: 0 0 40%;
 }
 
 .movie-detail-row span {
-  flex: 1; /* Let content take the remaining space */
-  color: #555; /* Softer color for content */
-  text-align: left; /* Align text to the left */
+  flex: 1;
+  color: #555;
+  text-align: left;
 }
 
 .movie-detail-row img {
-  flex: 1; /* Let content take the remaining space */
-  display: flex; /* Block-level element for images */
-  /*margin: 10px 200px; /* Add top and bottom margin */
-  max-width: 300px; /* Make it responsive */
-  border: 1px solid #ccc; /* Subtle border for the image */
-  border-radius: 10px; /* Rounded corners */
+  flex: 1;
+  display: flex;
+  max-width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
 }
 
 .movie-detail-row video {
-  flex: 1; /* Let content take the remaining space */
-  display: flex; /* Block-level element for images */
-  /*margin: 10px 200px; /* Add top and bottom margin */
-  max-width: 300px; /* Make it responsive */
-  border: 1px solid #ccc; /* Subtle border for the image */
-  border-radius: 10px; /* Rounded corners */
+  flex: 1;
+  display: flex;
+  max-width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
 }
 
 .list-group-item .actions {
-  display: flex; /* Use flexbox for button alignment */
-  justify-content: flex-start; /* Align buttons to the left */
-  align-items: center; /* Ensure buttons are vertically aligned and not stretched */
-  gap: 10px; /* Add space between buttons */
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
 }
 
 .actions .btn {
-  min-width: 80px; /* Optional: Ensures buttons have consistent width */
-  padding: 5px auto; /* Adjust padding for a balanced look */
-  font-size: 14px; /* Ensure text size is appropriate */
-  line-height: 1.2; /* Improve vertical text alignment */
+  min-width: 80px;
+  padding: 5px auto; 
+  font-size: 14px;
+  line-height: 1.2;
 }
 
 .actions .btn-edit {
@@ -245,3 +242,15 @@ color: white;
   background: #0259b6;
   color: white;
   }
+
+.actions .btn-add {
+    background: #069d10;
+    color: rgb(255, 255, 255);
+    height: 40px;
+}
+
+.actions .btn-add:hover {
+  background: #07870f;
+  color: rgb(255, 255, 255);
+  height: 40px;
+}

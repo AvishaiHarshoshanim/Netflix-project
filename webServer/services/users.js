@@ -14,7 +14,7 @@ const getNextIdForRecServer = async () => {
 };
 
 // Function that creates a new user
-const createUser = async (userName, name, picture, password) => {
+const createUser = async (userName, name, picture, password, role) => {
     const idForRecServer = await getNextIdForRecServer();  
   
     // Check if a user with the given userName already exists
@@ -24,7 +24,7 @@ const createUser = async (userName, name, picture, password) => {
     }
 
     // Create a new user
-    const user = new Users({userName, name, password, idForRecServer});
+    const user = new Users({userName, name, password, role, idForRecServer});
 
     // Set the picture if provided
     if (picture) {

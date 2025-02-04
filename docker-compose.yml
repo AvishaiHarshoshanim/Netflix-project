@@ -10,7 +10,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - mongodb_data:/data/db
+      - ./webServer/DB_data:/data/db
 
   rec-server:
     build:

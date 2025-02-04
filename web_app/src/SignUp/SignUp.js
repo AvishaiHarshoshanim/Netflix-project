@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Password from "./Component/Password";
 import ProfilePic from "./Component/ProfilePic";
 import axios from "axios";
@@ -15,6 +16,10 @@ function SignUp() {
 
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const navigate = useNavigate();
+
+  const API_PORT = process.env.REACT_APP_USER_TO_WEB_PORT;
+  const API_URL = `http://localhost:${API_PORT}/api`;
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -42,9 +47,9 @@ function SignUp() {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/api/users", formDataToSend);
-      console.log("User created successfully:", response.data);
-      alert("User created successfully!");
+      console.log(API_URL)
+      await axios.post(`${API_URL}/users`, formDataToSend);
+      navigate("/signin");
     } catch (err) {
       if (err.response) {
         console.error("Error creating user:", err.response.data);
@@ -58,7 +63,7 @@ function SignUp() {
 
   return (
     <div className="home-page-background">
-      <div className="block">
+      <div className="block-up">
         <form onSubmit={handleSubmit}>
           <h2>Sign Up</h2>
 

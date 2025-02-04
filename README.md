@@ -42,12 +42,26 @@ Execute the following commands in Command Prompt for running the web server:
    ```bash
    docker-compose up
    ```
-- Step 3: Connect the web server:
-   You can now connect to the web server using your preferred method (such as curl, Thunder Client, etc.) with a command like the following:
+- Step 3: Connect the web server using React client:
+   Go to the web_app folder:
    ```bash
-   http://localhost:<put here your USER_TO_WEB_PORT>/api/categories/
+   cd web_app
    ```
-- Step 4: Stoping the web server and removing the containers:
+   Set the port that you used for the web server to listen to in the Environment Variable REACT_APP_USER_TO_WEB_PORT:
+   ```bash
+   set REACT_APP_USER_TO_WEB_PORT=<same as USER_TO_WEB_PORT>
+   ```
+   Install the dependencies:
+   ```bash
+   npm install
+   ```
+   Start the React client:
+   ```bash
+   npm start
+   ```
+- Step 4: Connect the web server using React client:
+   Open the android_app folder in Android Studio and run the app in the emullator.
+- Step 5: Stoping the web server and removing the containers:
    ```bash
    docker-compose down
    ```

@@ -6,15 +6,13 @@ const HeroSection = ({ userId }) => {
     const [isMuted, setIsMuted] = useState(true);
     const [videoURL, setVideoUrl] = useState(null);
 
-    console.log("userId from HeroSection:", userId);
-
+    const API_PORT = process.env.REACT_APP_USER_TO_WEB_PORT;
+    const API_URL = `http://localhost:${API_PORT}/api`;
 
     useEffect(() => {
         if (!userId) return; 
-        
-        console.log("Fetching random movie for user:", userId);
-    
-        fetch("http://localhost:5000/api/movies", {
+            
+        fetch(`${API_URL}/movies`, {
             method: "GET",
             headers: {
                 "Accept": "application/json",
@@ -23,7 +21,6 @@ const HeroSection = ({ userId }) => {
         })
         .then((res) => res.json())
         .then((data) => {
-            console.log("Fetched movies data:", data);
             
             const allMovies = data.flatMap(category => category.movies);
             if (allMovies.length === 0) {
@@ -33,8 +30,6 @@ const HeroSection = ({ userId }) => {
             }
     
             const randomMovie = allMovies[Math.floor(Math.random() * allMovies.length)];
-            console.log("Selected movie videoURL:", randomMovie.videoURL);
-
     
             if (!randomMovie.videoURL) {
                 console.error("Selected movie has no videoURL.");
@@ -49,7 +44,7 @@ const HeroSection = ({ userId }) => {
             setVideoUrl(null);
         });
     
-    }, [userId]); 
+    }, [userId, API_URL]); 
 
     const toggleMute = () => {
         if (videoRef.current) {
@@ -81,9 +76,9 @@ const HeroSection = ({ userId }) => {
                 alt={isMuted ? 'Mute' : 'Unmute'}
             />
             </button>
-            <div className="hero-buttons">
+            {/* <div className="hero-buttons">
                 <button className="btn btn-primary">play now</button>
-            </div>
+            </div> */}
         </div>
     );
 };

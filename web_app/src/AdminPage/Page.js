@@ -10,11 +10,14 @@ const AdminPage = () => {
   const [categories, setCategories] = useState([]);
   const [movies, setMovies] = useState([]);
 
+  const API_PORT = process.env.REACT_APP_USER_TO_WEB_PORT;
+  const API_URL = `http://localhost:${API_PORT}/api`;
+
   useEffect(() => {
     // Fetch categories and movies concurrently
     Promise.all([
-      fetch('http://localhost:5000/api/categories').then((response) => response.json()),
-      fetch('http://localhost:5000/api/movies/all').then((response) => response.json()),
+      fetch(`${API_URL}/categories`).then((response) => response.json()),
+      fetch(`${API_URL}/movies/all`).then((response) => response.json()),
     ])
       .then(([categoriesData, moviesData]) => {
         // Update categories state
@@ -39,7 +42,7 @@ const AdminPage = () => {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-  }, []);
+  }, [API_URL]);
 
   return (
     <div>
