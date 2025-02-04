@@ -24,7 +24,7 @@ Ensure Docker Desktop is running on your computer.
 - Step 2: Set the Ports for the web Server Connections:
     Set the port that you want the web server to listen to in the Environment Variable USER_TO_WEB_PORT:
    ```bash
-   set USER_TO_WEB_PORT=<put the port here (e.g. 5000)>
+   set USER_TO_WEB_PORT=<put the port here (e.g. 5000 (we recommended 5000))>
    ```
    Set the port between the recommendations server and the web server in the Environment Variable REC_TO_WEB_PORT:
    ```bash
@@ -42,6 +42,8 @@ Execute the following commands in Command Prompt for running the web server:
    ```bash
    docker-compose up
    ```
+   ### important
+   This server setup contains a setup to a default DB of the project that we made so you dont need to create the DB from scratch. the DB contains 9 movies and two signed up users: 1. username: 'admin' password Aa123456 2. username: 'user1' password: Aa123456. the admin have admin permissions, the admin permission provided to the user that his username is the one defined in the webServer/controllers/users.js file in line 30.
 - Step 3: Connect the web server using React client:
    Go to the web_app folder:
    ```bash
@@ -60,6 +62,7 @@ Execute the following commands in Command Prompt for running the web server:
    npm start
    ```
 - Step 4: Connect the web server using React client:
+   for this step you need to run the web server on port 5000 (USER_TO_WEB_PORT=5000).
    Open the android_app folder in Android Studio and run the app in the emullator.
 - Step 5: Stoping the web server and removing the containers:
    ```bash
