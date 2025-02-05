@@ -36,7 +36,7 @@ const processLogin = async (req, res) => {
 
     if (user.password === password) {
       const token = jwt.sign(
-        { userName: user.userName, role: user.role || "user" }, // Default role "user"
+        { userId: user._id, role: user.role || "user" }, // Default role "user"
         key,
         { expiresIn: "1h" }
       );

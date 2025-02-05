@@ -61,7 +61,6 @@ const MovieForm = ({ categories, addMovie, newMovie, setNewMovie }) => {
                         accept="video/*"
                         onChange={(e) => {
                             const file = e.target.files[0];
-                            console.log('Selected video file:', file); // Log to check if the file is selected
                             setNewMovie({
                                 ...newMovie,
                                 videoName: file.name,
@@ -69,9 +68,11 @@ const MovieForm = ({ categories, addMovie, newMovie, setNewMovie }) => {
                             })
                         }}
                     />
-                    <button className="btn btn-success ms-2" onClick={addMovie}>
-                        Add Movie
-                    </button>
+                    <div className="actions">
+                        <button className="btn btn-add ms-2" onClick={addMovie}>
+                            Add Movie
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

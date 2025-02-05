@@ -7,8 +7,11 @@ import './HomePage.css';
 const HomePage = ({userId}) => {
   const [categoriesWithMovies, setCategoriesWithMovies] = useState([]);
 
+  const API_PORT = process.env.REACT_APP_USER_TO_WEB_PORT;
+  const API_URL = `http://localhost:${API_PORT}/api`;
+
   useEffect(() => {
-    fetch("http://localhost:5000/api/movies", {
+    fetch(`${API_URL}/movies`, {
       method: "GET",
       headers: {
         "Accept": "application/json",
@@ -18,7 +21,7 @@ const HomePage = ({userId}) => {
       .then((response) => response.json())
       .then((data) => setCategoriesWithMovies(data))
       .catch((error) => console.error("Error fetching categories and movies:", error));
-  }, []);
+  }, [userId, API_URL]);
 
   return (
     <div>

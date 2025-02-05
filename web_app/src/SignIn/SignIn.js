@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import "./SignIn.css";
 
-function SignIn() {
+function SignIn({ setJwt, setUser }) {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
     userName: "",
     password: "",
   });
+
+  const API_PORT = process.env.REACT_APP_USER_TO_WEB_PORT;
+  const API_URL = `http://localhost:${API_PORT}/api`;
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -20,7 +24,7 @@ function SignIn() {
 
     try {
       // Send login request with correct values
-      const response = await axios.post("http://localhost:5000/api/Tokens", {
+      const response = await axios.post(`${API_URL}/Tokens`, {
         userName: inputs.userName, 
         password: inputs.password,
       });
@@ -28,11 +32,15 @@ function SignIn() {
       // Get token from response
       const { token } = response.data;
 
-      // Save token to localStorage
       localStorage.setItem("jwtToken", token);
-
-      alert("Login successful! Token saved.");
-      navigate("/"); // Redirect to home page after login
+      setJwt(token);
+      try {
+        const decoded = jwtDecode(token);
+        setUser({ userId: decoded.userId, role: decoded.role });        
+      } catch (error) {
+        console.error("Invalid JWT:", error);
+      }
+      navigate("/home"); // Redirect to home page after login
     } catch (error) {
       console.error("Login failed:", error.response?.data || error.message);
       alert("Invalid username or password");
@@ -41,7 +49,7 @@ function SignIn() {
 
   return (
     <div className="home-page-background">
-      <div className="block">
+      <div className="block-in">
       <h2>Sign In</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group mb-5">

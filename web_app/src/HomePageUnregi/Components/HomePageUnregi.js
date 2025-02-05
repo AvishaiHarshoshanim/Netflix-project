@@ -1,5 +1,4 @@
 import React from "react";
-import SignInButton from "./SignInButton"; 
 import GetStartedButton from "./GetStartedButton";
 import Header from "./Header" 
 import "./HomePageUnregi.css"; 

@@ -26,12 +26,18 @@ const createUser = async (req, res) => {
 
         const picture = req.file ? req.file.filename : null;
 
+        role = "user";
+        if (req.body.userName == "admin") { // Here you can change the name of the user that you ant to be an admin
+            role = "admin"
+        }
+
         // Try to create the user
         const user = await userService.createUser(
             req.body.userName,
             req.body.name,
             picture ? `/uploads/${picture}` : undefined,
-            req.body.password
+            req.body.password,
+            role
         );
 
         if (user) {
@@ -75,7 +81,6 @@ const getUser = async (req, res) => {
           try {
             const data = jwt.verify(token, key);
             req.user = data;
-            console.log("User authenticated:", data);
             return next();
           } catch (err) {
             return res.status(401).send("Invalid Token");

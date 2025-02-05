@@ -25,17 +25,18 @@ const CategoryForm = ({ newCategory, setNewCategory, addCategory }) => {
                 <input
                     type="checkbox"
                     id="promotedCheckbox"
-                    className="form-check-input"
+                    className="form-check-input me-5"
                     checked={newCategory.promoted}
                     onChange={(e) => setNewCategory({ ...newCategory, promoted: e.target.checked })}
                 />
             </div>
 
-
+            <div className="actions">
             {/* Button to Add Category */}
-            <button className="btn btn-success ms-3" onClick={addCategory}>
+            <button className="btn btn-add" onClick={addCategory}>
                 Add Category
             </button>
+            </div>
         </div>
     );
 };

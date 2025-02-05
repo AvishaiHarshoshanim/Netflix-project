@@ -18,9 +18,10 @@ const MovieManager = ({ categories, movies, setMovies }) => {
     videoURL: ''
   });
 
-  const addMovie = () => {
-    console.log('newMovie before submission:', newMovie); // Log the newMovie object before submission
+  const API_PORT = process.env.REACT_APP_USER_TO_WEB_PORT;
+  const API_URL = `http://localhost:${API_PORT}/api`;
 
+  const addMovie = () => {
     if (!newMovie.movieName) {
       alert("Movie name is required");
       return;
@@ -51,7 +52,7 @@ const MovieManager = ({ categories, movies, setMovies }) => {
       formData.append('videoFileToAdd', newMovie.videoFile);
     }
 
-    fetch('http://localhost:5000/api/movies', {
+    fetch(`${API_URL}/movies`, {
       method: 'POST',
       body: formData,
     })
@@ -103,7 +104,7 @@ const MovieManager = ({ categories, movies, setMovies }) => {
   };
 
   const deleteMovie = (movieId) => {
-    fetch(`http://localhost:5000/api/movies/${movieId}`, {
+    fetch(`${API_URL}/movies/${movieId}`, {
       method: 'DELETE',
     })
       .then(() => {
@@ -147,7 +148,7 @@ const MovieManager = ({ categories, movies, setMovies }) => {
       formData.append('videoFileToAdd', editingMovie.videoFile);
     }
 
-    fetch(`http://localhost:5000/api/movies/${movie._id}`, {
+    fetch(`${API_URL}/movies/${movie._id}`, {
       method: 'PUT',
       body: formData,
     })

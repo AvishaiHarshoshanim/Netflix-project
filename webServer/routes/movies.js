@@ -43,7 +43,7 @@ router.route('/:id')
     .delete(moviesController.deleteMovie);
     
 // route to get recommendations for id movie
-router.get('/:id/recommend', userController.isLoggedIn, moviesController.getRecommendations);
+router.get('/:id/recommend', moviesController.getRecommendations);
 
 // route to add a user's view of id movie
 router.post('/:id/recommend', moviesController.addUserMovie);

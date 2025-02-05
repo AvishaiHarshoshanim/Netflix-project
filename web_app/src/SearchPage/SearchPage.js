@@ -9,9 +9,12 @@ const SearchPage = ({userId}) => {
   const [isLoading, setIsLoading] = useState(true); 
   const [error, setError] = useState(null); 
 
+  const API_PORT = process.env.REACT_APP_USER_TO_WEB_PORT;
+  const API_URL = `http://localhost:${API_PORT}/api`;
+
   useEffect(() => {
     setIsLoading(true); 
-    fetch(`http://localhost:5000/api/movies/search/${query}`)
+    fetch(`${API_URL}/movies/search/${query}`)
       .then((res) => {
         if (res.status === 204) {
           setResults(null);
@@ -31,7 +34,7 @@ const SearchPage = ({userId}) => {
         setError("Error loading search results");
       })
       .finally(() => setIsLoading(false));
-  }, [query]);
+  }, [query, API_URL]);
 
   return (
     <div>

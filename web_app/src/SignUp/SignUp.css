@@ -1,20 +1,34 @@
 .home-page-background {
-  min-height: 100vh; /* Change from height to min-height */
+  position: relative;
+  width: 100%;
+  height: 100vh;
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: flex-start; /* Change from center to flex-start */
-  padding: 300px 0 50px 0; /* Add padding-top to push content down and padding-bottom for space */
+  background: black;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.home-page-background::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-image: url('../AdminPage/netflix-like_background.webp');
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed; /* Keep background fixed while scrolling */
-  background-color: rgba(0, 0, 0, 0.5);
-  overflow-y: auto; /* Enable vertical scrolling */
+  opacity: 0.3;
+  z-index: 1;
+  pointer-events: none;
 }
 
-.block {
-  width: 350px; /* Adjust width */
+.block-up {
+  position: relative;
+  z-index: 1;
+  width: 350px;
   padding: 40px; /* Padding inside the box */
   background-color: rgba(0, 0, 0, 0.8); /* Slightly darker black background */
   border-radius: 8px; /* Slightly round corners */
@@ -23,6 +37,7 @@
   color: white; /* White text color */
   font-family: Arial, sans-serif; /* Standard font */
   margin: 200px auto; /* Adjust vertical spacing with margin-top */
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 .form-group {
   margin-bottom: 25px; /* Increased spacing between input fields */

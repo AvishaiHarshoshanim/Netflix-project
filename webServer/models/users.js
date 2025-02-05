@@ -18,7 +18,7 @@ const UsersSchema = new Schema({
     },
     role: {
         type: String,
-        enum: ["user", "manager"], 
+        enum: ["user", "admin"], 
         default: "user",
       },
     viewingHistory: [
