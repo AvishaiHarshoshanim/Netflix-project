@@ -44,6 +44,11 @@ Execute the following commands in Command Prompt for running the web server:
    ```
    ### important
    This server setup contains a setup to a default DB of the project that we made so you dont need to create the DB from scratch. the DB contains 9 movies and two signed up users: 1. username: 'admin' password Aa123456 2. username: 'user1' password: Aa123456. the admin have admin permissions, the admin permission provided to the user that his username is the one defined in the webServer/controllers/users.js file in line 30.
+   If the mongoDB crushes run the following command:
+   ```bash
+   docker-compose run mongodb mongod --repair
+   ```
+   this will fix the data that should be saved to the mongoDB.
 - Step 3: Connect the web server using React client:
    Go to the web_app folder:
    ```bash
