@@ -31,6 +31,10 @@ public class MovieViewModel extends AndroidViewModel {
         return allMovies;
     }
 
+    public void fetchAllMovies() {
+        movieRepository.fetchAllMovies(movies -> allMovies.postValue(movies));
+    }
+
     public LiveData<List<Category>> getCategories() {
         categoryRepository.fetchAndStoreCategories(allCategories::postValue);
         return allCategories;
