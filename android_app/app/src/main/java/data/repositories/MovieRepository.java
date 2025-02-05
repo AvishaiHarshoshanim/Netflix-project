@@ -57,6 +57,10 @@ public class MovieRepository {
         void onMovieFetched(Movie movie);
     }
 
+    public interface MovieListCallback {
+        void onMoviesFetched(List<Movie> movies);
+    }
+
     public MovieRepository(Application application) {
         AppDB appDatabase = Room.databaseBuilder(application, AppDB.class, "app_database").build();
         movieDao = appDatabase.movieDao();
@@ -71,6 +75,29 @@ public class MovieRepository {
 
     public LiveData<List<Movie>> getAllMovies() {
         return movieDao.getAllMovies();
+    }
+
+    public void fetchAllMovies(MovieListCallback callback) {
+        new Thread(() -> {
+                webServiceAPI.getAllMovies().enqueue(new Callback<List<Movie>>() {
+                    @Override
+                    public void onResponse(Call<List<Movie>> call, Response<List<Movie>> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            List<Movie> movies = response.body();
+                            new Thread(() -> {
+                                movieDao.clearAllMovies();
+                                movieDao.insertMovies(movies);
+                                callback.onMoviesFetched(movies);
+                            }).start();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Movie>> call, Throwable t) {
+                        Log.e("MovieRepository", "Failed to fetch movies", t);
+                    }
+                });
+        }).start();
     }
 
     public Movie getMovie(String id) {
