@@ -76,9 +76,10 @@ const HeroSection = ({ userId }) => {
                 alt={isMuted ? 'Mute' : 'Unmute'}
             />
             </button>
-            {/* <div className="hero-buttons">
+            {/* i deleted it and returned this button: */}
+            <div className="hero-buttons">
                 <button className="btn btn-primary">play now</button>
-            </div> */}
+            </div>
         </div>
     );
 };

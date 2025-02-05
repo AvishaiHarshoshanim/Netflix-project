@@ -48,6 +48,8 @@ services:
       - "${USER_TO_WEB_PORT}:${USER_TO_WEB_PORT}"
     volumes:
       - ./webServer/uploads:/myapp/webserver/uploads
+    depends_on:
+    - mongodb
 
 networks:
   mynetwork:
