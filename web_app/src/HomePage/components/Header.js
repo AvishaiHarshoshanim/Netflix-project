@@ -75,7 +75,7 @@ const Header = ({ toggleTheme, theme, user, logout }) => {
             src={userDet?.picture ? `http://localhost:${API_PORT}${userDet.picture}` : "/images/default-profile.webp"}
             alt="Profile"
             className="profile-picture"
-            onClick={() => setIsProfileOpen(true)} // פותח את החלון בלחיצה
+            onClick={() => setIsProfileOpen(true)} 
           />
 
           <span className="user-name"> {userDet?.name || "Guest"}</span>
