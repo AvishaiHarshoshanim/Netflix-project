@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package views.user;
 
 public class SignUpResponse {
     private String userName; 

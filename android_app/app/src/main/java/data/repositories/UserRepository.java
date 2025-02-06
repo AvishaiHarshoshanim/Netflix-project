@@ -21,12 +21,17 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import views.user.LoginRequest;
 import views.user.TokenResponse;
+import android.util.Base64;
+import org.json.JSONObject;
+import java.nio.charset.StandardCharsets;
 
 import java.io.File;
 
 public class UserRepository {
     private static final String PREF_NAME = "user_prefs";
     private static final String KEY_TOKEN = "jwt_token";
+    private static final String KEY_USER_ID = "user_id";
+    private static final String KEY_ROLE = "user_role";
 
     private final WebServiceAPI webServiceAPI;
     private final SharedPreferences sharedPreferences;
@@ -75,6 +80,49 @@ public class UserRepository {
             }
         });
     }
+
+    private void saveToken(String token) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_TOKEN, token);
+
+        // Extract userId & role
+        try {
+            String[] parts = token.split("\\.");  // JWT has 3 parts: Header, Payload, Signature
+            if (parts.length == 3) {
+                String payloadJson = new String(Base64.decode(parts[1], Base64.URL_SAFE), StandardCharsets.UTF_8);
+                JSONObject jsonObject = new JSONObject(payloadJson);
+
+                String userId = jsonObject.optString("userId", "");  // Extract userId
+                String role = jsonObject.optString("role", "");  // Extract role
+
+                // Save in SharedPreferences
+                editor.putString(KEY_USER_ID, userId);
+                editor.putString(KEY_ROLE, role);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        editor.apply();
+    }
+
+
+    public String getToken() {
+        return sharedPreferences.getString(KEY_TOKEN, null);
+    }
+
+    public String getUserId() {
+        return sharedPreferences.getString(KEY_USER_ID, null);
+    }
+
+    public String getUserRole() {
+        return sharedPreferences.getString(KEY_ROLE, null);
+    }
+
+    public void logout() {
+        sharedPreferences.edit().clear().apply();
+    }
+
     //signUp
     public void signUp(String username, String name, String password, File imageFile, SignUpCallback callback) {
         Log.d(TAG, "🔹 Starting sign-up process for: " + username);
@@ -122,19 +170,5 @@ public class UserRepository {
                         callback.onSignUpResult(false);
                     }
                 });
-    }
-//puts the jwt in the KEY_TOKEN
-    private void saveToken(String token) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(KEY_TOKEN, token);
-        editor.apply();
-    }
-
-    public String getToken() {
-        return sharedPreferences.getString(KEY_TOKEN, null);
-    }
-
-    public void logout() {
-        sharedPreferences.edit().remove(KEY_TOKEN).apply();
     }
 }

@@ -2,11 +2,14 @@ package com.example.android_app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import features.threePages.HomePageWithBarActivity;
+import features.login.LoginActivity;
+import features.signUp.SignUpActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,14 +19,26 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        // David and lior! replace "AdminPage" to your page
-        Intent intent = new Intent(MainActivity.this, HomePageWithBarActivity.class);
-        startActivity(intent);
+        Button loginButton = findViewById(R.id.loginButton);
+        Button signUpButton = findViewById(R.id.signUpButton);
 
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-//            return insets;
-//        });
+        // Navigate to LoginActivity
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // Navigate to SignUpActivity
+        signUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
+

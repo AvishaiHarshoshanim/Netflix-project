@@ -1,5 +1,7 @@
 package features.MovieDetails;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -40,6 +42,10 @@ public class MovieDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+        String userId = sharedPreferences.getString("user_id", null);
+        String role = sharedPreferences.getString("user_role", null);
+
         moviePoster = findViewById(R.id.movie_poster);
         movieName = findViewById(R.id.movie_name);
         movieDirector = findViewById(R.id.movie_director);
@@ -56,8 +62,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
         String movieId = getIntent().getStringExtra("MOVIE_ID");
 
         Log.println(Log.DEBUG, "ALO movieId", movieId);
-
-        String userId = getIntent().getStringExtra("USER_ID");
 
         if (movieId != null) {
             movieViewModel.fetchMovieDetails(movieId);

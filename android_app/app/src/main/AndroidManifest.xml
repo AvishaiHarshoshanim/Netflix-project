@@ -30,8 +30,8 @@
         <activity
             android:name="features.MovieDetails.MovieShowActivity"
             android:exported="false" />
-        <activity android:name=".LoginActivity" android:exported="true"/>
-        <activity android:name=".SignUpActivity" android:exported="true"/>
+        <activity android:name="features.login.LoginActivity" android:exported="true"/>
+        <activity android:name="features.signUp.SignUpActivity" android:exported="true"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">
