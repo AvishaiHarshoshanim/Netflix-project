@@ -13,9 +13,10 @@ function Password({
   // Validate Password
   const validatePassword = (value) => {
     setPassword(value);
-
+    //if there is no password than we will see no error
     if (!value) {
-      setPasswordError(""); // Clear error if empty
+      setPasswordError(""); 
+      setConfirmPasswordError(""); 
       return;
     }
 
@@ -23,35 +24,52 @@ function Password({
     const hasLowercase = /[a-z]/.test(value);
     const hasNumber = /\d/.test(value);
     const hasMinLength = value.length >= 8;
-
+    //if the password meets all the cratirea than no error else error
     if (hasUppercase && hasLowercase && hasNumber && hasMinLength) {
-      setPasswordError(""); // No error
+      setPasswordError(""); 
     } else {
       setPasswordError(
         "Password must contain: a lowercase letter, an uppercase letter, a number, and be at least 8 characters."
       );
     }
+
+    // Validate confirm password with the updated password
+    if (confirmPassword) {
+      validateConfirmPassword(confirmPassword, value);
+    }
   };
 
   // Validate Confirm Password
-  const validateConfirmPassword = (value) => {
+  const validateConfirmPassword = (value, password) => {
     setConfirmPassword(value);
 
     if (!value) {
-      setConfirmPasswordError(""); // Clear error if empty
+      setConfirmPasswordError(""); 
+      return;
+    }
+
+    if (password === "") {
+      setConfirmPasswordError(""); 
       return;
     }
 
     if (value !== password) {
       setConfirmPasswordError("Passwords do not match.");
     } else {
-      setConfirmPasswordError(""); // No error
+      setConfirmPasswordError(""); 
     }
   };
 
-  // Determine input classes
-  const passwordInputClass = passwordError === "" ? "is-valid" : passwordError ? "is-invalid" : "";
-  const confirmPasswordInputClass = confirmPasswordError === "" ? "is-valid" : confirmPasswordError ? "is-invalid" : "";
+  const passwordInputClass = password
+    ? (passwordError === "" ? "is-valid" : "is-invalid")
+    : "";
+
+  const confirmPasswordInputClass =
+    confirmPassword && password 
+      ? confirmPasswordError === ""
+        ? "is-valid"
+        : "is-invalid"
+      : "";
 
   return (
     <div>
@@ -79,7 +97,9 @@ function Password({
           className={`form-control ${confirmPasswordInputClass}`}
           placeholder="Confirm password"
           value={confirmPassword}
-          onChange={(event) => validateConfirmPassword(event.target.value)}
+          onChange={(event) =>
+            validateConfirmPassword(event.target.value, password)
+          }
           required
         />
         {confirmPasswordError && (
