@@ -12,9 +12,15 @@ const HeroSection = ({ userId }) => {
 
     const API_PORT = process.env.REACT_APP_USER_TO_WEB_PORT;
     const API_URL = `http://localhost:${API_PORT}/api`;
+    const hasFetched = useRef(false); // flag that prevents duplicate calls to the server
 
     useEffect(() => {
         if (!userId) return; 
+
+        if (hasFetched.current) return; // If the reading has already been done - do not read again
+        hasFetched.current = true; // Marking that the reading has been done
+
+        console.log("🔄 Fetching movie from server...");
             
         fetch(`${API_URL}/movies`, {
             method: "GET",
