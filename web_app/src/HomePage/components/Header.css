@@ -135,32 +135,110 @@
   background-color: white;
   color: black;
 }
+
 .user-info {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin: 0 20px; 
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 200px; /* Increased max-width for better visibility */
-  order: -1; /* This ensures it comes before the navigation items */
+  gap: 8px; 
+  position: absolute;
+  left: 160px; 
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer; 
+  transition: transform 0.3s ease-in-out;
 }
+
 .profile-picture {
-  width: 35px;
-  height: 35px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid white;
+  border: 3px solid white;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.profile-picture:hover {
+  transform: scale(1.05); 
+}
+
+.dark-mode .profile-picture {
+  border-color: #e50914; 
+}
+
+.light-mode .profile-picture {
+  border-color: #007bff; 
 }
 
 .user-name {
-  font-weight: bold;
   font-size: 16px;
-  color: white;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100px;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 15px;
+  transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  position: relative;
+  top: 5px; 
+  left: -5px;
 }
-  
-  
+
+
+.dark-mode .user-name {
+  color: white;
+}
+
+
+.light-mode .user-name {
+  color: #007bff; 
+}
+
+.profile-modal {
+  position: absolute;
+  top: 60px; 
+  left: 160px; 
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  width: 200px;
+  text-align: left;
+  z-index: 1000;
+  transition: all 0.3s ease-in-out;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+.profile-content {
+  padding: 10px;
+}
+
+.profile-content h2 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.profile-content p {
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.profile-content button {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  border: none;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+.dark-mode .profile-content button {
+  background: red;
+  color: white;
+}
+
+.light-mode .profile-content button {
+  background: #007bff; 
+  color: white;
+}
