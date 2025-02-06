@@ -2,18 +2,23 @@ package features.MovieDetails;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.android_app.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import features.threePages.MovieListAdapter;
 import views.movies.Movie;
 import views.movies.MovieViewModel;
 
@@ -24,9 +29,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     private MovieViewModel movieViewModel;
     private ImageView moviePoster;
-    private TextView movieName, movieDirector, movieActors, movieCategories;
+    private TextView movieName, movieDirector, movieActors, movieCategories, noResultsMessage, recoTitle;
+    private RecyclerView recyclerView;
     private Button playVideoButton;
     private String videoUrl;
+    private MovieListAdapter movieAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,15 +46,18 @@ public class MovieDetailsActivity extends AppCompatActivity {
         movieActors = findViewById(R.id.movie_actors);
         movieCategories = findViewById(R.id.movie_categories);
         playVideoButton = findViewById(R.id.play_video_button);
+        recoTitle = findViewById(R.id.recoTitle);
+        recyclerView = findViewById(R.id.recycler_View);
+        noResultsMessage = findViewById(R.id.noResultsMessage);
 
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
 
         // Get movie ID from intent
         String movieId = getIntent().getStringExtra("MOVIE_ID");
 
-        //String userId = getIntent().getStringExtra("USER_ID");
-        String userId = "679a3db25f4cedde9d4d1742";
+        Log.println(Log.DEBUG, "ALO movieId", movieId);
 
+        String userId = getIntent().getStringExtra("USER_ID");
 
         if (movieId != null) {
             movieViewModel.fetchMovieDetails(movieId);
@@ -70,9 +80,37 @@ public class MovieDetailsActivity extends AppCompatActivity {
             // Handle Play Video button click
             playVideoButton.setOnClickListener(v -> {
                 if (videoUrl != null && !videoUrl.isEmpty()) {
+                    movieViewModel.updateRecServer(userId,movieId);
                     Intent intent = new Intent(MovieDetailsActivity.this, MovieShowActivity.class);
                     intent.putExtra("VIDEO_URL", videoUrl);
                     startActivity(intent);
+                }
+            });
+
+            movieAdapter = new MovieListAdapter(new ArrayList<>(), movie -> {
+                Intent intent = new Intent(this, MovieDetailsActivity.class);
+                intent.putExtra("MOVIE_ID", movie.get_id());
+                intent.putExtra("USER_ID", userId);
+                startActivity(intent);
+            });
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+            recyclerView.setAdapter(movieAdapter);
+
+            movieViewModel.getRecMovies(userId,movieId);
+
+            recyclerView.setVisibility(View.VISIBLE);
+
+            // Observe the allMovies LiveData (to display the full movie list initially)
+            movieViewModel.getMoviesToShow().observe(this, recoMovies -> {
+                if (recoMovies == null || recoMovies.isEmpty()) {
+                    // No movies were found, show a message or placeholder
+                    recyclerView.setVisibility(View.GONE);  // Optionally hide the RecyclerView
+                    noResultsMessage.setVisibility(View.VISIBLE);  // Show a "No results found" message (you should add this TextView to your layout)
+                } else {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    noResultsMessage.setVisibility(View.GONE);  // Hide the "No results found" message
+                    movieAdapter.updateList(recoMovies);
                 }
             });
 

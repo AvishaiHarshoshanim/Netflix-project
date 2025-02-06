@@ -1,38 +1,43 @@
 package views.movies;
+import views.CategoryWithMovies;
 import views.categories.Category;
 import data.repositories.CategoryRepository;
 import data.repositories.MovieRepository;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MovieViewModel extends AndroidViewModel {
     private final MovieRepository movieRepository;
     private CategoryRepository categoryRepository;
     private final MutableLiveData<List<Movie>> allMovies;
     private final MutableLiveData<List<Category>> allCategories;
+    private final MutableLiveData<Map<String, List<CategoryWithMovies.Movie>>> categorizedMovies;
+    private final MutableLiveData<List<Movie>> moviesToShow;
+
 
     public MovieViewModel(@NonNull Application application) {
         super(application);
         movieRepository = new MovieRepository(application);
         allMovies = new MutableLiveData<>();
         allCategories = new MutableLiveData<>();
+        categorizedMovies = new MutableLiveData<>();
+        moviesToShow = new MutableLiveData<>();
         categoryRepository = new CategoryRepository(application);
         refreshMovies();
     }
 
     public LiveData<List<Movie>> getAllMovies() {
         return allMovies;
-    }
-
-    public void fetchAllMovies() {
-        movieRepository.fetchAllMovies(movies -> allMovies.postValue(movies));
     }
 
     public LiveData<List<Category>> getCategories() {
@@ -83,5 +88,81 @@ public class MovieViewModel extends AndroidViewModel {
                 }
             }
         });
+    }
+
+    public LiveData<List<Movie>> getRecMovies(String userId, String movieId) {
+        movieRepository.getRecMovies(userId, movieId, recoMovies -> {
+            if (recoMovies == null) {
+                Log.e("MovieViewModel", "No searchedMovies received!");
+            }
+            moviesToShow.postValue(recoMovies);
+        });
+
+        return moviesToShow;
+    }
+
+    public void updateRecServer(String userId, String movieId) {
+        movieRepository.updateRecServer(userId, movieId, () -> {});
+    }
+
+    public LiveData<Map<String, List<CategoryWithMovies.Movie>>> getMoviesByCategories() {
+        if (categorizedMovies.getValue() == null) {
+            categorizedMovies.setValue(new HashMap<>());  // Ensure it's never null
+        }
+
+        movieRepository.getMoviesByCategories(categoryWithMoviesList -> {
+            if (categoryWithMoviesList == null || categoryWithMoviesList.isEmpty()) {
+                Log.e("MovieViewModel", "No categories received!");
+                return;
+            }
+
+            Map<String, List<CategoryWithMovies.Movie>> categorized = new HashMap<>();
+            for (CategoryWithMovies categoryWithMovies : categoryWithMoviesList) {
+                categorized.put(categoryWithMovies.getCategory(), categoryWithMovies.getMovies());
+            }
+
+            Log.d("MovieViewModel", "Fetched categories: " + categorized.keySet());
+            categorizedMovies.postValue(categorized);
+        });
+
+        return categorizedMovies;
+    }
+
+    public LiveData<Map<String, List<CategoryWithMovies.Movie>>> getMoviesByCategory(String userId) {
+        if (categorizedMovies.getValue() == null) {
+            categorizedMovies.setValue(new HashMap<>());  // Ensure it's never null
+        }
+
+        movieRepository.getMoviesByCategory(userId, categoryWithMoviesList -> {
+            if (categoryWithMoviesList == null || categoryWithMoviesList.isEmpty()) {
+                Log.e("MovieViewModel", "No movies received!");
+                return;
+            }
+
+            Map<String, List<CategoryWithMovies.Movie>> categorized = new HashMap<>();
+            for (CategoryWithMovies categoryWithMovies : categoryWithMoviesList) {
+                categorized.put(categoryWithMovies.getCategory(), categoryWithMovies.getMovies());
+            }
+
+            Log.d("MovieViewModel", "Fetched categories: " + categorized.keySet());
+            categorizedMovies.postValue(categorized);
+        });
+
+        return categorizedMovies;
+    }
+
+    public LiveData<List<Movie>> searchMovies(String query) {
+        movieRepository.searchMovies(query, newSearchedMovies -> {
+            if (newSearchedMovies == null) {
+                Log.e("MovieViewModel", "No searchedMovies received!");
+            }
+            moviesToShow.postValue(newSearchedMovies);
+        });
+
+        return moviesToShow;
+    }
+
+    public MutableLiveData<List<Movie>> getMoviesToShow() {
+        return moviesToShow;
     }
 }
