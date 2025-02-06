@@ -1,6 +1,8 @@
 package data.remote;
 
+import features.threePages.ui.search.MoviesToShowResponse;
 import retrofit2.http.Header;
+import views.CategoryWithMovies;
 import views.categories.Category;
 import views.movies.Movie;
 import okhttp3.MultipartBody;
@@ -62,13 +64,15 @@ public interface WebServiceAPI {
     Call<Void> deleteMovie(@Path("id") String _id);
 
     @GET("movies/{id}/recommend")
-    Call<List<Movie>> getRecMovies(@Header("userId") String userId, @Path("id") int movieId);
+    Call<MoviesToShowResponse> getRecMovies(@Header("userId") String userId, @Path("id") String movieId);
 
     @POST("movies/{id}/recommend")
-    Call<Void> updateRecServer(@Header("userId") String userId, @Path("id") int movieId);
+    Call<Void> updateRecServer(@Header("userId") String userId, @Path("id") String movieId);
+
     //create token
      @POST("tokens")
     Call<TokenResponse> login(@Body LoginRequest loginRequest);
+  
     //create user
     @Multipart
     @POST("users")
@@ -76,9 +80,14 @@ public interface WebServiceAPI {
             @Part("userName") RequestBody username,
             @Part("name") RequestBody name,
             @Part("password") RequestBody password,
-            @Part MultipartBody.Part profile_picture
+            @Part MultipartBody.Part profile_picture);
+  
+    @GET("movies/categories/withMovies")
+    Call<List<CategoryWithMovies>> getMoviesByCategories();
 
-    );
+    @GET("movies/")
+    Call<List<CategoryWithMovies>> getMoviesByCategory(@Header("userId") String userId);
 
-
+    @GET("movies/search/{query}")
+    Call<MoviesToShowResponse> searchMovies(@Path("query") String query);
 }

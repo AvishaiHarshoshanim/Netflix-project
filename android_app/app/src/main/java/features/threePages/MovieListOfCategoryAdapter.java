@@ -1,4 +1,4 @@
-package features.homePage;
+package features.threePages;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,21 +12,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.android_app.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import views.movies.Movie;
+import views.CategoryWithMovies;
 
+public class MovieListOfCategoryAdapter extends RecyclerView.Adapter<MovieListOfCategoryAdapter.MovieViewHolder> {
+    private final List<CategoryWithMovies.Movie> movies;
+    private final CategoryWithMoviesAdapter.OnMovieClickListener listener;
 
-public class MovieHomeAdapter extends RecyclerView.Adapter<MovieHomeAdapter.MovieViewHolder> {
-    private List<Movie> movies = new ArrayList<>();
-    private final OnMovieClickListener listener;
-
-    public interface OnMovieClickListener {
-        void onMovieClick(Movie movie);
-    }
-
-    public MovieHomeAdapter(OnMovieClickListener listener) {
+    public MovieListOfCategoryAdapter(List<CategoryWithMovies.Movie> movies, CategoryWithMoviesAdapter.OnMovieClickListener listener) {
+        this.movies = movies;
         this.listener = listener;
     }
 
@@ -47,11 +42,6 @@ public class MovieHomeAdapter extends RecyclerView.Adapter<MovieHomeAdapter.Movi
         return movies.size();
     }
 
-    public void setMovies(List<Movie> movies) {
-        this.movies = movies;
-        notifyDataSetChanged();
-    }
-
     class MovieViewHolder extends RecyclerView.ViewHolder {
         private final TextView titleTextView;
         private final ImageView posterImageView;
@@ -69,10 +59,9 @@ public class MovieHomeAdapter extends RecyclerView.Adapter<MovieHomeAdapter.Movi
             });
         }
 
-        public void bind(Movie movie) {
+        public void bind(CategoryWithMovies.Movie movie) {
             titleTextView.setText(movie.getMovieName());
 
-            // Handle the picture URL to replace "localhost" with "10.0.2.2"
             String imageUrl = movie.getImageURL();
             if (imageUrl != null && imageUrl.contains("localhost")) {
                 imageUrl = imageUrl.replace("localhost", "10.0.2.2");
@@ -80,7 +69,7 @@ public class MovieHomeAdapter extends RecyclerView.Adapter<MovieHomeAdapter.Movi
 
             Glide.with(itemView.getContext())
                     .load(imageUrl)
-                    .placeholder(R.drawable.ic_movie_poster_placeholder) // Optional: Placeholder while loading
+                    .placeholder(R.drawable.ic_movie_poster_placeholder)
                     .into(posterImageView);
         }
     }

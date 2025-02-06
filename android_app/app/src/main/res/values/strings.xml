@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Netblix</string>
+    <string name="title_activity_home_page_with_bar">HomePageWithBarActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Hello user!</string>
+    <string name="nav_header_subtitle">Please enjoy the netblix app!</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Logout</string>
+
+    <string name="menu_home">Home Page</string>
+    <string name="menu_gallery">Movies</string>
+    <string name="menu_slideshow">Search</string>
 </resources>

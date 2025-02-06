@@ -7,12 +7,19 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.room.Room;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import features.threePages.ui.search.MoviesToShowResponse;
+import views.CategoryDeserializer;
+import views.CategoryWithMovies;
 import views.movies.Movie;
 import data.loacl.AppDB;
 import data.remote.WebServiceAPI;
@@ -57,8 +64,20 @@ public class MovieRepository {
         void onMovieFetched(Movie movie);
     }
 
-    public interface MovieListCallback {
-        void onMoviesFetched(List<Movie> movies);
+    public interface MoviesByCategoryCallback {
+        void onMoviesByCategoriesFetched(List<CategoryWithMovies> moviesByCategory);
+    }
+
+    public interface MoviesSearchCallback {
+        void onMoviesSearchFetched(List<Movie> movieSearch);
+    }
+
+    public interface MoviesRecoCallback {
+        void onMoviesRecoFetched(List<Movie> movieReco);
+    }
+
+    public interface MovieRecoUpdatedCallback {
+        void onRecoMovieUpdated();
     }
 
     public MovieRepository(Application application) {
@@ -66,38 +85,21 @@ public class MovieRepository {
         movieDao = appDatabase.movieDao();
         categoryDao = appDatabase.categoryDao();
 
+        // Custom Gson instance with CategoryDeserializer
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(new TypeToken<List<Category>>(){}.getType(), new CategoryDeserializer())
+                .create();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:5000/api/")
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
+
         webServiceAPI = retrofit.create(WebServiceAPI.class);
     }
 
     public LiveData<List<Movie>> getAllMovies() {
         return movieDao.getAllMovies();
-    }
-
-    public void fetchAllMovies(MovieListCallback callback) {
-        new Thread(() -> {
-                webServiceAPI.getAllMovies().enqueue(new Callback<List<Movie>>() {
-                    @Override
-                    public void onResponse(Call<List<Movie>> call, Response<List<Movie>> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            List<Movie> movies = response.body();
-                            new Thread(() -> {
-                                movieDao.clearAllMovies();
-                                movieDao.insertMovies(movies);
-                                callback.onMoviesFetched(movies);
-                            }).start();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<Movie>> call, Throwable t) {
-                        Log.e("MovieRepository", "Failed to fetch movies", t);
-                    }
-                });
-        }).start();
     }
 
     public Movie getMovie(String id) {
@@ -311,6 +313,130 @@ public class MovieRepository {
             @Override
             public void onFailure(Call<Movie> call, Throwable t) {
                 Log.e("MovieRepository", "Failed to fetch movie details", t);
+            }
+        });
+    }
+
+    public void getRecMovies(String userId, String movieId, MoviesRecoCallback callback) {
+        webServiceAPI.getRecMovies(userId, movieId).enqueue(new Callback<MoviesToShowResponse>() {
+            @Override
+            public void onResponse(Call<MoviesToShowResponse> call, Response<MoviesToShowResponse> response) {
+                if (response.isSuccessful()) {
+                    if(response.body() != null) {
+                        List<Movie> movies = response.body().getRecommendations();
+                        new android.os.Handler(Looper.getMainLooper()).post(() -> {
+                            callback.onMoviesRecoFetched(movies);
+                        });
+                    } else {
+                        List<Movie> movies = null;
+                        new android.os.Handler(Looper.getMainLooper()).post(() -> {
+                            callback.onMoviesRecoFetched(movies);
+                        });
+                    }
+                } else {
+                    Log.e("MovieRepository", "Response unsuccessful or empty");
+                    Log.e("MovieRepository", response.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MoviesToShowResponse> call, Throwable t) {
+                Log.e("MovieRepository", "Failed to fetch movies search", t);
+            }
+        });
+    }
+
+    public void updateRecServer(String userId, String movieId, MovieRecoUpdatedCallback callback) {
+        webServiceAPI.updateRecServer(userId, movieId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                        new android.os.Handler(Looper.getMainLooper()).post(() -> {
+                            callback.onRecoMovieUpdated();
+                        });
+                } else {
+                    Log.e("MovieRepository", "Response unsuccessful or empty");
+                    Log.e("MovieRepository", response.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("MovieRepository", "Failed to update movies search", t);
+            }
+        });
+    }
+
+    public void getMoviesByCategories(MoviesByCategoryCallback callback) {
+        webServiceAPI.getMoviesByCategories().enqueue(new Callback<List<CategoryWithMovies>>() {
+            @Override
+            public void onResponse(Call<List<CategoryWithMovies>> call, Response<List<CategoryWithMovies>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<CategoryWithMovies> movies = response.body();
+                    new android.os.Handler(Looper.getMainLooper()).post(() -> {
+                        callback.onMoviesByCategoriesFetched(movies);
+                    });
+                } else {
+                    Log.e("MovieRepository", "Response unsuccessful or empty");
+                    Log.e("MovieRepository", response.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CategoryWithMovies>> call, Throwable t) {
+                Log.e("MovieRepository", "Failed to fetch movies by categories", t);
+            }
+        });
+    }
+
+    public void getMoviesByCategory(String userId, MoviesByCategoryCallback callback) {
+        webServiceAPI.getMoviesByCategory(userId).enqueue(new Callback<List<CategoryWithMovies>>() {
+            @Override
+            public void onResponse(Call<List<CategoryWithMovies>> call, Response<List<CategoryWithMovies>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<CategoryWithMovies> movies = response.body();
+                    new android.os.Handler(Looper.getMainLooper()).post(() -> {
+                        callback.onMoviesByCategoriesFetched(movies);
+                    });
+                } else {
+                    Log.e("MovieRepository", "Response unsuccessful or empty");
+                    Log.e("MovieRepository", response.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CategoryWithMovies>> call, Throwable t) {
+                Log.e("MovieRepository", "Failed to fetch movies of user", t);
+            }
+        });
+    }
+
+    public void searchMovies(String query, MoviesSearchCallback callback) {
+        webServiceAPI.searchMovies(query).enqueue(new Callback<MoviesToShowResponse>() {
+            @Override
+            public void onResponse(Call<MoviesToShowResponse> call, Response<MoviesToShowResponse> response) {
+                if (response.isSuccessful()) {
+                    if(response.body() != null) {
+                        List<Movie> movies = response.body().getResults();
+                        Log.println(Log.DEBUG,"aaaaa",movies.toString());
+                        new android.os.Handler(Looper.getMainLooper()).post(() -> {
+                            callback.onMoviesSearchFetched(movies);
+                        });
+                    } else {
+                        List<Movie> movies = null;
+                        new android.os.Handler(Looper.getMainLooper()).post(() -> {
+                            callback.onMoviesSearchFetched(movies);
+                        });
+                    }
+                } else {
+                    Log.e("MovieRepository", "Response unsuccessful or empty");
+                    Log.e("MovieRepository", response.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MoviesToShowResponse> call, Throwable t) {
+                Log.e("MovieRepository", "Failed to fetch movies search", t);
             }
         });
     }

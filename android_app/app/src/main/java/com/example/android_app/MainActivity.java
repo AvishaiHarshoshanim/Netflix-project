@@ -6,8 +6,7 @@ import android.os.Bundle;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import features.adminPage.AdminPage;
-import features.homePage.HomePageActivity;
+import features.threePages.HomePageWithBarActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // David and lior! replace "AdminPage" to your page
-        Intent intent = new Intent(MainActivity.this, HomePageActivity.class);
+        Intent intent = new Intent(MainActivity.this, HomePageWithBarActivity.class);
         startActivity(intent);
 
 //        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

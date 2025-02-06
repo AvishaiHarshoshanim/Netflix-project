@@ -29,6 +29,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -48,6 +51,10 @@ dependencies {
     implementation(libs.room.runtime)
 
     implementation(libs.androidx.recyclerview.v132)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui)
     //implementation("androidx.recyclerview:recyclerview:1.3.2")
 
     //annotationProcessor("androidx.room:room-compiler:2.6.1")
@@ -65,6 +72,9 @@ dependencies {
     annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
     //annotationProcessor(libs.github.compiler)
 
+
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
 
     implementation(libs.appcompat)
     implementation(libs.material)
