@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:padding="24dp">
 
-    <!-- לוגו בפינה השמאלית העליונה -->
+    
     <ImageView
         android:id="@+id/logo"
         android:layout_width="100dp"
@@ -19,13 +19,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- Spacer (ממלא את החלק העליון) -->
+    
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.5" />
 
-    <!-- קונטיינר לתוכן עם רקע שחור שקוף -->
+    
     <LinearLayout
         android:id="@+id/login_box"
         android:layout_width="match_parent"
@@ -45,7 +45,7 @@
             android:gravity="center"
             android:layout_marginBottom="16dp"/>
 
-        <!-- EditText עם גבול לבן דק -->
+        
         <EditText
             android:id="@+id/userName_input"
             android:layout_width="match_parent"
@@ -90,7 +90,7 @@
             android:padding="10dp"
             android:layout_marginBottom="16dp"
 />
-        <!-- קבוצה עבור בחירת תמונת פרופיל -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -138,7 +138,7 @@
             android:layout_marginTop="10dp"/>
     </LinearLayout>
 
-    <!-- Spacer (ממלא את החלק התחתון) -->
+  
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
