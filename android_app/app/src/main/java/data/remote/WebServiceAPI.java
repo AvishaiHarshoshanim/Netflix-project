@@ -66,5 +66,19 @@ public interface WebServiceAPI {
 
     @POST("movies/{id}/recommend")
     Call<Void> updateRecServer(@Header("userId") String userId, @Path("id") int movieId);
+    //create token
+     @POST("tokens")
+    Call<TokenResponse> login(@Body LoginRequest loginRequest);
+    //create user
+    @Multipart
+    @POST("users")
+    Call<ResponseBody> signUp(
+            @Part("userName") RequestBody username,
+            @Part("name") RequestBody name,
+            @Part("password") RequestBody password,
+            @Part MultipartBody.Part profile_picture
+
+    );
+
 
 }
