@@ -7,6 +7,8 @@ const Header = ({ toggleTheme, theme, user, logout }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [userDet, setUserDet] = useState(null);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+
 
   const searchInputRef = useRef(null);
   const API_PORT = process.env.REACT_APP_USER_TO_WEB_PORT;
@@ -62,6 +64,8 @@ const Header = ({ toggleTheme, theme, user, logout }) => {
   };
 
   return (
+    <>
+
     <div className="header">
       <div className="logo" src="./NETBLIX.png"> </div>
 
@@ -71,7 +75,9 @@ const Header = ({ toggleTheme, theme, user, logout }) => {
             src={userDet?.picture ? `http://localhost:${API_PORT}${userDet.picture}` : "/images/default-profile.webp"}
             alt="Profile"
             className="profile-picture"
+            onClick={() => setIsProfileOpen(true)} // פותח את החלון בלחיצה
           />
+
           <span className="user-name"> {userDet?.name || "Guest"}</span>
         </div>
       )}
@@ -106,7 +112,22 @@ const Header = ({ toggleTheme, theme, user, logout }) => {
       </button>
 
       <button className="logout-btn" onClick={logout}>LOGOUT</button>
+
     </div>
+
+    {/* Pop-up window for user details */}
+    {isProfileOpen && (
+      <div className="profile-modal">
+        <div className="profile-content">
+          <h2>User Details</h2>
+          <p><strong>Username:</strong> {userDet?.userName}</p>
+          <p><strong>Name:</strong> {userDet?.name}</p>
+          <p><strong>Role:</strong> {userDet?.role}</p>
+          <button onClick={() => setIsProfileOpen(false)}>Close</button>
+        </div>
+      </div>
+    )}
+    </>
   );
 };
 

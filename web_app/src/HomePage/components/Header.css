@@ -154,14 +154,19 @@
   border-radius: 50%;
   border: 3px solid white;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.profile-picture:hover {
+  transform: scale(1.05); 
 }
 
 .dark-mode .profile-picture {
-  border-color: #e50914; /* אדום ב-dark-mode */
+  border-color: #e50914; 
 }
 
 .light-mode .profile-picture {
-  border-color: #007bff; /* כחול ב-light-mode */
+  border-color: #007bff; 
 }
 
 .user-name {
@@ -174,6 +179,54 @@
   position: relative;
   top: 5px; 
   left: -5px;
+}
+
+.profile-modal {
+  position: absolute;
+  top: 60px; /* ממקם את החלון קצת מתחת לתמונה */
+  left: 160px; /* צריך לכוון כך שיתאים למיקום של התמונה */
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  width: 200px;
+  text-align: left;
+  z-index: 1000;
+}
+
+.profile-content {
+  padding: 10px;
+}
+
+.profile-content h2 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.profile-content p {
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.profile-content button {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  border: none;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+.dark-mode .profile-content button {
+  background: red;
+  color: white;
+}
+
+.light-mode .profile-content button {
+  background: #007bff; 
+  color: white;
 }
 
 
