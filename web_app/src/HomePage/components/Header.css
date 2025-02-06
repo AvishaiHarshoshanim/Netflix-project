@@ -139,25 +139,45 @@
 .user-info {
   display: flex;
   align-items: center;
-  gap: 10px; 
+  gap: 8px; 
   position: absolute;
-  left: 150px; 
+  left: 160px; 
   top: 50%;
   transform: translateY(-50%);
+  cursor: pointer; 
+  transition: transform 0.3s ease-in-out;
 }
 
 .profile-picture {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
-  border: 2px solid white;
+  border: 3px solid white;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dark-mode .profile-picture {
+  border-color: #e50914; /* אדום ב-dark-mode */
+}
+
+.light-mode .profile-picture {
+  border-color: #007bff; /* כחול ב-light-mode */
 }
 
 .user-name {
   color: white;
   font-size: 16px;
   font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 15px;
+  transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  position: relative;
+  top: 5px; 
+  left: -5px;
 }
+
+
+
 
 
 
