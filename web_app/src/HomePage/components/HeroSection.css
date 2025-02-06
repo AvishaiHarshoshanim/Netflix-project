@@ -112,8 +112,8 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    width: 100px; /* או כל גודל שמתאים */
-    height: 60px; /* לוודא שהכפתור לא מתעוות */
+    width: 100px; 
+    height: 60px; 
     display: flex;
 }
 
