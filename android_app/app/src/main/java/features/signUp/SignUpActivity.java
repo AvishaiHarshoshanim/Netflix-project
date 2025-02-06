@@ -1,4 +1,4 @@
-package features.SignUp;
+package features.signUp;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -19,7 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import java.io.File;
 
-import features.Login.LoginActivity;
+import features.login.LoginActivity;
 import views.user.FileUtils;
 import views.user.UserViewModel;
 

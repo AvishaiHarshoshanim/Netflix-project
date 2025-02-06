@@ -1,6 +1,8 @@
 package features.threePages.ui.homePage;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,8 +36,9 @@ public class HomeFragment extends Fragment {
         RecyclerView recyclerViewMovies = binding.recyclerViewMovies;
         recyclerViewMovies.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        //String userId = "67a226de2c4c4db72f90f6f2";
-        String userId = "67a26cdb05a60ab1fce51507";
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+        String userId = sharedPreferences.getString("user_id", null);
+        String role = sharedPreferences.getString("user_role", null);
 
         // ViewModel to fetch movies
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);

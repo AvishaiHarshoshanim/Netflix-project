@@ -1,6 +1,7 @@
 package data.remote;
 
 import features.threePages.ui.search.MoviesToShowResponse;
+import okhttp3.ResponseBody;
 import retrofit2.http.Header;
 import views.CategoryWithMovies;
 import views.categories.Category;
@@ -17,6 +18,8 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import views.user.LoginRequest;
+import views.user.TokenResponse;
 
 import java.util.List;
 

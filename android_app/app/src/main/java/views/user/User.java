@@ -9,7 +9,7 @@ public class User {
         this.name = name;
     }
 
-    public StringuserName() {
+    public String userName() {
         return userName;
     }
 

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
@@ -41,7 +42,6 @@ public class SlideshowFragment extends Fragment {
         movieAdapter = new MovieListAdapter(new ArrayList<>(), movie -> {
             Intent intent = new Intent(requireContext(), MovieDetailsActivity.class);
             intent.putExtra("MOVIE_ID", movie.get_id());
-            intent.putExtra("USER_ID", userId);
             startActivity(intent);
         });
         binding.recyclerView.setAdapter(movieAdapter);

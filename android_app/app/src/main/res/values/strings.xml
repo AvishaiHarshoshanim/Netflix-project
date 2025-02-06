@@ -8,7 +8,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Logout</string>
 
-    <string name="menu_home">Home Page</string>
+    <string name="menu_home">Netblix</string>
     <string name="menu_gallery">Movies</string>
     <string name="menu_slideshow">Search</string>
 </resources>

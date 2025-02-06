@@ -72,6 +72,8 @@ dependencies {
     annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
     //annotationProcessor(libs.github.compiler)
 
+    //implementation(libs.jwt.decode)
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
