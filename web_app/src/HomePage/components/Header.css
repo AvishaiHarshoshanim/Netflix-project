@@ -135,5 +135,32 @@
   background-color: white;
   color: black;
 }
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 20px; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px; /* Increased max-width for better visibility */
+  order: -1; /* This ensures it comes before the navigation items */
+}
+.profile-picture {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+}
+
+.user-name {
+  font-weight: bold;
+  font-size: 16px;
+  color: white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
+}
   
   
