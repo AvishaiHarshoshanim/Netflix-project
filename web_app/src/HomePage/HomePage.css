@@ -6,33 +6,24 @@
   .category-block {
     margin-bottom: 30px;
   }
-  
-  .light-mode .category-title {
-    font-size: 1.8em;
-    color: rgb(0, 0, 0);
-    margin-bottom: 10px;
-    font-weight: bold;
-    text-align: left;
-  }
-  
 
-  .dark-mode .category-title {
+  .category-title {
     font-size: 1.8em;
     color: white;
     margin-bottom: 10px;
     font-weight: bold;
     text-align: left;
   }
-  
+
   .movies-list {
     display: flex;
     gap: 10px;
     overflow-x: auto; 
     padding: 10px 0;
   }
-
+  
   .light-mode .categories-section {
-    background-color: #edf4f1; 
+    background-color: #1b4d3e; 
 }
 
 .dark-mode .categories-section {

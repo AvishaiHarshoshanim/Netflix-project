@@ -10,7 +10,7 @@ const Header = ({ toggleTheme, theme, user, logout, setJwt, setUser }) => {
 
   //const adminId = userId;  // Defining the manager's id
   const isAdmin = user?.role === "admin";
-
+     
   const toggleSearch = () => {
     setIsSearchOpen((prev) => !prev);
   };

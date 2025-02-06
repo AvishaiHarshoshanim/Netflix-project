@@ -16,7 +16,7 @@
 
 
 .light-mode .header {
-    background-color: #edf4f1;
+  background-color: #013220;
 }
 
 
@@ -45,11 +45,11 @@
 }
 
 .light-mode .header-link {
-  color: #000000;
+  color: #007bff;
 }
 
 .light-mode .header-link:hover {
-  color: #31363b;
+  color: #0056b3;
 }
 
 
@@ -86,12 +86,12 @@
 }
 
 .light-mode .logout-btn {
-  background-color: #e50914; 
+  background-color: #007bff; 
   color: white;
 }
 
 .light-mode .logout-btn:hover {
-  background-color: #800000;
+  background-color: #0056b3;
 }
   
   
