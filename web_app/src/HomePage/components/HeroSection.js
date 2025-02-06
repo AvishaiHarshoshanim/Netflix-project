@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom"; 
+import MovieDetailsPopup from "../../MovieInfo/Components/MovieDetailsPopup";
 import './HeroSection.css';
 
 const HeroSection = ({ userId }) => {
@@ -9,6 +10,8 @@ const HeroSection = ({ userId }) => {
     const [videoURL, setVideoUrl] = useState(null);
     const [currentMovie, setCurrentMovie] = useState(null);
     const isMovieSelected = useRef(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
 
     const API_PORT = process.env.REACT_APP_USER_TO_WEB_PORT;
     const API_URL = `http://localhost:${API_PORT}/api`;
@@ -68,12 +71,9 @@ const HeroSection = ({ userId }) => {
         }
       };
 
-      const playMovie = () => {
-        if (currentMovie && currentMovie.videoURL) {
-            console.log("🎥 Navigating to MovieShow with:", currentMovie);
-            navigate("/watch", { state: { videoURL: currentMovie.videoURL, movieName: currentMovie.movieName } });
-        } else {
-            console.warn("❌ No movie available to play!");
+      const openMovieDetails = () => {
+        if (currentMovie) {
+            setIsModalOpen(true);
         }
     };
 
@@ -100,10 +100,18 @@ const HeroSection = ({ userId }) => {
             />
             </button>
             <div className="hero-buttons">
-                <button className="btn btn-primary" onClick={playMovie} disabled={!currentMovie}>
+                <button className="btn btn-primary" onClick={openMovieDetails} disabled={!currentMovie}>
                     {currentMovie ? "Play Now" : "Loading..."}
                 </button>
             </div>
+
+            {isModalOpen && (
+                <MovieDetailsPopup
+                    movieId={currentMovie._id}
+                    userId={userId}
+                    onClose={() => setIsModalOpen(false)}
+                />
+            )}
         </div>
     );
 };
