@@ -44,4 +44,26 @@
         android:layout_marginTop="16dp"
         android:layout_gravity="center_horizontal"/>
 
+    <TextView
+        android:id="@+id/recoTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text= "Recommendation:"
+        android:layout_gravity="left" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_View"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:scrollbars="vertical" />
+
+    <TextView
+        android:id="@+id/noResultsMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No recommendation found"
+        android:visibility="gone"
+        android:layout_gravity="center" />
+
 </LinearLayout>

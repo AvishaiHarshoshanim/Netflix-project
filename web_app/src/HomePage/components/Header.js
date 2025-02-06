@@ -12,7 +12,7 @@ const Header = ({ toggleTheme, theme, user, logout }) => {
 
   const searchInputRef = useRef(null);
   const API_PORT = process.env.REACT_APP_USER_TO_WEB_PORT;
-  const API_URL = `http://localhost:${API_PORT}/api`;
+  const API_URL = http://localhost:${API_PORT}/api;
 
   const isAdmin = user?.role === "admin";
 
@@ -20,7 +20,7 @@ const Header = ({ toggleTheme, theme, user, logout }) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`${API_URL}/users/${user.userId}`, {
+        const response = await fetch(${API_URL}/users/${user.userId}, {
           method: "GET",
           headers: { "Accept": "application/json" }
         });
@@ -28,9 +28,7 @@ const Header = ({ toggleTheme, theme, user, logout }) => {
         if (!response.ok) throw new Error("Failed to fetch user details");
 
         const data = await response.json();
-
-        console.log("📡 Data from server:", data);
-        console.log("🖼️ Picture field:", data.picture);
+      
         setUserDet(data);
       } catch (err) {
         console.error("Error fetching user data:", err);
@@ -54,7 +52,7 @@ const Header = ({ toggleTheme, theme, user, logout }) => {
 
   const handleSearch = (event) => {
     if (event.key === "Enter" && searchQuery.trim() !== "") {
-      navigate(`/search/${searchQuery.trim()}`);
+      navigate(/search/${searchQuery.trim()});
     }
   };
 
@@ -72,7 +70,7 @@ const Header = ({ toggleTheme, theme, user, logout }) => {
       {userDet && (
         <div className="user-info">
           <img
-            src={userDet?.picture ? `http://localhost:${API_PORT}${userDet.picture}` : "/images/default-profile.webp"}
+            src={userDet?.picture ? http://localhost:${API_PORT}${userDet.picture} : "/images/default-profile.webp"}
             alt="Profile"
             className="profile-picture"
             onClick={() => setIsProfileOpen(true)} 
